@@ -19,7 +19,10 @@
       "Bash(curl -s -w \"\\\\nHTTP %{http_code}\\\\n\" -o /dev/null \"https://api.planespotters.net/pub/photos/reg/F-ZBFX\")",
       "Bash(curl -s -A \"Mozilla/5.0 \\(Windows NT 10.0; Win64; x64\\) AppleWebKit/537.36 Chrome/126.0 Safari/537.36\" \"https://api.planespotters.net/pub/photos/reg/F-ZBFX\")",
       "Bash(curl -s -A \"Mozilla/5.0 \\(Windows NT 10.0; Win64; x64\\) AppleWebKit/537.36 Chrome/126.0 Safari/537.36\" -H \"Origin: http://localhost:5173\" -H \"Referer: http://localhost:5173/\" \"https://api.planespotters.net/pub/photos/reg/F-ZBFX\")",
-      "Bash(python -c \"import json,sys; d=json.load\\(sys.stdin\\); p=\\(d.get\\('photos'\\) or [{}]\\)[0]; print\\('photo:', bool\\(p.get\\('thumbnail_large'\\)\\), '|', p.get\\('photographer'\\), '|', \\(p.get\\('link'\\) or ''\\)[:60]\\)\")"
+      "Bash(python -c \"import json,sys; d=json.load\\(sys.stdin\\); p=\\(d.get\\('photos'\\) or [{}]\\)[0]; print\\('photo:', bool\\(p.get\\('thumbnail_large'\\)\\), '|', p.get\\('photographer'\\), '|', \\(p.get\\('link'\\) or ''\\)[:60]\\)\")",
+      "PowerShell(npm install --prefix frontend --no-fund --no-audit --save-dev puppeteer-core)",
+      "PowerShell(node frontend\\\\scripts\\\\check.mjs)",
+      "PowerShell(node scripts\\\\check.mjs)"
     ]
   }
 }

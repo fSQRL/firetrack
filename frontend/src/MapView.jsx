@@ -10,10 +10,11 @@ function trailWindow(speed) {
 }
 
 // Fenêtre de visibilité d'un point chaud FIRMS autour de son heure de détection.
-// Les satellites ne passent que vers ~01h30 et ~13h30 locales : on fait persister
-// la détection ~10 h pour couvrir l'intervalle entre deux passages.
+// Les satellites ne passent que vers ~01h30-04h30 et ~13h30-16h locales : il faut
+// ~14 h de persistance pour que le passage de l'après-midi (dernier vers ~16h)
+// tienne jusqu'au passage nocturne suivant, sans trou vers 2h-4h du matin.
 const FIRE_BEFORE_S = 30 * 60;
-const FIRE_AFTER_S = 10 * 3600;
+const FIRE_AFTER_S = 14 * 3600;
 
 // Silhouette d'avion (SVG, nez vers le haut) — marqueur DOM : mise à jour synchrone,
 // contrairement aux couches symbol de MapLibre qui replacent les icônes en différé.
@@ -63,8 +64,42 @@ export default function MapView({ aircraft, fires, t, speed, selectedHex, persis
   const containerRef = useRef(null);
   const mapRef = useRef(null);
   const readyRef = useRef(false);
-  const markersRef = useRef(new Map()); // hex -> {marker, path}
+  const markersRef = useRef(new Map()); // hex -> {marker, svg}
   const canvasRef = useRef(null);
+  const visFiresRef = useRef([]); // feux visibles à l'instant t (cache, rebâti toutes les 60 s simulées)
+  const fireSpritesRef = useRef(null); // 3 frames de flamme découpées depuis /flames.png
+
+  // Sprite sheet des flammes : 3 frames côte à côte. Le fond noir éventuel est
+  // converti en transparence (alpha = luminance) au chargement.
+  useEffect(() => {
+    const img = new Image();
+    img.onload = () => {
+      const fw = Math.floor(img.width / 3), fh = img.height;
+      fireSpritesRef.current = [0, 1, 2].map((i) => {
+        const c = document.createElement('canvas');
+        c.width = fw;
+        c.height = fh;
+        const cx = c.getContext('2d');
+        cx.drawImage(img, -i * fw, 0);
+        const d = cx.getImageData(0, 0, fw, fh);
+        const px = d.data;
+        for (let j = 0; j < px.length; j += 4) {
+          px[j + 3] = Math.min(px[j + 3], Math.max(px[j], px[j + 1], px[j + 2]));
+        }
+        cx.putImageData(d, 0, 0);
+        return c;
+      });
+    };
+    img.src = '/flames.png';
+  }, []);
+
+  // Les flammes dansent même en pause : petit tick de redessin permanent (~8 fps,
+  // la fluidité pendant la lecture vient déjà du refresh à chaque frame)
+  useEffect(() => {
+    const id = setInterval(() => drawTrails(), 130);
+    return () => clearInterval(id);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // Traînées récentes dessinées sur un canvas overlay : synchronisées à la frame près
   // avec les marqueurs (les sources GeoJSON de MapLibre sont retuilées en asynchrone).
@@ -86,11 +121,37 @@ export default function MapView({ aircraft, fires, t, speed, selectedHex, persis
     const ctx = canvas.getContext('2d');
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     ctx.clearRect(0, 0, w, h);
+
+    // --- Flammes (sprites animés, taille ∝ intensité FRP, ancrées au sol) ---
+    const sprites = fireSpritesRef.current;
+    const nowMs = performance.now();
+    const frame = Math.floor(nowMs / 150);
+    for (let i = 0; i < visFiresRef.current.length; i++) {
+      const [lon, lat, frp, fade] = visFiresRef.current[i];
+      const p = map.project([lon, lat]);
+      if (p.x < -40 || p.y < -60 || p.x > w + 40 || p.y > h + 40) continue;
+      const s = (14 + 22 * Math.min(1, frp / 150)) * (1 + 0.07 * Math.sin(nowMs / 90 + i * 2.7));
+      ctx.globalAlpha = fade;
+      if (sprites) {
+        ctx.drawImage(sprites[(frame + i) % 3], p.x - s / 2, p.y - s * 1.25, s, s * 1.35);
+      } else {
+        // fallback tant que /flames.png n'existe pas
+        ctx.fillStyle = '#ff6a00';
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, s / 3, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
+    ctx.globalAlpha = 1;
+
+    // --- Traînées des avions ---
     ctx.lineWidth = 2.5;
     ctx.lineCap = 'round';
     ctx.lineJoin = 'round';
     ctx.globalAlpha = 0.9;
     for (const a of aircraft) {
+      // avion absent (atterri / hors couverture) : sa ligne disparaît d'un coup
+      if (!positionAt(a.points, t)) continue;
       const coords = trailBefore(a.points, t, trailWindow(speed));
       if (coords.length < 2) continue;
       const dim = selectedHex && selectedHex !== a.hex;
@@ -115,26 +176,8 @@ export default function MapView({ aircraft, fires, t, speed, selectedHex, persis
     map.addControl(new maplibregl.AttributionControl({ compact: true }), 'top-right');
     mapRef.current = map;
     map.on('load', () => {
-      map.addSource('fires', { type: 'geojson', data: EMPTY });
       map.addSource('fulltrack', { type: 'geojson', data: EMPTY });
       map.addSource('trails', { type: 'geojson', data: EMPTY });
-      map.addLayer({
-        id: 'fires-glow', type: 'circle', source: 'fires',
-        paint: {
-          'circle-color': '#ff5a00',
-          'circle-blur': 1,
-          'circle-radius': ['interpolate', ['linear'], ['get', 'frp'], 0, 8, 50, 16, 300, 30],
-          'circle-opacity': ['*', 0.5, ['get', 'fade']],
-        },
-      });
-      map.addLayer({
-        id: 'fires-core', type: 'circle', source: 'fires',
-        paint: {
-          'circle-color': '#ffc02e',
-          'circle-radius': ['interpolate', ['linear'], ['get', 'frp'], 0, 2.5, 50, 4.5, 300, 8],
-          'circle-opacity': ['get', 'fade'],
-        },
-      });
       map.addLayer({
         id: 'fulltrack', type: 'line', source: 'fulltrack',
         paint: { 'line-color': ['get', 'color'], 'line-width': 1.5, 'line-opacity': 0.45 },
@@ -197,21 +240,17 @@ export default function MapView({ aircraft, fires, t, speed, selectedHex, persis
     // --- Traînées récentes : canvas, à chaque frame ---
     drawTrails();
 
-    // --- Feux : GeoJSON, mis à jour toutes les 60 s simulées seulement ---
+    // --- Feux : liste des visibles recalculée toutes les 60 s simulées seulement ---
     const firesKey = `${fires?.length ?? 0}|${Math.floor(t / 60)}`;
     if (firesKeyRef.current !== firesKey) {
       firesKeyRef.current = firesKey;
-      const fireFeats = [];
+      const vis = [];
       for (const [ts, lat, lon, frp] of fires ?? []) {
         if (t < ts - FIRE_BEFORE_S || t > ts + FIRE_AFTER_S) continue;
         const fade = t < ts ? 1 - (ts - t) / FIRE_BEFORE_S : 1 - (t - ts) / FIRE_AFTER_S;
-        fireFeats.push({
-          type: 'Feature',
-          geometry: { type: 'Point', coordinates: [lon, lat] },
-          properties: { frp: frp ?? 5, fade: Math.max(0.15, fade) },
-        });
+        vis.push([lon, lat, frp ?? 5, Math.max(0.15, fade)]);
       }
-      map.getSource('fires')?.setData({ type: 'FeatureCollection', features: fireFeats });
+      visFiresRef.current = vis;
     }
 
     // --- Tracés persistants : uniquement le vol en cours des avions en l'air,
