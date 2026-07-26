@@ -33,6 +33,11 @@ FLEET_PATH = Path(__file__).resolve().parent / "fleet.json"
 GITHUB_RELEASE_URL = "https://api.github.com/repos/adsblol/globe_history_{year}/releases/tags/{tag}"
 HEXDB_URL = "https://hexdb.io/reg-hex?reg={reg}"
 
+# Vent horaire historique (Open-Meteo, gratuit sans clé) au centre de la zone feu
+OPEN_METEO_URL = ("https://archive-api.open-meteo.com/v1/archive?latitude=44.6&longitude=-1.0"
+                  "&start_date={start}&end_date={end}"
+                  "&hourly=wind_speed_10m,wind_direction_10m&timezone=UTC")
+
 # NASA FIRMS (points chauds satellites) — bbox Gironde + Landes (w,s,e,n)
 FIRMS_URL = "https://firms.modaps.eosdis.nasa.gov/api/area/csv/{key}/{source}/{bbox}/{days}/{day}"
 FIRMS_BBOX = "-1.6,43.4,0.2,45.6"
@@ -77,6 +82,11 @@ CREATE TABLE IF NOT EXISTS fires (
     PRIMARY KEY (lat, lon, ts, satellite)
 );
 CREATE INDEX IF NOT EXISTS idx_fires_ts ON fires (ts);
+CREATE TABLE IF NOT EXISTS wind (
+    ts        REAL PRIMARY KEY,       -- epoch Unix (s), pas horaire
+    speed_kmh REAL,
+    dir_deg   REAL                    -- direction d'où vient le vent (météo)
+);
 CREATE TABLE IF NOT EXISTS ingested_days (
     day         TEXT PRIMARY KEY,     -- YYYY-MM-DD
     tag         TEXT NOT NULL,
@@ -326,6 +336,26 @@ def cmd_fires(args):
     print(f"FIRMS {start} → {day - timedelta(days=1)} : {total} détections (bbox Gironde+Landes).")
 
 
+# ---------------------------------------------------------------- wind
+
+def cmd_wind(args):
+    start = date.fromisoformat(args.date) if args.date else date.today() - timedelta(days=1)
+    end = start + timedelta(days=args.days - 1)
+    url = OPEN_METEO_URL.format(start=start.isoformat(), end=end.isoformat())
+    with http_get(url, timeout=60) as resp:
+        h = json.load(resp)["hourly"]
+    db = get_db()
+    rows = []
+    for time_s, spd, deg in zip(h["time"], h["wind_speed_10m"], h["wind_direction_10m"]):
+        if spd is None:
+            continue
+        ts = datetime.fromisoformat(time_s + ":00+00:00").timestamp()
+        rows.append((ts, spd, deg))
+    db.executemany("INSERT OR REPLACE INTO wind VALUES (?, ?, ?)", rows)
+    db.commit()
+    print(f"Vent {start} → {end} : {len(rows)} relevés horaires (Open-Meteo).")
+
+
 # ---------------------------------------------------------------- photos
 
 PLANESPOTTERS_UA = "CanadairsGironde/0.1 (+mailto:angledroit@gmail.com)"
@@ -392,6 +422,9 @@ def cmd_export(args):
     out["fires"] = db.execute(
         "SELECT ts, lat, lon, frp FROM fires WHERE ts >= ? AND ts < ? ORDER BY ts", (start, end)
     ).fetchall()
+    out["wind"] = db.execute(
+        "SELECT ts, speed_kmh, dir_deg FROM wind WHERE ts >= ? AND ts < ? ORDER BY ts", (start, end)
+    ).fetchall()
     EXPORT_DIR.mkdir(parents=True, exist_ok=True)
     path = EXPORT_DIR / f"{day.isoformat()}.json"
     path.write_text(json.dumps(out, separators=(",", ":")), encoding="utf-8")
@@ -443,6 +476,11 @@ def main():
     p = sub.add_parser("export", help="exporte un jour en JSON pour le frontend")
     p.add_argument("date", help="YYYY-MM-DD")
     p.set_defaults(func=cmd_export)
+
+    p = sub.add_parser("wind", help="récupère le vent horaire (Open-Meteo, pour la fumée)")
+    p.add_argument("date", nargs="?", help="YYYY-MM-DD, début de plage (défaut : hier)")
+    p.add_argument("--days", type=int, default=1, help="nombre de jours")
+    p.set_defaults(func=cmd_wind)
 
     p = sub.add_parser("photos", help="récupère les photos des appareils (planespotters.net)")
     p.add_argument("--force", action="store_true", help="rafraîchir aussi les photos déjà en cache")

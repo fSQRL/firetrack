@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react';
 import maplibregl from 'maplibre-gl';
 import 'maplibre-gl/dist/maplibre-gl.css';
-import { positionAt, trailBefore, trailSegmentsBefore, fullTrack } from './interp.js';
+import { positionAt, trailBefore, trailSegmentsBefore, fullTrack, windAt } from './interp.js';
 
 // Traînée : ce que l'avion a parcouru pendant ~8 s réelles de lecture (borné 15 min – 2 h),
 // pour rester visible aux grandes vitesses de lecture.
@@ -60,13 +60,36 @@ const MAP_STYLE = {
 
 const EMPTY = { type: 'FeatureCollection', features: [] };
 
-export default function MapView({ aircraft, fires, t, speed, selectedHex, persist, onSelect }) {
+// Imagerie satellite quotidienne NASA GIBS (vraies couleurs VIIRS, panache de fumée visible)
+const GIBS_URL = 'https://gibs.earthdata.nasa.gov/wmts/epsg3857/best/'
+  + 'VIIRS_SNPP_CorrectedReflectance_TrueColor/default/{day}/GoogleMapsCompatible_Level9/{z}/{y}/{x}.jpg';
+
+const SMOKE_PUFFS = 10;      // bouffées par foyer
+const SMOKE_MAX_FIRES = 60;  // seuls les foyers les plus intenses émettent de la fumée
+
+// Sprite de bouffée de fumée (dégradé radial gris, pré-rendu une fois)
+let smokeSprite = null;
+function getSmokeSprite() {
+  if (smokeSprite) return smokeSprite;
+  const c = document.createElement('canvas');
+  c.width = c.height = 64;
+  const cx = c.getContext('2d');
+  const g = cx.createRadialGradient(32, 32, 4, 32, 32, 30);
+  g.addColorStop(0, 'rgba(115, 115, 120, 0.6)');
+  g.addColorStop(1, 'rgba(115, 115, 120, 0)');
+  cx.fillStyle = g;
+  cx.fillRect(0, 0, 64, 64);
+  return (smokeSprite = c);
+}
+
+export default function MapView({ aircraft, fires, wind, t, speed, selectedHex, persist, satelliteDay, onSelect }) {
   const containerRef = useRef(null);
   const mapRef = useRef(null);
   const readyRef = useRef(false);
   const markersRef = useRef(new Map()); // hex -> {marker, svg}
   const canvasRef = useRef(null);
   const visFiresRef = useRef([]); // feux visibles à l'instant t (cache, rebâti toutes les 60 s simulées)
+  const visSmokeRef = useRef([]); // sous-ensemble des foyers les plus intenses, émetteurs de fumée
   const fireSpritesRef = useRef(null); // 3 frames de flamme découpées depuis /flames.png
 
   // Sprite sheet des flammes : 3 frames côte à côte. Le fond noir éventuel est
@@ -144,6 +167,49 @@ export default function MapView({ aircraft, fires, t, speed, selectedHex, persis
     }
     ctx.globalAlpha = 1;
 
+    // --- Fumée : bouffées dérivant sous le vent réel de l'heure simulée ---
+    const wv = windAt(propsRef.current.wind, t);
+    if (wv && visSmokeRef.current.length) {
+      const smoke = getSmokeSprite();
+      const rad = Math.PI / 180;
+      const spd = Math.max(wv.speed, 3);                    // km/h, plancher par vent calme
+      const lenKm = Math.min(120, Math.max(8, spd * 6));    // panache = ~6 h de dérive
+      const travelS = (lenKm / spd) * 3600;                 // durée de parcours du panache (s)
+      const heading = (wv.dir + 180) * rad;                 // le vent "vient de" dir : fumée vers dir+180
+      // échelle géographique : px par km à ce zoom (la fumée garde sa taille réelle)
+      const p0 = map.project([-1, 44.6]);
+      const p1 = map.project([-1, 44.6 + 1 / 111]);
+      const pxPerKm = Math.hypot(p1.x - p0.x, p1.y - p0.y);
+      const rnd = (n) => { const x = Math.sin(n) * 43758.5453; return x - Math.floor(x); }; // bruit stable
+      for (let i = 0; i < visSmokeRef.current.length; i++) {
+        const [lon, lat, frp, fade] = visSmokeRef.current[i];
+        const strength = Math.min(1, frp / 150);
+        // chaque foyer a son propre panache : cap dévié (±10°), longueur variable (60-130 %)
+        const head = heading + (rnd(i * 7.13) - 0.5) * 20 * rad;
+        const fLen = lenKm * (0.6 + 0.7 * rnd(i * 3.77));
+        const m1 = rnd(i * 5.31) * 6.28, m2 = rnd(i * 9.02) * 6.28; // phases du méandre
+        for (let k = 0; k < SMOKE_PUFFS; k++) {
+          const ph = (((t / travelS) + k / SMOKE_PUFFS + i * 0.137) % 1 + 1) % 1;
+          const distKm = ph * fLen;
+          // le panache serpente : méandre commun à toutes les bouffées du foyer
+          // (deux sinusoïdes superposées), pas d'éventail symétrique
+          const side = (Math.sin(m1 + distKm * 0.11) + 0.5 * Math.sin(m2 + distKm * 0.31))
+            * 0.13 * distKm;
+          const dLat = (Math.cos(head) * distKm - Math.sin(head) * side) / 111;
+          const dLon = (Math.sin(head) * distKm + Math.cos(head) * side)
+            / (111 * Math.cos(lat * rad));
+          const p = map.project([lon + dLon, lat + dLat]);
+          // bouffées irrégulières : gonflement en dérivant + jitter de taille
+          const szKm = (0.6 + 0.4 * distKm) * (0.6 + 0.6 * strength) * (0.65 + 0.7 * rnd(i * 13.7 + k * 2.9));
+          const sz = Math.max(7, szKm * pxPerKm);
+          if (p.x < -sz || p.y < -sz || p.x > w + sz || p.y > h + sz) continue;
+          ctx.globalAlpha = fade * (0.28 + 0.2 * rnd(i * 2.1 + k * 4.3)) * (1 - ph * 0.75);
+          ctx.drawImage(smoke, p.x - sz / 2, p.y - sz / 2, sz, sz);
+        }
+      }
+      ctx.globalAlpha = 1;
+    }
+
     // --- Traînées des avions ---
     ctx.lineWidth = 2.5;
     ctx.lineCap = 'round';
@@ -198,7 +264,27 @@ export default function MapView({ aircraft, fires, t, speed, selectedHex, persis
 
   // refs pour que refresh() lise toujours les dernières props sans réinitialiser la carte
   const propsRef = useRef({});
-  propsRef.current = { aircraft, fires, t, speed, selectedHex, persist };
+  propsRef.current = { aircraft, fires, wind, t, speed, selectedHex, persist };
+
+  // Couche satellite NASA GIBS, datée selon le jour affiché par la timeline
+  useEffect(() => {
+    const map = mapRef.current;
+    if (!map || !readyRef.current) return;
+    if (map.getLayer('gibs')) map.removeLayer('gibs');
+    if (map.getSource('gibs')) map.removeSource('gibs');
+    if (!satelliteDay) return;
+    map.addSource('gibs', {
+      type: 'raster',
+      tiles: [GIBS_URL.replace('{day}', satelliteDay)],
+      tileSize: 256,
+      maxzoom: 9,
+      attribution: 'NASA GIBS',
+    });
+    map.addLayer(
+      { id: 'gibs', type: 'raster', source: 'gibs', paint: { 'raster-opacity': 0.8 } },
+      'fulltrack' // sous les tracés et tout le reste
+    );
+  }, [satelliteDay]);
   const trailsKeyRef = useRef('');
   const firesKeyRef = useRef('');
   const trackKeyRef = useRef('');
@@ -251,6 +337,7 @@ export default function MapView({ aircraft, fires, t, speed, selectedHex, persis
         vis.push([lon, lat, frp ?? 5, Math.max(0.15, fade)]);
       }
       visFiresRef.current = vis;
+      visSmokeRef.current = [...vis].sort((a, b) => b[2] - a[2]).slice(0, SMOKE_MAX_FIRES);
     }
 
     // --- Tracés persistants : uniquement le vol en cours des avions en l'air,
@@ -297,7 +384,7 @@ export default function MapView({ aircraft, fires, t, speed, selectedHex, persis
     }
   }
 
-  useEffect(refresh, [aircraft, fires, t, selectedHex, persist]);
+  useEffect(refresh, [aircraft, fires, wind, t, selectedHex, persist]);
 
   return (
     <div className="map-wrap">

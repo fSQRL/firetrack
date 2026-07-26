@@ -24,5 +24,5 @@ const state = await page.evaluate(() => {
   };
 });
 console.log('[state]', JSON.stringify(state));
-await page.screenshot({ path: 'scripts/check.png' });
+await page.screenshot({ path: new URL('./check.png', import.meta.url).pathname.slice(1) });
 await browser.close();

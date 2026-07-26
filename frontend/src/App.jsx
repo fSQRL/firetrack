@@ -41,6 +41,8 @@ export default function App() {
   const [day, setDay] = useState(null);
   const [aircraft, setAircraft] = useState([]);
   const [fires, setFires] = useState([]);
+  const [wind, setWind] = useState([]);
+  const [satellite, setSatellite] = useState(false);
   const [range, setRange] = useState(null);
   const [t, setT] = useState(0);
   const [playing, setPlaying] = useState(false);
@@ -73,7 +75,7 @@ export default function App() {
       .then((loaded) => {
         // fusion par appareil (les jours sont chargés dans l'ordre chronologique)
         const byHex = new Map();
-        const allFires = [];
+        const allFires = [], allWind = [];
         for (const data of loaded) {
           for (const a of data.aircraft) {
             const cur = byHex.get(a.hex);
@@ -81,12 +83,18 @@ export default function App() {
             else byHex.set(a.hex, { ...a });
           }
           allFires.push(...(data.fires ?? []));
+          allWind.push(...(data.wind ?? []));
         }
-        const data = { aircraft: [...byHex.values()], fires: allFires.sort((a, b) => a[0] - b[0]) };
+        const data = {
+          aircraft: [...byHex.values()],
+          fires: allFires.sort((a, b) => a[0] - b[0]),
+          wind: allWind.sort((a, b) => a[0] - b[0]),
+        };
         const list = data.aircraft.map((a, i) => ({ ...a, color: COLORS[i % COLORS.length] }));
         setAircraft(list);
         const fs = data.fires ?? [];
         setFires(fs);
+        setWind(data.wind ?? []);
         // plage : vols + détections de feu (le feu peut précéder le premier décollage)
         let r = timeRange(list);
         if (fs.length) {
@@ -167,7 +175,11 @@ export default function App() {
 
   return (
     <div className="app">
-      <MapView aircraft={aircraft} fires={fires} t={t} speed={speed} selectedHex={selectedHex} persist={persist} onSelect={onSelect} />
+      <MapView
+        aircraft={aircraft} fires={fires} wind={wind} t={t} speed={speed}
+        selectedHex={selectedHex} persist={persist} onSelect={onSelect}
+        satelliteDay={satellite && range ? new Date(t * 1000).toISOString().slice(0, 10) : null}
+      />
       <div className="night" style={{ opacity: range ? nightOpacity(t) : 0 }} />
 
       {range && (
@@ -234,6 +246,15 @@ export default function App() {
                 <a href="https://www.openstreetmap.org" target="_blank" rel="noreferrer">OpenStreetMap</a>.
               </li>
             </ul>
+            <h3>Affichage</h3>
+            <label className="menu-toggle">
+              <input type="checkbox" checked={satellite} onChange={(e) => setSatellite(e.target.checked)} />
+              Vue satellite du jour (NASA)
+            </label>
+            <p className="menu-text menu-hint">
+              Image satellite réelle de la journée affichée (VIIRS, une image par jour) :
+              on y voit le vrai panache de fumée.
+            </p>
             <h3>Mise à jour</h3>
             <p className="menu-text">
               Le site se met à jour <b>une fois par jour</b> avec les vols de la veille :

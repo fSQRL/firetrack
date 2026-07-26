@@ -97,6 +97,22 @@ export function fullTrack(points) {
   return segments;
 }
 
+/** Vent interpolé à l'instant t depuis les relevés horaires [[ts, speed_kmh, dir_deg], ...]. */
+export function windAt(wind, t) {
+  if (!wind || !wind.length) return null;
+  let lo = 0, hi = wind.length - 1, i = -1;
+  while (lo <= hi) {
+    const mid = (lo + hi) >> 1;
+    if (wind[mid][0] <= t) { i = mid; lo = mid + 1; } else { hi = mid - 1; }
+  }
+  if (i < 0) return { speed: wind[0][1], dir: wind[0][2] };
+  if (i >= wind.length - 1) return { speed: wind[i][1], dir: wind[i][2] };
+  const [t0, s0, d0] = wind[i], [t1, s1, d1] = wind[i + 1];
+  const f = (t - t0) / (t1 - t0 || 1);
+  let dd = ((d1 - d0 + 540) % 360) - 180;
+  return { speed: s0 + (s1 - s0) * f, dir: (d0 + dd * f + 360) % 360 };
+}
+
 /** Plage [premier ts, dernier ts] couverte par au moins un avion, ou null. */
 export function timeRange(aircraft) {
   let min = Infinity, max = -Infinity;

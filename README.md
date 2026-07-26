@@ -28,8 +28,8 @@ de release, défaut `prod-0`).
 ### Cron
 
 ```cron
-# tous les jours à 06h00 : ingérer la veille (avions + feux) puis exporter
-0 6 * * * cd /path/flight && python backend/cli.py ingest && python backend/cli.py fires && python backend/cli.py export $(date -d yesterday +\%F)
+# tous les jours à 06h00 : ingérer la veille (avions + feux + vent) puis exporter
+0 6 * * * cd /path/flight && python backend/cli.py ingest && python backend/cli.py fires && python backend/cli.py wind && python backend/cli.py export $(date -d yesterday +\%F)
 ```
 
 Sous Windows : Planificateur de tâches avec la même commande. Optionnel : définir
