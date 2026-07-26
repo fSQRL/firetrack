@@ -1,0 +1,25 @@
+{
+  "permissions": {
+    "allow": [
+      "PowerShell(python backend\\\\cli.py discover)",
+      "PowerShell(python backend\\\\cli.py ingest 2026-07-25 --force)",
+      "PowerShell(python backend\\\\cli.py ingest 2026-07-24)",
+      "PowerShell(python backend\\\\cli.py export 2026-07-24)",
+      "PowerShell(python backend\\\\cli.py ingest 2026-07-23)",
+      "PowerShell(python backend\\\\cli.py ingest 2026-07-22)",
+      "PowerShell(python backend\\\\cli.py export 2026-07-23)",
+      "PowerShell(python backend\\\\cli.py export 2026-07-22)",
+      "PowerShell(npm run build --prefix frontend 2>&1)",
+      "Bash(python -c ' *)",
+      "Bash(curl -s \"https://api.planespotters.net/pub/photos/hex/3b7b6c\")",
+      "Bash(python -c \"import json,sys; d=json.load\\(sys.stdin\\); p=\\(d.get\\('photos'\\) or [{}]\\)[0]; print\\('photo:', bool\\(p.get\\('thumbnail_large'\\)\\), '| photographe:', p.get\\('photographer'\\)\\)\")",
+      "Bash(curl -s \"https://api.planespotters.net/pub/photos/hex/7caeb4\")",
+      "Bash(python -c \"import json,sys; d=json.load\\(sys.stdin\\); p=\\(d.get\\('photos'\\) or [{}]\\)[0]; print\\('VH-8SM photo:', bool\\(p.get\\('thumbnail_large'\\)\\), '|', p.get\\('photographer'\\)\\)\")",
+      "Bash(curl -s \"https://api.planespotters.net/pub/photos/reg/F-ZBFX\")",
+      "Bash(curl -s -w \"\\\\nHTTP %{http_code}\\\\n\" -o /dev/null \"https://api.planespotters.net/pub/photos/reg/F-ZBFX\")",
+      "Bash(curl -s -A \"Mozilla/5.0 \\(Windows NT 10.0; Win64; x64\\) AppleWebKit/537.36 Chrome/126.0 Safari/537.36\" \"https://api.planespotters.net/pub/photos/reg/F-ZBFX\")",
+      "Bash(curl -s -A \"Mozilla/5.0 \\(Windows NT 10.0; Win64; x64\\) AppleWebKit/537.36 Chrome/126.0 Safari/537.36\" -H \"Origin: http://localhost:5173\" -H \"Referer: http://localhost:5173/\" \"https://api.planespotters.net/pub/photos/reg/F-ZBFX\")",
+      "Bash(python -c \"import json,sys; d=json.load\\(sys.stdin\\); p=\\(d.get\\('photos'\\) or [{}]\\)[0]; print\\('photo:', bool\\(p.get\\('thumbnail_large'\\)\\), '|', p.get\\('photographer'\\), '|', \\(p.get\\('link'\\) or ''\\)[:60]\\)\")"
+    ]
+  }
+}

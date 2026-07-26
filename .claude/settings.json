@@ -1,0 +1,17 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(curl -s \"https://api.airplanes.live/v2/type/CL2T\")",
+      "Bash(python -c \"import json,sys; d=json.load\\(sys.stdin\\); [print\\(a.get\\('hex'\\),a.get\\('r'\\),a.get\\('flight',''\\).strip\\(\\),a.get\\('t'\\)\\) for a in d.get\\('ac',[]\\)]\")",
+      "Bash(curl -s \"https://api.airplanes.live/v2/type/DH8D\")",
+      "Bash(python -c \"import json,sys; d=json.load\\(sys.stdin\\); [print\\(a.get\\('hex'\\),a.get\\('r'\\),a.get\\('flight',''\\).strip\\(\\)\\) for a in d.get\\('ac',[]\\) if str\\(a.get\\('r',''\\)\\).startswith\\('F-'\\) or str\\(a.get\\('flight',''\\)\\).startswith\\('MILAN'\\)]\")",
+      "Bash(curl -s \"https://api.airplanes.live/v2/type/AT8T\")",
+      "Bash(python -c \"import json,sys; d=json.load\\(sys.stdin\\); [print\\(a.get\\('hex'\\),a.get\\('r'\\),a.get\\('flight',''\\).strip\\(\\)\\) for a in d.get\\('ac',[]\\) if str\\(a.get\\('r',''\\)\\).startswith\\('F-'\\)]\")",
+      "Bash(curl -s \"https://api.airplanes.live/v2/type/A400\")",
+      "Bash(python -c \"import json,sys; d=json.load\\(sys.stdin\\); [print\\(a.get\\('hex'\\),a.get\\('r'\\),a.get\\('flight',''\\).strip\\(\\)\\) for a in d.get\\('ac',[]\\)]\")",
+      "Bash(curl -s \"https://api.airplanes.live/v2/point/44.6/-1.0/150\")",
+      "Bash(python -c ' *)",
+      "PowerShell(python backend\\\\cli.py photos)"
+    ]
+  }
+}

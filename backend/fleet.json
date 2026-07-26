@@ -1,0 +1,31 @@
+{
+  "comment": "Flotte suivie. Le code hex ICAO est résolu automatiquement via hexdb.io par la commande `fleet` et stocké en base. Ajouter ici tout nouvel appareil (ex. Dash 8 MILAN).",
+  "aircraft": [
+    { "registration": "F-ZBFP", "name": "Pélican 31", "type": "CL-415" },
+    { "registration": "F-ZBFS", "name": "Pélican 32", "type": "CL-415" },
+    { "registration": "F-ZBFN", "name": "Pélican 33", "type": "CL-415" },
+    { "registration": "F-ZBFX", "name": "Pélican 34", "type": "CL-415" },
+    { "registration": "F-ZBFY", "name": "Pélican 35", "type": "CL-415" },
+    { "registration": "F-ZBEO", "name": "Pélican 36", "type": "CL-415" },
+    { "registration": "F-ZBFV", "name": "Pélican 37", "type": "CL-415" },
+    { "registration": "F-ZBFW", "name": "Pélican 38", "type": "CL-415" },
+    { "registration": "F-ZBEG", "name": "Pélican 39", "type": "CL-415" },
+    { "registration": "F-ZBEZ", "name": "Pélican 41", "type": "CL-415" },
+    { "registration": "F-ZBEU", "name": "Pélican 42", "type": "CL-415" },
+    { "registration": "F-ZBFQ", "name": "Pélican 43", "type": "CL-415" },
+    { "registration": "F-ZBME", "name": "Pélican 44", "type": "CL-415" },
+    { "registration": "F-ZBMF", "name": "Pélican 45", "type": "CL-415" },
+    { "registration": "F-ZBMG", "name": "Pélican 48", "type": "CL-415" },
+    { "registration": "F-ZBMI", "name": "Milan F-ZBMI", "type": "DASH8" },
+    { "registration": "F-ZBMJ", "name": "Milan F-ZBMJ", "type": "DASH8" },
+    { "registration": "F-ZBMK", "name": "Milan F-ZBMK", "type": "DASH8" },
+    { "registration": "F-ZBML", "name": "Milan F-ZBML", "type": "DASH8" },
+    { "registration": "F-ZBMM", "name": "Milan F-ZBMM", "type": "DASH8" },
+    { "registration": "F-ZBQM", "name": "Milan F-ZBQM", "type": "DASH8" },
+    { "registration": "F-ZBQN", "name": "Milan F-ZBQN", "type": "DASH8" },
+    { "registration": "F-ZBQO", "name": "Milan F-ZBQO", "type": "DASH8" },
+    { "registration": "F-ZBQP", "name": "Milan F-ZBQP", "type": "DASH8" },
+    { "registration": "F-ZBGL", "name": "F-ZBGL", "type": "COORD" },
+    { "registration": "F-ZBGM", "name": "F-ZBGM", "type": "COORD" }
+  ]
+}

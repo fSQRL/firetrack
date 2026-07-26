@@ -1,0 +1,10 @@
+# secrets
+backend/firms_key.txt
+
+# données générées
+data/
+frontend/public/data/
+
+# node
+frontend/node_modules/
+frontend/dist/
