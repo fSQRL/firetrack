@@ -32,7 +32,8 @@ const HELI_PATHS = '<path d="M13 7 L15.5 4.5 L35 24 L32.5 26.5 Z"/>'
 function isHelicopter(type) {
   const t = (type || '').toUpperCase();
   return ['EC45', 'EC35', 'EC30', 'EC55', 'EC75', 'H125', 'H135', 'H145', 'H160', 'H225',
-    'AS50', 'AS55', 'AS3B', 'AS32', 'S76', 'B06', 'B412', 'B429', 'A109', 'A139', 'A189']
+    'AS50', 'AS55', 'AS3B', 'AS32', 'S330', 'PUMA', 'S76', 'B06', 'B412', 'B429',
+    'A109', 'A139', 'A189', 'H60', 'S70', 'UH60']
     .includes(t) || t.startsWith('EC1') || t.startsWith('R4');
 }
 

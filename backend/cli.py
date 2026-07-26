@@ -52,7 +52,7 @@ FIRMS_KEY_FILE = Path(__file__).resolve().parent / "firms_key.txt"
 
 # Découverte live des moyens aériens engagés (les avions loués ont des immats étrangères)
 AIRPLANES_LIVE_POINT = "https://api.airplanes.live/v2/point/{lat}/{lon}/{radius}"
-FIRE_CALLSIGNS = ("PELICAN", "MILAN", "DRAGON", "TRACT", "ABEL", "CHARLIE", "CTM", "COTAM", "BOMB")
+FIRE_CALLSIGNS = ("PELICAN", "MILAN", "DRAGON", "TRACT", "ABEL", "CHARLIE", "CTM", "COTAM", "BOMB", "PUMA")
 FIRE_TYPES = {"CL2T", "AT8T", "A400", "DH8D", "EC45", "H125", "AS50", "EC30", "AS3B", "S2P", "B350",
               "H60", "S70", "UH60", "B412"}
 MAX_DISCOVER_ALT_FT = 15000  # écarte les liners en croisière au-dessus de la zone
