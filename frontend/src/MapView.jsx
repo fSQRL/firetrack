@@ -82,7 +82,7 @@ function getSmokeSprite() {
   return (smokeSprite = c);
 }
 
-export default function MapView({ aircraft, fires, wind, t, speed, selectedHex, persist, satelliteDay, onSelect }) {
+export default function MapView({ aircraft, fires, wind, t, speed, selectedHex, satelliteDay, onSelect }) {
   const containerRef = useRef(null);
   const mapRef = useRef(null);
   const readyRef = useRef(false);
@@ -264,7 +264,7 @@ export default function MapView({ aircraft, fires, wind, t, speed, selectedHex, 
 
   // refs pour que refresh() lise toujours les dernières props sans réinitialiser la carte
   const propsRef = useRef({});
-  propsRef.current = { aircraft, fires, wind, t, speed, selectedHex, persist };
+  propsRef.current = { aircraft, fires, wind, t, speed, selectedHex };
 
   // Couche satellite NASA GIBS, datée selon le jour affiché par la timeline
   useEffect(() => {
@@ -294,7 +294,7 @@ export default function MapView({ aircraft, fires, wind, t, speed, selectedHex, 
   function refresh() {
     if (!readyRef.current) return;
     const map = mapRef.current;
-    const { aircraft, fires, t, selectedHex, persist } = propsRef.current;
+    const { aircraft, fires, t, selectedHex } = propsRef.current;
 
     // --- Avions (marqueurs DOM) : à chaque frame ---
     const markers = markersRef.current;
@@ -342,24 +342,20 @@ export default function MapView({ aircraft, fires, wind, t, speed, selectedHex, 
 
     // --- Tracés persistants : uniquement le vol en cours des avions en l'air,
     //     GeoJSON mis à jour toutes les 30 s simulées (la tête mobile est au canvas) ---
-    const trailsKey = persist
-      ? `${selectedHex}|${aircraft.length}|${Math.floor(t / 30)}`
-      : 'off';
+    const trailsKey = `${selectedHex}|${aircraft.length}|${Math.floor(t / 30)}`;
     if (trailsKeyRef.current !== trailsKey) {
       trailsKeyRef.current = trailsKey;
       const trails = [];
-      if (persist) {
-        for (const a of aircraft) {
-          if (!inFlight.has(a.hex)) continue; // au sol / atterri : la ligne s'efface
-          const segs = trailSegmentsBefore(a.points, t);
-          const cur = segs[segs.length - 1]; // le vol en cours seulement
-          if (cur && cur.length > 1) {
-            trails.push({
-              type: 'Feature',
-              geometry: { type: 'LineString', coordinates: cur },
-              properties: { color: selectedHex && selectedHex !== a.hex ? '#8892a0' : a.color },
-            });
-          }
+      for (const a of aircraft) {
+        if (!inFlight.has(a.hex)) continue; // au sol / atterri : la ligne s'efface
+        const segs = trailSegmentsBefore(a.points, t);
+        const cur = segs[segs.length - 1]; // le vol en cours seulement
+        if (cur && cur.length > 1) {
+          trails.push({
+            type: 'Feature',
+            geometry: { type: 'LineString', coordinates: cur },
+            properties: { color: selectedHex && selectedHex !== a.hex ? '#8892a0' : a.color },
+          });
         }
       }
       map.getSource('trails')?.setData({ type: 'FeatureCollection', features: trails });
@@ -384,7 +380,7 @@ export default function MapView({ aircraft, fires, wind, t, speed, selectedHex, 
     }
   }
 
-  useEffect(refresh, [aircraft, fires, wind, t, selectedHex, persist]);
+  useEffect(refresh, [aircraft, fires, wind, t, selectedHex]);
 
   return (
     <div className="map-wrap">

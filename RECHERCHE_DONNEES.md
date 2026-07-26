@@ -246,6 +246,42 @@ avec l'option 2 (couche GIBS "vue satellite du jour") en bonus activable dans le
 
 ---
 
+## 9. Indice de pollution de l'air (et son évolution par lieu)
+
+> Recherche du 26/07/2026, testée sur l'épisode des 22-25/07.
+
+### ✅ Open-Meteo Air Quality API
+
+Même fournisseur que le vent : **gratuit, sans clé**, basé sur le modèle Copernicus **CAMS
+Europe** (~11 km de résolution), heure par heure.
+
+- Endpoint : `https://air-quality-api.open-meteo.com/v1/air-quality`
+- Variables utiles : `pm2_5`, `pm10`, `european_aqi` (indice européen 0-100+),
+  plus ozone, NO2, etc.
+- **Multi-points en une seule requête** (listes `latitude=,,&longitude=,,`) : parfait pour
+  suivre l'évolution selon les lieux, voire construire une grille pour une carte de chaleur.
+- Historique et prévision (archive dispo sur plusieurs années).
+- **Testé sur le 24/07** (pic du feu) : zone du feu PM2.5 max 12,6 µg/m³ (AQI 55) contre
+  6,9 à Bordeaux : le gradient spatial est bien visible.
+
+### ⚠️ Limite importante
+
+C'est un **modèle** (~11 km) : il lisse fortement les pics locaux de fumée. Au cœur du
+panache, les vraies valeurs mesurées peuvent être bien plus élevées que ce que CAMS annonce.
+Pour des **mesures réelles** station par station, l'organisme régional
+[ATMO Nouvelle-Aquitaine](https://www.atmo-nouvelleaquitaine.org/) publie l'indice ATMO
+quotidien par commune en open data, mais ses stations sont rares hors agglomération
+(aucune au cœur du massif forestier).
+
+### Intégration possible
+
+1. Commande `air` dans le CLI : grille de points (ex. 6×6 sur Gironde+Landes) requêtée en un
+   appel, stockée en SQLite, exportée par jour.
+2. Frontend : couche de chaleur (cercles colorés selon l'AQI européen, vert → rouge) qui
+   évolue avec la timeline, ou simple pastille "qualité de l'air" au point du feu.
+
+---
+
 ## Sources
 
 - [adsb.lol — Historical data](https://www.adsb.lol/docs/open-data/historical/)
@@ -260,5 +296,7 @@ avec l'option 2 (couche GIBS "vue satellite du jour") en bonus activable dans le
 - [EFFIS — Data and services](https://forest-fire.emergency.copernicus.eu/applications/data-and-services)
 - [BDIFF — base des incendies de forêt](https://bdiff.agriculture.gouv.fr/)
 - [Open-Meteo — Historical Weather API](https://open-meteo.com/en/docs/historical-weather-api)
+- [Open-Meteo — Air Quality API](https://open-meteo.com/en/docs/air-quality-api)
+- [ATMO Nouvelle-Aquitaine](https://www.atmo-nouvelleaquitaine.org/)
 - [NASA GIBS — API docs](https://nasa-gibs.github.io/gibs-api-docs/) · [Earthdata GIBS](https://www.earthdata.nasa.gov/engage/open-data-services-software/earthdata-developer-portal/gibs-api)
 - [AerialFire — The Amphibious Firefighters of the French Civil Security](https://aerialfiremag.com/2026/03/01/the-amphibious-firefighters-of-the-french-civil-security/)

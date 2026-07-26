@@ -218,15 +218,6 @@ ul.menu-text li { margin-bottom: 8px; }
   margin-bottom: 4px;
 }
 
-.day-select {
-  background: #1c222b;
-  color: #e8ecf2;
-  border: 1px solid #39414d;
-  border-radius: 8px;
-  padding: 6px 8px;
-  font-size: 13px;
-}
-
 .btn {
   border: 1px solid #39414d;
   background: #1c222b;
@@ -239,20 +230,33 @@ ul.menu-text li { margin-bottom: 8px; }
 }
 .btn:disabled { opacity: 0.4; }
 .btn.speed { font-size: 12px; }
-.btn.persist {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  font-size: 12px;
-  user-select: none;
-}
-.btn.persist input { accent-color: #ff5d47; margin: 0; }
 
 .clock {
   margin-left: auto;
   font-variant-numeric: tabular-nums;
   font-size: 15px;
   font-weight: 600;
+}
+
+/* règle graduée des jours au-dessus du slider */
+.ruler {
+  position: relative;
+  height: 14px;
+  margin-top: 2px;
+}
+.ruler-seg {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  border-left: 1px solid #39414d;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  white-space: nowrap;
+  font-size: 10px;
+  color: #93a0ae;
+  text-transform: capitalize;
 }
 
 .scrub {

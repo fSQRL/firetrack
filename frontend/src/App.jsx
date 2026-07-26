@@ -38,7 +38,6 @@ const COLORS = [
 
 export default function App() {
   const [days, setDays] = useState([]);
-  const [day, setDay] = useState(null);
   const [aircraft, setAircraft] = useState([]);
   const [fires, setFires] = useState([]);
   const [wind, setWind] = useState([]);
@@ -50,7 +49,6 @@ export default function App() {
   const [selectedHex, setSelectedHex] = useState(null);
   const [error, setError] = useState(null);
   const [menuOpen, setMenuOpen] = useState(false);
-  const [persist, setPersist] = useState(true);
 
   // Liste des jours disponibles
   useEffect(() => {
@@ -58,17 +56,16 @@ export default function App() {
       .then((r) => (r.ok ? r.json() : Promise.reject(new Error(`HTTP ${r.status}`))))
       .then(({ days }) => {
         setDays(days);
-        setDay(days.length > 1 ? 'all' : days[days.length - 1] ?? null);
         if (!days.length) setError('Aucune donnée : lancer le pipeline (ingest + export).');
       })
       .catch(() => setError('Aucune donnée : lancer le pipeline (ingest + export).'));
   }, []);
 
-  // Chargement du jour sélectionné — ou de tous les jours fusionnés ("all")
+  // Chargement de tous les jours disponibles, fusionnés en une timeline continue
   useEffect(() => {
-    if (!day) return;
+    const wanted = days.filter((d) => /^\d{4}-/.test(d));
+    if (!wanted.length) return;
     setPlaying(false);
-    const wanted = day === 'all' ? days.filter((d) => /^\d{4}-/.test(d)) : [day];
     Promise.all(wanted.map((d) =>
       fetch(`/data/${d}.json`).then((r) => (r.ok ? r.json() : Promise.reject(new Error(`HTTP ${r.status}`))))
     ))
@@ -112,10 +109,10 @@ export default function App() {
         } else {
           setT(0);
         }
-        setError(r ? null : `Aucun vol enregistré le ${day}.`);
+        setError(r ? null : 'Aucun vol enregistré.');
       })
       .catch((e) => setError(`Erreur de chargement : ${e.message}`));
-  }, [day, days]);
+  }, [days]);
 
   const firstLoadRef = useRef(true);
 
@@ -177,7 +174,7 @@ export default function App() {
     <div className="app">
       <MapView
         aircraft={aircraft} fires={fires} wind={wind} t={t} speed={speed}
-        selectedHex={selectedHex} persist={persist} onSelect={onSelect}
+        selectedHex={selectedHex} onSelect={onSelect}
         satelliteDay={satellite && range ? new Date(t * 1000).toISOString().slice(0, 10) : null}
       />
       <div className="night" style={{ opacity: range ? nightOpacity(t) : 0 }} />
@@ -263,7 +260,14 @@ export default function App() {
               journée complète : la journée en cours apparaîtra demain.
             </p>
             <h3>Crédits</h3>
-            <p className="menu-text">Guillaume HARARI</p>
+            <p className="menu-text">
+              Guillaume HARARI
+              <br />
+              <span className="menu-hint">
+                Vibe codé avec{' '}
+                <a href="https://claude.com/claude-code" target="_blank" rel="noreferrer">Claude Code</a>
+              </span>
+            </p>
           </nav>
         </div>
       )}
@@ -284,11 +288,9 @@ export default function App() {
           ))}
         </div>
         <Timeline
-          days={days} day={day} onDay={setDay}
           range={range} t={t} onScrub={setT}
           playing={playing} onTogglePlay={() => setPlaying((p) => !p)}
           speed={speed} onSpeed={setSpeed}
-          persist={persist} onPersist={setPersist}
         />
       </footer>
     </div>
