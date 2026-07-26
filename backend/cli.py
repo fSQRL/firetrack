@@ -48,8 +48,9 @@ FIRMS_KEY_FILE = Path(__file__).resolve().parent / "firms_key.txt"
 
 # Découverte live des moyens aériens engagés (les avions loués ont des immats étrangères)
 AIRPLANES_LIVE_POINT = "https://api.airplanes.live/v2/point/{lat}/{lon}/{radius}"
-FIRE_CALLSIGNS = ("PELICAN", "MILAN", "DRAGON", "TRACT", "CTM", "COTAM", "BOMB")
-FIRE_TYPES = {"CL2T", "AT8T", "A400", "DH8D", "EC45", "H125", "AS50", "EC30", "AS3B", "S2P", "B350"}
+FIRE_CALLSIGNS = ("PELICAN", "MILAN", "DRAGON", "TRACT", "ABEL", "CHARLIE", "CTM", "COTAM", "BOMB")
+FIRE_TYPES = {"CL2T", "AT8T", "A400", "DH8D", "EC45", "H125", "AS50", "EC30", "AS3B", "S2P", "B350",
+              "H60", "S70", "UH60", "B412"}
 MAX_DISCOVER_ALT_FT = 15000  # écarte les liners en croisière au-dessus de la zone
 
 SCHEMA = """
@@ -129,6 +130,13 @@ def cmd_fleet(args):
         reg = ac["registration"]
         if reg in known:
             print(f"  {reg} -> {known[reg]} (déjà en base)")
+            continue
+        if "hex" in ac:  # hex fourni explicitement (immat. militaires absentes de hexdb)
+            db.execute(
+                "INSERT OR IGNORE INTO aircraft (hex, registration, name, type) VALUES (?, ?, ?, ?)",
+                (ac["hex"].lower(), reg, ac["name"], ac["type"]),
+            )
+            print(f"  {reg} -> {ac['hex']} (hex explicite)")
             continue
         try:
             with http_get(HEXDB_URL.format(reg=reg)) as resp:
@@ -414,7 +422,10 @@ def cmd_export(args):
             " WHERE hex = ? AND ts >= ? AND ts < ? ORDER BY ts",
             (hex_, start, end),
         ).fetchall()
-        if points:
+        # ne garder que les appareils passés par la zone Gironde/Landes ce jour-là
+        # (les A400M et autres militaires volent partout dans le monde)
+        in_zone = any(43.4 <= p[1] <= 45.6 and -1.6 <= p[2] <= 0.2 for p in points)
+        if points and in_zone:
             ac = {"hex": hex_, "registration": reg, "name": name, "type": typ, "points": points}
             if psrc:
                 ac["photo"] = {"src": psrc, "link": plink, "credit": pcredit}

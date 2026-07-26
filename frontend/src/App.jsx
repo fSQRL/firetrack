@@ -220,7 +220,7 @@ export default function App() {
         <div className="menu-overlay" onClick={() => setMenuOpen(false)}>
           <nav className="menu" onClick={(e) => e.stopPropagation()}>
             <button className="menu-close" onClick={() => setMenuOpen(false)} aria-label="Fermer">✕</button>
-            <h2>Canadairs en Gironde</h2>
+            <h2>Fire Tracker</h2>
             <p className="menu-text">
               Rejouez les allers-retours des avions de lutte contre les incendies
               (Canadair, Dash, Air Tractor…) en Gironde et dans les Landes, jour par jour.

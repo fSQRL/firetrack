@@ -11,7 +11,8 @@
       "Bash(python -c \"import json,sys; d=json.load\\(sys.stdin\\); [print\\(a.get\\('hex'\\),a.get\\('r'\\),a.get\\('flight',''\\).strip\\(\\)\\) for a in d.get\\('ac',[]\\)]\")",
       "Bash(curl -s \"https://api.airplanes.live/v2/point/44.6/-1.0/150\")",
       "Bash(python -c ' *)",
-      "PowerShell(python backend\\\\cli.py photos)"
+      "PowerShell(python backend\\\\cli.py photos)",
+      "PowerShell(ssh -o BatchMode=yes -o ConnectTimeout=10 ubuntu@firetrack.harari.ovh \"echo ok\")"
     ]
   }
 }
