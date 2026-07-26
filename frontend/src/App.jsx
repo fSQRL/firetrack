@@ -225,6 +225,23 @@ export default function App() {
               Rejouez les allers-retours des avions de lutte contre les incendies
               (Canadair, Dash, Air Tractor…) en Gironde et dans les Landes, jour par jour.
             </p>
+            <div className="menu-warning">
+              <b>⚠️ Ceci est une reconstitution, pas un outil d'alerte.</b>
+              <p className="menu-text">
+                Les trajectoires sont rejouées avec un jour de décalage et les zones de feu
+                sont approximatives (détection satellite, fumée simulée). Si vous êtes
+                concerné par un incendie, informez-vous uniquement auprès des sources
+                officielles :
+              </p>
+              <ul className="menu-text">
+                <li><a href="https://www.gironde.gouv.fr" target="_blank" rel="noreferrer">Préfecture de la Gironde</a> (et son compte X <a href="https://x.com/PrefAquitaine33" target="_blank" rel="noreferrer">@PrefAquitaine33</a>)</li>
+                <li><a href="https://www.landes.gouv.fr" target="_blank" rel="noreferrer">Préfecture des Landes</a> (et son compte X <a href="https://x.com/Prefecture40" target="_blank" rel="noreferrer">@Prefecture40</a>)</li>
+                <li>Numéro d'information incendies (cellule d'information du public) :{' '}
+                  <b><a href="tel:0970809040">09 70 80 90 40</a></b></li>
+                <li>Les alertes <b>FR-Alert</b> reçues sur votre téléphone et les consignes de votre mairie</li>
+                <li>En cas d'urgence : <b>112</b> ou <b>18</b> (personnes sourdes ou malentendantes : 114)</li>
+              </ul>
+            </div>
             <h3>Données</h3>
             <ul className="menu-text">
               <li>
@@ -243,15 +260,6 @@ export default function App() {
                 <a href="https://www.openstreetmap.org" target="_blank" rel="noreferrer">OpenStreetMap</a>.
               </li>
             </ul>
-            <h3>Affichage</h3>
-            <label className="menu-toggle">
-              <input type="checkbox" checked={satellite} onChange={(e) => setSatellite(e.target.checked)} />
-              Vue satellite du jour (NASA)
-            </label>
-            <p className="menu-text menu-hint">
-              Image satellite réelle de la journée affichée (VIIRS, une image par jour) :
-              on y voit le vrai panache de fumée.
-            </p>
             <h3>Mise à jour</h3>
             <p className="menu-text">
               Le site se met à jour <b>une fois par jour</b> avec les vols de la veille :
@@ -291,6 +299,7 @@ export default function App() {
           range={range} t={t} onScrub={setT}
           playing={playing} onTogglePlay={() => setPlaying((p) => !p)}
           speed={speed} onSpeed={setSpeed}
+          satellite={satellite} onSatellite={setSatellite}
         />
       </footer>
     </div>

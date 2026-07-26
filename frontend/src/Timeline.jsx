@@ -44,6 +44,7 @@ function daySegments(range) {
 export default function Timeline({
   range, t, onScrub,
   playing, onTogglePlay, speed, onSpeed,
+  satellite, onSatellite,
 }) {
   const segments = useMemo(() => daySegments(range), [range]);
   return (
@@ -58,6 +59,10 @@ export default function Timeline({
         >
           ×{speed}
         </button>
+        <label className="btn sat" title="Image satellite réelle du jour affiché (NASA VIIRS) : on y voit le vrai panache de fumée">
+          <input type="checkbox" checked={satellite} onChange={(e) => onSatellite(e.target.checked)} />
+          🛰️ Image NASA du jour
+        </label>
       </div>
       <div className="ruler">
         {segments.map((s) => (

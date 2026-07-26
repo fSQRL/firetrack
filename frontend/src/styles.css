@@ -141,15 +141,18 @@ html, body, #root {
 ul.menu-text { padding-left: 18px; }
 ul.menu-text li { margin-bottom: 8px; }
 .menu a { color: #6aa6ff; }
-.menu-toggle {
-  display: flex;
-  align-items: center;
-  gap: 8px;
+.menu-warning {
+  margin-top: 14px;
+  padding: 10px 12px;
+  background: rgba(255, 93, 71, 0.12);
+  border: 1px solid rgba(255, 93, 71, 0.45);
+  border-radius: 10px;
   font-size: 13px;
-  color: #cdd5de;
-  cursor: pointer;
 }
-.menu-toggle input { accent-color: #ff5d47; margin: 0; }
+.menu-warning > b { color: #ffb0a3; }
+.menu-warning p { margin: 6px 0; }
+.menu-warning ul { margin: 6px 0 0; }
+
 .menu-hint { font-size: 11px; color: #93a0ae; margin-top: 4px; }
 .menu-close {
   position: absolute;
@@ -232,6 +235,15 @@ ul.menu-text li { margin-bottom: 8px; }
 }
 .btn:disabled { opacity: 0.4; }
 .btn.speed { font-size: 12px; }
+.btn.sat {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 12px;
+  user-select: none;
+  white-space: nowrap;
+}
+.btn.sat input { accent-color: #ff5d47; margin: 0; }
 
 .clock {
   margin-left: auto;
