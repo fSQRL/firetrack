@@ -227,13 +227,20 @@ export default function App() {
               <li>
                 <b>Zones de feu</b> : points chauds satellites VIIRS,{' '}
                 <a href="https://firms.modaps.eosdis.nasa.gov" target="_blank" rel="noreferrer">NASA FIRMS</a>
-                {' '}(2 à 4 passages par jour — les contours affichés sont approximatifs).
+                {' '}(2 à 4 passages par jour, les contours affichés sont approximatifs).
               </li>
               <li>
                 <b>Fond de carte</b> :{' '}
                 <a href="https://www.openstreetmap.org" target="_blank" rel="noreferrer">OpenStreetMap</a>.
               </li>
             </ul>
+            <h3>Mise à jour</h3>
+            <p className="menu-text">
+              Le site se met à jour <b>une fois par jour</b> avec les vols de la veille :
+              les trajectoires sont publiées par adsb.lol en archive quotidienne, disponible
+              le lendemain. C'est pourquoi la timeline s'arrête à la fin de la dernière
+              journée complète : la journée en cours apparaîtra demain.
+            </p>
             <h3>Crédits</h3>
             <p className="menu-text">Guillaume HARARI</p>
           </nav>

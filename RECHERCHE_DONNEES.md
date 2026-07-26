@@ -204,6 +204,48 @@ GeoJSON. Utile pour dessiner la **tache brûlée** (polygone) en plus des flamme
 
 ---
 
+## 8. Afficher la fumée et sa direction
+
+> Recherche du 26/07/2026. Trois approches possibles, de la plus simple à la plus lourde.
+
+### ✅ Recommandé : fumée simulée à partir du vent (Open-Meteo)
+
+Il n'existe pas de flux temps réel simple "panache de fumée" pour la France, mais on peut la
+**simuler de façon très convaincante** : on connaît les foyers (FIRMS, avec intensité FRP) et
+on peut récupérer le **vent historique heure par heure** au point du feu.
+
+- **[Open-Meteo Historical API](https://open-meteo.com/en/docs/historical-weather-api)** :
+  gratuit, **sans clé**, licence CC BY 4.0. Réanalyse ERA5 depuis 1940, ~10 km de résolution,
+  variables `wind_speed_10m` + `wind_direction_10m` heure par heure.
+  Testé sur la Gironde au 23/07/2026 : réponse instantanée, données complètes.
+- **Rendu proposé** : particules de fumée émises par chaque foyer sur le canvas overlay
+  (déjà en place pour flammes et traînées), poussées selon le vecteur vent de l'heure simulée,
+  avec grossissement/dilution au fil de la dérive. Quantité liée au FRP du foyer.
+- **Pipeline** : commande `wind` dans le CLI (une requête par jour ingéré, stockée en SQLite,
+  incluse dans l'export). Aucune dépendance, aucune clé.
+- **Limites** : c'est une simulation plausible (direction et force réelles du vent), pas la
+  photographie exacte du panache.
+
+### 🆗 Alternative : imagerie satellite réelle (NASA GIBS)
+
+[NASA GIBS](https://nasa-gibs.github.io/gibs-api-docs/) sert en **tuiles XYZ/WMTS gratuites**
+les mosaïques quotidiennes **VIIRS/MODIS en vraies couleurs**, où les panaches de fumée sont
+réellement visibles (résolution 250-375 m, une image par jour, dispo en ~3-5 h).
+On peut l'ajouter en **couche d'opacité réglable** sur la carte, datée selon le jour de la
+timeline. Réel mais statique (1 image/jour) et l'image couvre tout (nuages compris).
+
+### ❌ Écarté : Copernicus CAMS
+
+Le service atmosphère de Copernicus modélise les aérosols/PM2.5 des feux (résolution ~40 km,
+NetCDF, inscription + API lourde) : trop grossier et trop complexe pour ce besoin.
+
+### Verdict
+
+Approche 1 (vent + particules) pour l'animation vivante synchronisée à la timeline,
+avec l'option 2 (couche GIBS "vue satellite du jour") en bonus activable dans le menu.
+
+---
+
 ## Sources
 
 - [adsb.lol — Historical data](https://www.adsb.lol/docs/open-data/historical/)
@@ -217,4 +259,6 @@ GeoJSON. Utile pour dessiner la **tache brûlée** (polygone) en plus des flamme
 - [NASA FIRMS — API](https://firms.modaps.eosdis.nasa.gov/api/) · [tutoriel API](https://firms.modaps.eosdis.nasa.gov/content/academy/data_api/firms_api_use.html) · [archive](https://firms.modaps.eosdis.nasa.gov/download/)
 - [EFFIS — Data and services](https://forest-fire.emergency.copernicus.eu/applications/data-and-services)
 - [BDIFF — base des incendies de forêt](https://bdiff.agriculture.gouv.fr/)
+- [Open-Meteo — Historical Weather API](https://open-meteo.com/en/docs/historical-weather-api)
+- [NASA GIBS — API docs](https://nasa-gibs.github.io/gibs-api-docs/) · [Earthdata GIBS](https://www.earthdata.nasa.gov/engage/open-data-services-software/earthdata-developer-portal/gibs-api)
 - [AerialFire — The Amphibious Firefighters of the French Civil Security](https://aerialfiremag.com/2026/03/01/the-amphibious-firefighters-of-the-french-civil-security/)
