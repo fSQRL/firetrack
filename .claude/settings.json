@@ -15,7 +15,16 @@
       "PowerShell(ssh -o BatchMode=yes -o ConnectTimeout=10 ubuntu@firetrack.harari.ovh \"echo ok\")",
       "Bash(curl -s -A \"CanadairsGironde/0.1 \\(+mailto:angledroit@gmail.com\\)\" \"https://api.planespotters.net/pub/photos/reg/F-RBAX\")",
       "Bash(curl -s -A \"CanadairsGironde/0.1 \\(+mailto:angledroit@gmail.com\\)\" \"https://api.planespotters.net/pub/photos/hex/3b775c\")",
-      "Bash(python backend/cli.py export 2026-07-25)"
+      "Bash(python backend/cli.py export 2026-07-25)",
+      "Bash(curl -s -H \"Referer: https://globe.adsb.lol/\" -H \"User-Agent: Mozilla/5.0\" \"https://globe.adsb.lol/data/traces/5c/trace_full_3b775c.json\")",
+      "Bash(curl -s -H \"Referer: https://globe.adsb.lol/\" -H \"User-Agent: Mozilla/5.0\" \"https://globe.adsb.lol/data/traces/3d/trace_full_3b7b3d.json\")",
+      "Bash(python -c \"import json,sys; d=json.load\\(sys.stdin\\); print\\('hex:',d.get\\('icao'\\),'| points aujourd_hui:',len\\(d.get\\('trace',[]\\)\\)\\)\")",
+      "Bash(curl -sL -H \"Referer: https://globe.adsb.lol/\" -H \"User-Agent: Mozilla/5.0\" -w \"\\\\nHTTP %{http_code} url=%{url_effective}\\\\n\" \"https://globe.adsb.lol/data/traces/3d/trace_full_3b7b3d.json\")",
+      "Bash(curl -sL --compressed -H \"Referer: https://globe.adsb.lol/\" -H \"User-Agent: Mozilla/5.0\" \"https://globe.adsb.lol/data/traces/3d/trace_full_3b7b3d.json\")",
+      "PowerShell(python backend\\\\cli.py today)",
+      "PowerShell(python backend\\\\cli.py fires 2026-07-26)",
+      "PowerShell(python backend\\\\cli.py wind 2026-07-26)",
+      "PowerShell(python backend\\\\cli.py export 2026-07-26)"
     ]
   }
 }

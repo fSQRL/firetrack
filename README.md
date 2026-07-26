@@ -30,6 +30,7 @@ Python **sans aucune dépendance** (stdlib uniquement), base SQLite.
 python backend/cli.py fleet              # résout la flotte de fleet.json (hex ICAO)
 python backend/cli.py ingest             # vols de la veille (défaut) depuis adsb.lol (~4 Go streamés)
 python backend/cli.py ingest 2026-07-25  # un jour précis ; --force pour ré-ingérer
+python backend/cli.py today              # traces live des ~24 dernières heures (jour courant)
 python backend/cli.py fires              # points chauds NASA FIRMS (bbox Gironde+Landes)
 python backend/cli.py wind               # vent horaire Open-Meteo (pour la fumée)
 python backend/cli.py discover           # ajoute les moyens aériens détectés en vol autour du feu
@@ -48,8 +49,12 @@ passage unique, planifier plusieurs tentatives : les passages où les données s
 ne refont rien.
 
 ```cron
-# tentatives à 6h, 9h, 12h et 18h : la première qui trouve la release fait le travail
+# consolidation de la veille (archive complète) : tentatives à 6h, 9h, 12h et 18h,
+# la première qui trouve la release fait le travail
 0 6,9,12,18 * * * cd /path/flight && python backend/cli.py ingest && python backend/cli.py fires && python backend/cli.py wind && python backend/cli.py export $(date -d yesterday +\%F)
+
+# jour courant : traces live + feux + vent, toutes les 30 minutes
+*/30 * * * * cd /path/flight && python backend/cli.py today && python backend/cli.py fires $(date +\%F) && python backend/cli.py wind $(date +\%F) && python backend/cli.py export $(date +\%F)
 
 # pendant un épisode de feu : détection des moyens aériens engagés (hélicos, avions loués...)
 */10 * * * * cd /path/flight && python backend/cli.py discover

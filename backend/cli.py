@@ -37,6 +37,10 @@ HEXDB_URL = "https://hexdb.io/reg-hex?reg={reg}"
 OPEN_METEO_URL = ("https://archive-api.open-meteo.com/v1/archive?latitude=44.6&longitude=-1.0"
                   "&start_date={start}&end_date={end}"
                   "&hourly=wind_speed_10m,wind_direction_10m&timezone=UTC")
+# l'archive ERA5 a quelques jours de retard : l'API forecast couvre le jour courant
+OPEN_METEO_FORECAST_URL = ("https://api.open-meteo.com/v1/forecast?latitude=44.6&longitude=-1.0"
+                           "&past_days=2&forecast_days=1"
+                           "&hourly=wind_speed_10m,wind_direction_10m&timezone=UTC")
 
 # NASA FIRMS (points chauds satellites) — bbox Gironde + Landes (w,s,e,n)
 FIRMS_URL = "https://firms.modaps.eosdis.nasa.gov/api/area/csv/{key}/{source}/{bbox}/{days}/{day}"
@@ -111,8 +115,10 @@ def get_db():
     return db
 
 
-def http_get(url, timeout=30, ua=None):
+def http_get(url, timeout=30, ua=None, extra_headers=None):
     headers = {"User-Agent": ua or "canadair-gironde-pipeline"}
+    if extra_headers:
+        headers.update(extra_headers)
     token = os.environ.get("GITHUB_TOKEN")
     if token and "api.github.com" in url:
         headers["Authorization"] = f"Bearer {token}"
@@ -270,6 +276,38 @@ def cmd_ingest(args):
     print(f"Terminé : {total_points} points, {len(found)} appareil(s) vus, {absent} sans vol ce jour-là.")
 
 
+# ---------------------------------------------------------------- today
+
+# Trace live des dernières ~24 h par avion (même serveur que la carte globe.adsb.lol,
+# même format readsb que l'archive : le dédoublonnage se fait par la clé primaire)
+LIVE_TRACE_URL = "https://globe.adsb.lol/data/traces/{sub}/trace_full_{hex}.json"
+LIVE_HEADERS = {"Referer": "https://globe.adsb.lol/", "Accept-Encoding": "gzip"}
+
+
+def cmd_today(args):
+    db = get_db()
+    fleet = db.execute("SELECT hex, registration FROM aircraft ORDER BY registration").fetchall()
+    total, seen = 0, 0
+    for hex_, reg in fleet:
+        url = LIVE_TRACE_URL.format(sub=hex_[-2:], hex=hex_)
+        try:
+            with http_get(url, timeout=30, ua="Mozilla/5.0 (FireTracker)", extra_headers=LIVE_HEADERS) as resp:
+                raw = resp.read()
+        except urllib.error.HTTPError as e:
+            if e.code in (404, 403):
+                continue  # avion pas vu ces dernières 24 h
+            raise
+        if raw[:2] == b"\x1f\x8b":
+            raw = gzip.decompress(raw)
+        n = parse_trace(raw, hex_, db)
+        db.commit()
+        if n:
+            print(f"  ✔ {reg} ({hex_}) : {n} points sur ~24 h")
+            seen += 1
+            total += n
+    print(f"Live : {total} points, {seen} appareil(s) vus. Penser à `fires`/`wind`/`export` pour le jour courant.")
+
+
 # ---------------------------------------------------------------- discover
 
 def cmd_discover(args):
@@ -349,16 +387,24 @@ def cmd_fires(args):
 def cmd_wind(args):
     start = date.fromisoformat(args.date) if args.date else date.today() - timedelta(days=1)
     end = start + timedelta(days=args.days - 1)
-    url = OPEN_METEO_URL.format(start=start.isoformat(), end=end.isoformat())
-    with http_get(url, timeout=60) as resp:
-        h = json.load(resp)["hourly"]
+    def fetch_rows(url):
+        with http_get(url, timeout=60) as resp:
+            h = json.load(resp)["hourly"]
+        rows = []
+        for time_s, spd, deg in zip(h["time"], h["wind_speed_10m"], h["wind_direction_10m"]):
+            if spd is None:
+                continue
+            ts = datetime.fromisoformat(time_s + ":00+00:00").timestamp()
+            if start_ts <= ts < end_ts:
+                rows.append((ts, spd, deg))
+        return rows
+
+    start_ts = datetime(start.year, start.month, start.day, tzinfo=timezone.utc).timestamp()
+    end_ts = start_ts + args.days * 86400
+    rows = fetch_rows(OPEN_METEO_URL.format(start=start.isoformat(), end=end.isoformat()))
+    if len(rows) < args.days * 24:  # l'archive est en retard : compléter avec le forecast
+        rows += fetch_rows(OPEN_METEO_FORECAST_URL)
     db = get_db()
-    rows = []
-    for time_s, spd, deg in zip(h["time"], h["wind_speed_10m"], h["wind_direction_10m"]):
-        if spd is None:
-            continue
-        ts = datetime.fromisoformat(time_s + ":00+00:00").timestamp()
-        rows.append((ts, spd, deg))
     db.executemany("INSERT OR REPLACE INTO wind VALUES (?, ?, ?)", rows)
     db.commit()
     print(f"Vent {start} → {end} : {len(rows)} relevés horaires (Open-Meteo).")
@@ -472,6 +518,8 @@ def main():
     p.add_argument("--source", default="prod-0", help="variante de release (défaut : prod-0)")
     p.add_argument("--force", action="store_true", help="ré-ingérer même si déjà fait")
     p.set_defaults(func=cmd_ingest)
+
+    sub.add_parser("today", help="récupère les traces live (~24 h) de la flotte pour le jour courant").set_defaults(func=cmd_today)
 
     p = sub.add_parser("discover", help="détecte les moyens aériens engagés via l'API live et les ajoute à la flotte")
     p.add_argument("--lat", type=float, default=44.6)

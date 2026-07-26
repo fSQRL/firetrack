@@ -228,7 +228,7 @@ export default function App() {
             <div className="menu-warning">
               <b>⚠️ Ceci est une reconstitution, pas un outil d'alerte.</b>
               <p className="menu-text">
-                Les trajectoires sont rejouées avec un jour de décalage et les zones de feu
+                Les trajectoires sont rejouées avec un décalage et les zones de feu
                 sont approximatives (détection satellite, fumée simulée). Si vous êtes
                 concerné par un incendie, informez-vous uniquement auprès des sources
                 officielles :
@@ -262,10 +262,9 @@ export default function App() {
             </ul>
             <h3>Mise à jour</h3>
             <p className="menu-text">
-              Le site se met à jour <b>une fois par jour</b> avec les vols de la veille :
-              les trajectoires sont publiées par adsb.lol en archive quotidienne, disponible
-              le lendemain. C'est pourquoi la timeline s'arrête à la fin de la dernière
-              journée complète : la journée en cours apparaîtra demain.
+              La journée en cours est rafraîchie <b>toutes les 30 minutes</b> à partir des
+              traces live, puis consolidée le lendemain avec l'archive quotidienne complète
+              d'adsb.lol.
             </p>
             <h3>Crédits</h3>
             <p className="menu-text">
