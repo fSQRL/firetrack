@@ -48,17 +48,22 @@ Les archives adsb.lol du jour J paraissent le lendemain à une heure variable. P
 passage unique, planifier plusieurs tentatives : les passages où les données sont déjà là
 ne refont rien.
 
-```cron
-# consolidation de la veille (archive complète) : tentatives à 6h, 9h, 12h et 18h,
-# la première qui trouve la release fait le travail
-0 6,9,12,18 * * * cd /path/flight && python backend/cli.py ingest && python backend/cli.py fires && python backend/cli.py wind && python backend/cli.py export $(date -d yesterday +\%F)
+Les scripts `scripts/live.sh` (jour courant) et `scripts/daily.sh` (consolidation de la veille)
+enchaînent les commandes et redirigent **tout** (sorties et erreurs) vers le log :
 
+```cron
 # jour courant : traces live + feux + vent, toutes les 30 minutes
-*/30 * * * * cd /path/flight && python backend/cli.py today && python backend/cli.py fires $(date +\%F) && python backend/cli.py wind $(date +\%F) && python backend/cli.py export $(date +\%F)
+*/30 * * * * /path/flight/scripts/live.sh >> /var/log/firetrack.log 2>&1
+
+# consolidation de la veille : tentatives multiples, la première qui trouve la release travaille
+0 6,9,12,18 * * * /path/flight/scripts/daily.sh >> /var/log/firetrack.log 2>&1
 
 # pendant un épisode de feu : détection des moyens aériens engagés (hélicos, avions loués...)
-*/10 * * * * cd /path/flight && python backend/cli.py discover
+*/10 * * * * cd /path/flight && python3 backend/cli.py discover >> /var/log/firetrack.log 2>&1
 ```
+
+(un `chmod +x scripts/*.sh` après le clone ; attention, ne pas mettre `cmd1 && cmd2 >> log`
+directement en crontab : la redirection ne capturerait que la dernière commande)
 
 Optionnel : `GITHUB_TOKEN` en variable d'environnement pour éviter la limite anonyme de
 l'API GitHub (60 req/h, largement suffisant en pratique).
