@@ -270,6 +270,9 @@ export default function App() {
             <p className="menu-text">
               Guillaume HARARI
               <br />
+              Merci à <a href="https://x.com/nox33" target="_blank" rel="noreferrer">NoX</a> pour
+              son aide précieuse à l'identification des appareils engagés.
+              <br />
               <span className="menu-hint">
                 Vibe codé avec{' '}
                 <a href="https://claude.com/claude-code" target="_blank" rel="noreferrer">Claude Code</a>
