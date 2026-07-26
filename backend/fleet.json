@@ -32,7 +32,7 @@
     { "registration": "F-ZBEK", "name": "F-ZBEK", "type": "COORD", "hex": "3b7b43" },
     { "registration": "F-RBAY", "name": "A400M F-RBAY", "type": "A400", "hex": "3b775a" },
     { "registration": "0075", "name": "A400M 0075", "type": "A400", "hex": "3b775b" },
-    { "registration": "0137", "name": "A400M 0137", "type": "A400", "hex": "3b775c" },
+    { "registration": "F-RBAX", "name": "A400M F-RBAX", "type": "A400", "hex": "3b775c" },
     { "registration": "0134", "name": "A400M 0134", "type": "A400", "hex": "3b775d" },
     { "registration": "0130", "name": "A400M 0130", "type": "A400", "hex": "3b775e" },
     { "registration": "0127", "name": "A400M 0127", "type": "A400", "hex": "3b775f" },

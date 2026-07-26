@@ -60,10 +60,11 @@ html, body, #root {
   position: absolute;
   top: 0; left: 0; right: 0;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 10px;
   padding: calc(8px + env(safe-area-inset-top)) 12px 8px;
   pointer-events: none;
+  z-index: 8; /* la fiche avion passe devant l'horloge (z-index 7) */
 }
 .detail {
   pointer-events: auto;
@@ -97,14 +98,15 @@ html, body, #root {
 .detail-text { line-height: 1.45; }
 .detail-close {
   position: absolute;
-  top: 4px; right: 6px;
+  top: 6px; right: 6px;
   border: none;
-  background: rgba(20, 24, 31, 0.6);
-  color: #e8ecf2;
-  border-radius: 6px;
-  font-size: 12px;
+  background: rgba(20, 24, 31, 0.75);
+  color: #fff;
+  border-radius: 8px;
+  font-size: 16px;
+  line-height: 1;
   cursor: pointer;
-  padding: 2px 6px;
+  padding: 8px 10px; /* zone de tap confortable sur mobile */
 }
 
 .burger {
