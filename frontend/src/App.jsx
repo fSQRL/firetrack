@@ -49,6 +49,7 @@ export default function App() {
   const [selectedHex, setSelectedHex] = useState(null);
   const [error, setError] = useState(null);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [loading, setLoading] = useState({ done: 0, total: 1 }); // barre de chargement initial
 
   // Liste des jours disponibles
   useEffect(() => {
@@ -58,16 +59,22 @@ export default function App() {
         setDays(days);
         if (!days.length) setError('Aucune donnée : lancer le pipeline (ingest + export).');
       })
-      .catch(() => setError('Aucune donnée : lancer le pipeline (ingest + export).'));
+      .catch(() => { setError('Aucune donnée : lancer le pipeline (ingest + export).'); setLoading(null); });
   }, []);
 
   // Chargement de tous les jours disponibles, fusionnés en une timeline continue
   useEffect(() => {
     const wanted = days.filter((d) => /^\d{4}-/.test(d));
-    if (!wanted.length) return;
+    if (!wanted.length) { setLoading(null); return; }
     setPlaying(false);
+    setLoading({ done: 0, total: wanted.length });
     Promise.all(wanted.map((d) =>
-      fetch(`/data/${d}.json`).then((r) => (r.ok ? r.json() : Promise.reject(new Error(`HTTP ${r.status}`))))
+      fetch(`/data/${d}.json`)
+        .then((r) => (r.ok ? r.json() : Promise.reject(new Error(`HTTP ${r.status}`))))
+        .then((json) => {
+          setLoading((l) => (l ? { ...l, done: l.done + 1 } : l));
+          return json;
+        })
     ))
       .then((loaded) => {
         // fusion par appareil (les jours sont chargés dans l'ordre chronologique)
@@ -105,16 +112,19 @@ export default function App() {
           firstLoadRef.current = false;
           const start = first && START_T >= r[0] && START_T < r[1] ? START_T : r[0];
           setT(start);
-          if (first) setPlaying(true);
+          if (first) autoplayRef.current = true; // la lecture démarre à la fermeture du disclaimer
         } else {
           setT(0);
         }
         setError(r ? null : 'Aucun vol enregistré.');
+        // chargement fini : le disclaimer reste affiché jusqu'à fermeture par l'utilisateur
+        setLoading((l) => (l ? { ...l, ready: true } : l));
       })
-      .catch((e) => setError(`Erreur de chargement : ${e.message}`));
+      .catch((e) => { setError(`Erreur de chargement : ${e.message}`); setLoading(null); });
   }, [days]);
 
   const firstLoadRef = useRef(true);
+  const autoplayRef = useRef(false);
 
   // Horloge de lecture
   const tRef = useRef(t);
@@ -287,6 +297,45 @@ export default function App() {
       )}
 
       {error && <div className="banner">{error}</div>}
+
+      {loading && (
+        <div className="loader-overlay">
+          <div className="loader-card">
+            <h2>Fire Tracker</h2>
+            <p>
+              Cette carte interactive rejoue, heure par heure, les moyens aériens engagés
+              contre les feux de Gironde et des Landes. Elle s'appuie exclusivement sur des
+              données ouvertes : signaux des transpondeurs des avions, détections thermiques
+              des satellites de la NASA et relevés de vent Open-Meteo.
+            </p>
+            <p>
+              Elle est fournie à titre d'information : en cas d'incendie, seules les
+              communications officielles (préfectures, FR-Alert) font foi. Les zones de feu
+              reposent sur 2 à 4 passages satellite par jour et peuvent être temporairement
+              masquées par la couverture nuageuse.
+            </p>
+            <div className="loader-bar">
+              <div style={{ width: `${Math.round((loading.done / loading.total) * 100)}%` }} />
+            </div>
+            <div className="loader-label">
+              {loading.ready
+                ? 'Données chargées.'
+                : `Chargement des journées... ${loading.done}/${loading.total}`}
+            </div>
+            {loading.ready && (
+              <button
+                className="loader-close"
+                onClick={() => {
+                  setLoading(null);
+                  if (autoplayRef.current) { autoplayRef.current = false; setPlaying(true); }
+                }}
+              >
+                Accéder à la carte ✕
+              </button>
+            )}
+          </div>
+        </div>
+      )}
 
       <footer className="bottombar">
         <div className="legend" {...legendHandlers}>
