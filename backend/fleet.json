@@ -33,6 +33,8 @@
     { "registration": "EC-NKY", "name": "Tract EC-NKY", "type": "AT8T", "hex": "3464d9" },
     { "registration": "OM-BHK", "name": "Black Hawk OM-BHK", "type": "H60", "hex": "505d0b" },
     { "registration": "F-HRTS", "name": "Super Puma F-HRTS", "type": "AS32", "hex": "39c672" },
+    { "registration": "ZS-MNA", "name": "Tract ZS-MNA", "type": "AT8T", "hex": "00a113" },
+    { "registration": "OM-BHG", "name": "Black Hawk OM-BHG", "type": "H60", "hex": "505847" },
     { "registration": "F-ZBEK", "name": "F-ZBEK", "type": "COORD", "hex": "3b7b43" },
     { "registration": "F-RBAY", "name": "A400M F-RBAY", "type": "A400", "hex": "3b775a" },
     { "registration": "0075", "name": "A400M 0075", "type": "A400", "hex": "3b775b" },
