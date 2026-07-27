@@ -154,6 +154,20 @@ export default function App() {
     setSelectedHex((cur) => (cur === hex ? null : hex));
   }, []);
 
+  // saut temporel au double-clic sur la carte (borné à la plage de données)
+  const [jumpFlash, setJumpFlash] = useState(null); // {side, label}
+  const rangeRef = useRef(range);
+  rangeRef.current = range;
+  const jumpTimerRef = useRef(null);
+  const onJump = useCallback((delta) => {
+    const r = rangeRef.current;
+    if (!r) return;
+    setT((cur) => Math.min(r[1], Math.max(r[0], cur + delta)));
+    setJumpFlash({ side: delta < 0 ? 'left' : 'right', label: delta < 0 ? '−10 min' : '+10 min' });
+    clearTimeout(jumpTimerRef.current);
+    jumpTimerRef.current = setTimeout(() => setJumpFlash(null), 700);
+  }, []);
+
   // dernière détection satellite de feu à l'instant t (les feux sont triés par ts)
   const lastFireIdx = fires.length ? indexAt(fires, t) : -1;
   const lastFireTs = lastFireIdx >= 0 ? fires[lastFireIdx][0] : null;
@@ -190,7 +204,13 @@ export default function App() {
         aircraft={aircraft} fires={fires} wind={wind} t={t} speed={speed}
         selectedHex={selectedHex} onSelect={onSelect}
         satelliteDay={satellite && range ? new Date(t * 1000).toISOString().slice(0, 10) : null}
+        onJump={onJump}
       />
+      {jumpFlash && (
+        <div className={`jump-flash ${jumpFlash.side}`}>
+          {jumpFlash.side === 'left' ? '⏪' : '⏩'} {jumpFlash.label}
+        </div>
+      )}
       <div className="night" style={{ opacity: range ? nightOpacity(t) : 0 }} />
 
       {range && (

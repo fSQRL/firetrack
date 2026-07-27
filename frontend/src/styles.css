@@ -177,6 +177,29 @@ ul.menu-text li { margin-bottom: 8px; }
   text-align: center;
 }
 
+/* flash du saut temporel (double-clic gauche/droite) */
+.jump-flash {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 9;
+  pointer-events: none;
+  padding: 10px 16px;
+  background: rgba(20, 24, 31, 0.85);
+  border-radius: 12px;
+  font-size: 18px;
+  font-weight: 700;
+  animation: jump-fade 0.7s ease forwards;
+}
+.jump-flash.left { left: 18px; }
+.jump-flash.right { right: 18px; }
+@keyframes jump-fade {
+  0% { opacity: 0; }
+  15% { opacity: 1; }
+  70% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
 /* ---- loader initial ---- */
 .loader-overlay {
   position: absolute;

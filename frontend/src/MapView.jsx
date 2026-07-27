@@ -83,7 +83,7 @@ function getSmokeSprite() {
   return (smokeSprite = c);
 }
 
-export default function MapView({ aircraft, fires, wind, t, speed, selectedHex, satelliteDay, onSelect }) {
+export default function MapView({ aircraft, fires, wind, t, speed, selectedHex, satelliteDay, onSelect, onJump }) {
   const containerRef = useRef(null);
   const mapRef = useRef(null);
   const readyRef = useRef(false);
@@ -239,6 +239,7 @@ export default function MapView({ aircraft, fires, wind, t, speed, selectedHex, 
       center: [-0.7, 44.65], // Gironde
       zoom: 8,
       attributionControl: false,
+      doubleClickZoom: false, // le double-clic sert au saut temporel (zoom molette/pincement inchangés)
     });
     map.addControl(new maplibregl.AttributionControl({ compact: true }), 'top-right');
     mapRef.current = map;
@@ -259,6 +260,11 @@ export default function MapView({ aircraft, fires, wind, t, speed, selectedHex, 
     });
     map.on('move', drawTrails);
     map.on('resize', drawTrails);
+    // double-clic (ou double-tap) : moitié gauche = -10 min, moitié droite = +10 min
+    map.on('dblclick', (e) => {
+      const half = map.getContainer().clientWidth / 2;
+      onJumpRef.current?.(e.point.x < half ? -600 : 600);
+    });
     return () => { readyRef.current = false; markersRef.current.clear(); map.remove(); };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -291,6 +297,8 @@ export default function MapView({ aircraft, fires, wind, t, speed, selectedHex, 
   const trackKeyRef = useRef('');
   const onSelectRef = useRef(onSelect);
   onSelectRef.current = onSelect;
+  const onJumpRef = useRef(onJump);
+  onJumpRef.current = onJump;
 
   function refresh() {
     if (!readyRef.current) return;
