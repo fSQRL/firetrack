@@ -31,7 +31,8 @@
       "Bash(python -c \"import json,sys; d=json.load\\(sys.stdin\\); print\\(', '.join\\(f\\\\\"{a.get\\('hex'\\)} {a.get\\('t'\\)} {\\(a.get\\('flight'\\) or ''\\).strip\\(\\)}\\\\\" for a in d.get\\('ac',[]\\)\\) or 'pas en vol'\\)\")",
       "PowerShell(python backend\\\\cli.py ingest 2026-07-24 --force)",
       "PowerShell(python backend\\\\cli.py ingest 2026-07-23 --force)",
-      "PowerShell(python backend\\\\cli.py ingest 2026-07-22 --force)"
+      "PowerShell(python backend\\\\cli.py ingest 2026-07-22 --force)",
+      "PowerShell(python backend\\\\cli.py ingest 2026-07-26)"
     ]
   }
 }

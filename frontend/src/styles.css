@@ -244,6 +244,24 @@ ul.menu-text li { margin-bottom: 8px; }
   white-space: nowrap;
 }
 .btn.sat input { accent-color: #ff5d47; margin: 0; }
+.btn.info { font-size: 14px; min-width: 34px; padding: 6px 8px; }
+
+.fire-info {
+  position: absolute;
+  bottom: calc(100% + 8px);
+  right: 10px;
+  max-width: 280px;
+  padding: 10px 12px;
+  background: rgba(20, 24, 31, 0.96);
+  border: 1px solid #39414d;
+  border-radius: 10px;
+  font-size: 12px;
+  line-height: 1.45;
+  color: #cdd5de;
+  z-index: 10;
+}
+.fire-info b { color: #ffb0a3; }
+.fire-info p { margin: 6px 0 0; }
 
 .clock {
   margin-left: auto;

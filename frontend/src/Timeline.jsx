@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 
 const SPEEDS = [30, 60, 120, 300, 600, 1800, 3600];
 
@@ -44,9 +44,16 @@ function daySegments(range) {
 export default function Timeline({
   range, t, onScrub,
   playing, onTogglePlay, speed, onSpeed,
-  satellite, onSatellite,
+  satellite, onSatellite, lastFireTs,
 }) {
   const segments = useMemo(() => daySegments(range), [range]);
+  const [showInfo, setShowInfo] = useState(false);
+  const lastFireLabel = lastFireTs
+    ? new Date(lastFireTs * 1000).toLocaleString('fr-FR', {
+        weekday: 'short', day: 'numeric', month: 'short',
+        hour: '2-digit', minute: '2-digit', timeZone: 'Europe/Paris',
+      })
+    : null;
   return (
     <div className="timeline">
       <div className="timeline-row">
@@ -63,6 +70,23 @@ export default function Timeline({
           <input type="checkbox" checked={satellite} onChange={(e) => onSatellite(e.target.checked)} />
           🛰️ Image NASA du jour
         </label>
+        <button className="btn info" onClick={() => setShowInfo((s) => !s)} aria-label="Infos sur les feux">
+          ⓘ
+        </button>
+        {showInfo && (
+          <div className="fire-info" onClick={() => setShowInfo(false)}>
+            <b>Zones de feu (satellite)</b>
+            <p>
+              {lastFireLabel
+                ? <>Dernière détection satellite : <b>{lastFireLabel}</b>.</>
+                : 'Aucune détection satellite sur la période affichée.'}
+            </p>
+            <p>
+              Les satellites ne passent que 2 à 4 fois par jour, et les nuages peuvent
+              masquer temporairement les zones chaudes.
+            </p>
+          </div>
+        )}
       </div>
       <div className="ruler">
         {segments.map((s) => (

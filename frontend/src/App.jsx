@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import MapView from './MapView.jsx';
 import Timeline from './Timeline.jsx';
-import { positionAt, timeRange } from './interp.js';
+import { indexAt, positionAt, timeRange } from './interp.js';
 
 // Départ par défaut de la timeline : 23/07 15h17 heure de Paris (13h17 UTC)
 const START_T = Date.UTC(2026, 6, 23, 13, 17, 0) / 1000;
@@ -143,6 +143,10 @@ export default function App() {
   const onSelect = useCallback((hex) => {
     setSelectedHex((cur) => (cur === hex ? null : hex));
   }, []);
+
+  // dernière détection satellite de feu à l'instant t (les feux sont triés par ts)
+  const lastFireIdx = fires.length ? indexAt(fires, t) : -1;
+  const lastFireTs = lastFireIdx >= 0 ? fires[lastFireIdx][0] : null;
 
   const selected = aircraft.find((a) => a.hex === selectedHex);
   const selectedPos = selected ? positionAt(selected.points, t) : null;
@@ -302,6 +306,7 @@ export default function App() {
           playing={playing} onTogglePlay={() => setPlaying((p) => !p)}
           speed={speed} onSpeed={setSpeed}
           satellite={satellite} onSatellite={setSatellite}
+          lastFireTs={lastFireTs}
         />
       </footer>
     </div>
