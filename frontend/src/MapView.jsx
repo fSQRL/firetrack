@@ -21,9 +21,11 @@ const FIRE_AFTER_S = 14 * 3600;
 const PLANE_PATH = '<path d="M24 6 L28 16 L28 20 L45 28 L45 33 L28 29 L27 37 L33 41 L33 44 '
   + 'L24 42 L15 44 L15 41 L21 37 L20 29 L3 33 L3 28 L20 20 L20 16 Z"/>';
 
-// Hélicoptère vu de dessus : pales en croix, cellule, poutre et rotor de queue
-const HELI_PATHS = '<path d="M13 7 L15.5 4.5 L35 24 L32.5 26.5 Z"/>'
+// Hélicoptère vu de dessus : pales en croix (groupe animé en rotation), cellule, poutre, rotor de queue
+const HELI_PATHS = '<g class="rotor">'
+  + '<path d="M13 7 L15.5 4.5 L35 24 L32.5 26.5 Z"/>'
   + '<path d="M35 7 L32.5 4.5 L13 24 L15.5 26.5 Z"/>'
+  + '</g>'
   + '<path d="M24 8 C29 8 30 14 30 19 C30 26 27 29 24 29 C21 29 18 26 18 19 C18 14 19 8 24 8 Z"/>'
   + '<path d="M22.5 28 L25.5 28 L25 41 L23 41 Z"/>'
   + '<path d="M17 39.5 L31 39.5 L31 42.5 L17 42.5 Z"/>';

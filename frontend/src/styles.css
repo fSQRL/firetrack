@@ -20,6 +20,11 @@ html, body, #root {
   z-index: 5; /* au-dessus des couches carte, sous les marqueurs avions */
 }
 .plane-marker { cursor: pointer; line-height: 0; z-index: 6; }
+.plane-marker .rotor {
+  animation: rotor-spin 0.45s linear infinite;
+  transform-origin: 24px 15.5px; /* moyeu du rotor (croisement des pales) */
+}
+@keyframes rotor-spin { to { transform: rotate(360deg); } }
 
 /* voile de nuit (opacité pilotée par l'heure solaire) */
 .night {
