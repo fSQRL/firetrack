@@ -101,6 +101,17 @@ html, body, #root {
   text-decoration: none;
 }
 .detail-text { line-height: 1.45; }
+.detail-passes { font-size: 12px; color: #aeb8c4; }
+.detail-follow {
+  border: 1px solid #39414d;
+  background: #2a313c;
+  color: #e8ecf2;
+  border-radius: 8px;
+  padding: 8px;
+  font-size: 13px;
+  cursor: pointer;
+}
+.detail-follow:hover { background: #343d4a; }
 .detail-close {
   position: absolute;
   top: 6px; right: 6px;

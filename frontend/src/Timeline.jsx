@@ -44,7 +44,7 @@ function daySegments(range) {
 export default function Timeline({
   range, t, onScrub,
   playing, onTogglePlay, speed, onSpeed,
-  satellite, onSatellite, lastFireTs,
+  satellite, onSatellite, airQ, onAirQ, lastFireTs,
 }) {
   const segments = useMemo(() => daySegments(range), [range]);
   const [showInfo, setShowInfo] = useState(false);
@@ -69,6 +69,10 @@ export default function Timeline({
         <label className="btn sat" title="Image satellite réelle du jour affiché (NASA VIIRS) : on y voit le vrai panache de fumée">
           <input type="checkbox" checked={satellite} onChange={(e) => onSatellite(e.target.checked)} />
           🛰️ Image NASA du jour
+        </label>
+        <label className="btn sat" title="Indice européen de qualité de l'air (modèle Copernicus CAMS)">
+          <input type="checkbox" checked={airQ} onChange={(e) => onAirQ(e.target.checked)} />
+          😷 Air
         </label>
         <button className="btn info" onClick={() => setShowInfo((s) => !s)} aria-label="Infos sur les feux">
           ⓘ

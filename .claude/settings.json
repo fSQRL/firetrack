@@ -33,7 +33,9 @@
       "PowerShell(python backend\\\\cli.py ingest 2026-07-23 --force)",
       "PowerShell(python backend\\\\cli.py ingest 2026-07-22 --force)",
       "PowerShell(python backend\\\\cli.py ingest 2026-07-26)",
-      "Bash(curl -s \"https://api.airplanes.live/v2/point/44.8/-0.9/80\")"
+      "Bash(curl -s \"https://api.airplanes.live/v2/point/44.8/-0.9/80\")",
+      "PowerShell(python backend\\\\cli.py air 2026-07-22 --days 6)",
+      "PowerShell(python backend\\\\cli.py export 2026-07-27)"
     ]
   }
 }

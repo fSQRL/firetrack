@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import MapView from './MapView.jsx';
 import Timeline from './Timeline.jsx';
-import { indexAt, positionAt, timeRange } from './interp.js';
+import { indexAt, positionAt, timeRange, nearestActivityTs, countActionPasses } from './interp.js';
 
 // Départ par défaut de la timeline : 23/07 15h17 heure de Paris (13h17 UTC)
 const START_T = Date.UTC(2026, 6, 23, 13, 17, 0) / 1000;
@@ -41,7 +41,10 @@ export default function App() {
   const [aircraft, setAircraft] = useState([]);
   const [fires, setFires] = useState([]);
   const [wind, setWind] = useState([]);
+  const [air, setAir] = useState([]);
   const [satellite, setSatellite] = useState(false);
+  const [airQ, setAirQ] = useState(false);
+  const [followHex, setFollowHex] = useState(null);
   const [range, setRange] = useState(null);
   const [t, setT] = useState(0);
   const [playing, setPlaying] = useState(false);
@@ -79,7 +82,7 @@ export default function App() {
       .then((loaded) => {
         // fusion par appareil (les jours sont chargés dans l'ordre chronologique)
         const byHex = new Map();
-        const allFires = [], allWind = [];
+        const allFires = [], allWind = [], allAir = [];
         for (const data of loaded) {
           for (const a of data.aircraft) {
             const cur = byHex.get(a.hex);
@@ -88,17 +91,20 @@ export default function App() {
           }
           allFires.push(...(data.fires ?? []));
           allWind.push(...(data.wind ?? []));
+          allAir.push(...(data.air ?? []));
         }
         const data = {
           aircraft: [...byHex.values()],
           fires: allFires.sort((a, b) => a[0] - b[0]),
           wind: allWind.sort((a, b) => a[0] - b[0]),
+          air: allAir.sort((a, b) => a[0] - b[0]),
         };
         const list = data.aircraft.map((a, i) => ({ ...a, color: COLORS[i % COLORS.length] }));
         setAircraft(list);
         const fs = data.fires ?? [];
         setFires(fs);
         setWind(data.wind ?? []);
+        setAir(data.air ?? []);
         // plage : vols + détections de feu (le feu peut précéder le premier décollage)
         let r = timeRange(list);
         if (fs.length) {
@@ -151,6 +157,7 @@ export default function App() {
   }, [playing, speed, range]);
 
   const onSelect = useCallback((hex) => {
+    setFollowHex(null); // tout changement de sélection met fin au suivi
     setSelectedHex((cur) => (cur === hex ? null : hex));
   }, []);
 
@@ -174,6 +181,22 @@ export default function App() {
 
   const selected = aircraft.find((a) => a.hex === selectedHex);
   const selectedPos = selected ? positionAt(selected.points, t) : null;
+
+  // passages en action (écopages/largages estimés) : total de la journée affichée
+  const dayStart = Math.floor(t / 86400) * 86400;
+  const passes = selected ? countActionPasses(selected.points, dayStart, dayStart + 86400) : 0;
+
+  // suivre l'avion : si absent à l'instant t, on saute d'abord à sa prochaine activité
+  const onFollow = useCallback(() => {
+    if (!selected) return;
+    if (followHex === selected.hex) { setFollowHex(null); return; }
+    if (!positionAt(selected.points, t)) {
+      const ts = nearestActivityTs(selected.points, t);
+      if (ts == null) return;
+      setT(ts);
+    }
+    setFollowHex(selected.hex);
+  }, [selected, followHex, t]);
 
   // Légende : les avions en vol à l'instant t passent en tête
   const legendList = aircraft
@@ -201,10 +224,11 @@ export default function App() {
   return (
     <div className="app">
       <MapView
-        aircraft={aircraft} fires={fires} wind={wind} t={t} speed={speed}
+        aircraft={aircraft} fires={fires} wind={wind} air={airQ ? air : null} t={t} speed={speed}
         selectedHex={selectedHex} onSelect={onSelect}
         satelliteDay={satellite && range ? new Date(t * 1000).toISOString().slice(0, 10) : null}
         onJump={onJump}
+        followHex={followHex} onFollowEnd={() => setFollowHex(null)}
       />
       {jumpFlash && (
         <div className={`jump-flash ${jumpFlash.side}`}>
@@ -244,7 +268,16 @@ export default function App() {
               {selectedPos?.gs != null && ` · ${Math.round(selectedPos.gs * 1.852)} km/h`}
               {selectedPos?.ground && 'au sol'}
               {!selectedPos && 'hors couverture'}
+              <br />
+              <span className="detail-passes">
+                Largages / écopages estimés ce jour : <b>{passes}</b>
+              </span>
             </div>
+            <button className="detail-follow" onClick={onFollow}>
+              {followHex === selected.hex
+                ? '◉ Ne plus suivre'
+                : selectedPos ? '🎯 Suivre cet avion' : '🎯 Aller à son prochain vol'}
+            </button>
             <button className="detail-close" onClick={() => setSelectedHex(null)} aria-label="Fermer">✕</button>
           </div>
         )}
@@ -288,6 +321,12 @@ export default function App() {
                 <b>Zones de feu</b> : points chauds satellites VIIRS,{' '}
                 <a href="https://firms.modaps.eosdis.nasa.gov" target="_blank" rel="noreferrer">NASA FIRMS</a>
                 {' '}(2 à 4 passages par jour, les contours affichés sont approximatifs).
+              </li>
+              <li>
+                <b>Qualité de l'air</b> : indice européen modélisé{' '}
+                <a href="https://atmosphere.copernicus.eu/" target="_blank" rel="noreferrer">Copernicus CAMS</a>,
+                {' '}servi par l'<a href="https://open-meteo.com/en/docs/air-quality-api" target="_blank" rel="noreferrer">API Open-Meteo</a>
+                {' '}(résolution ~11 km : les pics locaux dans le panache peuvent être sous-estimés).
               </li>
               <li>
                 <b>Fond de carte</b> :{' '}
@@ -375,6 +414,7 @@ export default function App() {
           playing={playing} onTogglePlay={() => setPlaying((p) => !p)}
           speed={speed} onSpeed={setSpeed}
           satellite={satellite} onSatellite={setSatellite}
+          airQ={airQ} onAirQ={setAirQ}
           lastFireTs={lastFireTs}
         />
       </footer>

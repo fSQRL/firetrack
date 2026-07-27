@@ -42,6 +42,11 @@ OPEN_METEO_FORECAST_URL = ("https://api.open-meteo.com/v1/forecast?latitude=44.6
                            "&past_days=2&forecast_days=1"
                            "&hourly=wind_speed_10m,wind_direction_10m&timezone=UTC")
 
+# Qualité de l'air (Open-Meteo/CAMS) : grille de points sur la zone, indice européen horaire
+AIR_GRID = [(la, lo) for la in (43.6, 44.0, 44.4, 44.8, 45.2) for lo in (-1.4, -1.0, -0.6, -0.2)]
+AIR_URL = ("https://air-quality-api.open-meteo.com/v1/air-quality?latitude={lats}&longitude={lons}"
+           "&hourly=european_aqi&start_date={start}&end_date={end}&timezone=UTC")
+
 # NASA FIRMS (points chauds satellites) — bbox Gironde + Landes (w,s,e,n)
 FIRMS_URL = "https://firms.modaps.eosdis.nasa.gov/api/area/csv/{key}/{source}/{bbox}/{days}/{day}"
 FIRMS_BBOX = "-1.6,43.4,0.2,45.6"
@@ -92,6 +97,13 @@ CREATE TABLE IF NOT EXISTS wind (
     ts        REAL PRIMARY KEY,       -- epoch Unix (s), pas horaire
     speed_kmh REAL,
     dir_deg   REAL                    -- direction d'où vient le vent (météo)
+);
+CREATE TABLE IF NOT EXISTS air (
+    ts   REAL NOT NULL,               -- epoch Unix (s), pas horaire
+    lat  REAL NOT NULL,
+    lon  REAL NOT NULL,
+    aqi  REAL,                        -- indice européen de qualité de l'air
+    PRIMARY KEY (ts, lat, lon)
 );
 CREATE TABLE IF NOT EXISTS ingested_days (
     day         TEXT PRIMARY KEY,     -- YYYY-MM-DD
@@ -421,6 +433,32 @@ def cmd_wind(args):
     print(f"Vent {start} → {end} : {len(rows)} relevés horaires (Open-Meteo).")
 
 
+# ---------------------------------------------------------------- air
+
+def cmd_air(args):
+    start = date.fromisoformat(args.date) if args.date else date.today() - timedelta(days=1)
+    end = start + timedelta(days=args.days - 1)
+    url = AIR_URL.format(
+        lats=",".join(str(la) for la, _ in AIR_GRID),
+        lons=",".join(str(lo) for _, lo in AIR_GRID),
+        start=start.isoformat(), end=end.isoformat(),
+    )
+    with http_get(url, timeout=60) as resp:
+        locs = json.load(resp)
+    db = get_db()
+    rows = []
+    for (la, lo), loc in zip(AIR_GRID, locs):
+        h = loc["hourly"]
+        for time_s, aqi in zip(h["time"], h["european_aqi"]):
+            if aqi is None:
+                continue
+            ts = datetime.fromisoformat(time_s + ":00+00:00").timestamp()
+            rows.append((ts, la, lo, aqi))
+    db.executemany("INSERT OR REPLACE INTO air VALUES (?, ?, ?, ?)", rows)
+    db.commit()
+    print(f"Air {start} → {end} : {len(rows)} relevés ({len(AIR_GRID)} points de grille).")
+
+
 # ---------------------------------------------------------------- photos
 
 PLANESPOTTERS_UA = "CanadairsGironde/0.1 (+mailto:angledroit@gmail.com)"
@@ -493,6 +531,9 @@ def cmd_export(args):
     out["wind"] = db.execute(
         "SELECT ts, speed_kmh, dir_deg FROM wind WHERE ts >= ? AND ts < ? ORDER BY ts", (start, end)
     ).fetchall()
+    out["air"] = db.execute(
+        "SELECT ts, lat, lon, aqi FROM air WHERE ts >= ? AND ts < ? ORDER BY ts", (start, end)
+    ).fetchall()
     EXPORT_DIR.mkdir(parents=True, exist_ok=True)
     path = EXPORT_DIR / f"{day.isoformat()}.json"
     path.write_text(json.dumps(out, separators=(",", ":")), encoding="utf-8")
@@ -546,6 +587,11 @@ def main():
     p = sub.add_parser("export", help="exporte un jour en JSON pour le frontend")
     p.add_argument("date", help="YYYY-MM-DD")
     p.set_defaults(func=cmd_export)
+
+    p = sub.add_parser("air", help="récupère la qualité de l'air (Open-Meteo/CAMS, grille horaire)")
+    p.add_argument("date", nargs="?", help="YYYY-MM-DD, début de plage (défaut : hier)")
+    p.add_argument("--days", type=int, default=1, help="nombre de jours")
+    p.set_defaults(func=cmd_air)
 
     p = sub.add_parser("wind", help="récupère le vent horaire (Open-Meteo, pour la fumée)")
     p.add_argument("date", nargs="?", help="YYYY-MM-DD, début de plage (défaut : hier)")

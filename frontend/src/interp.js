@@ -113,6 +113,38 @@ export function windAt(wind, t) {
   return { speed: s0 + (s1 - s0) * f, dir: (d0 + dd * f + 360) % 360 };
 }
 
+/** Instant le plus proche où l'avion est actif : prochain point après t, sinon avant-dernier. */
+export function nearestActivityTs(points, t) {
+  if (points.length < 2) return null;
+  const i = indexAt(points, t);
+  if (i < 0) return points[0][TS] + 1;
+  if (i < points.length - 1) return points[i + 1][TS] + 1;
+  return points[points.length - 2][TS] + 1;
+}
+
+/**
+ * Passages "en action" (écopage/largage estimés) entre from et to :
+ * vol < 400 ft à vitesse soutenue, hors abords immédiats d'un contact au sol (aéroport).
+ */
+export function countActionPasses(points, from, to) {
+  const lows = [];
+  const grounds = [];
+  for (const p of points) {
+    const ts = p[TS];
+    if (ts > to) break;
+    if (p[GROUND]) { grounds.push(ts); continue; }
+    if (ts < from) continue;
+    if (p[ALT] != null && p[ALT] < 400 && (p[GS] == null || p[GS] > 60)) {
+      const last = lows[lows.length - 1];
+      if (last && ts - last.end < 120) last.end = ts;
+      else lows.push({ start: ts, end: ts });
+    }
+  }
+  return lows.filter((g) =>
+    !grounds.some((gt) => Math.abs(gt - g.start) < 180 || Math.abs(gt - g.end) < 180)
+  ).length;
+}
+
 /** Plage [premier ts, dernier ts] couverte par au moins un avion, ou null. */
 export function timeRange(aircraft) {
   let min = Infinity, max = -Infinity;

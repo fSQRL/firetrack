@@ -85,7 +85,20 @@ function getSmokeSprite() {
   return (smokeSprite = c);
 }
 
-export default function MapView({ aircraft, fires, wind, t, speed, selectedHex, satelliteDay, onSelect, onJump }) {
+// Palette de l'indice européen de qualité de l'air
+function aqiColor(v) {
+  if (v <= 20) return '80,240,230';
+  if (v <= 40) return '80,204,170';
+  if (v <= 60) return '240,230,65';
+  if (v <= 80) return '255,80,80';
+  if (v <= 100) return '150,0,50';
+  return '125,33,129';
+}
+
+export default function MapView({
+  aircraft, fires, wind, air, t, speed, selectedHex, satelliteDay,
+  onSelect, onJump, followHex, onFollowEnd,
+}) {
   const containerRef = useRef(null);
   const mapRef = useRef(null);
   const readyRef = useRef(false);
@@ -147,6 +160,36 @@ export default function MapView({ aircraft, fires, wind, t, speed, selectedHex, 
     const ctx = canvas.getContext('2d');
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     ctx.clearRect(0, 0, w, h);
+
+    // échelle géographique commune : px par km à ce zoom
+    const q0 = map.project([-1, 44.6]);
+    const q1 = map.project([-1, 44.6 + 1 / 111]);
+    const pxKm = Math.hypot(q1.x - q0.x, q1.y - q0.y);
+
+    // --- Qualité de l'air : grille colorée selon l'indice européen (heure la plus proche) ---
+    const airRows = propsRef.current.air;
+    if (airRows && airRows.length) {
+      for (const [ts, la, lo, aqi] of airRows) {
+        if (Math.abs(ts - t) > 1800) continue; // heure la plus proche de t
+        const p = map.project([lo, la]);
+        const r = 16 * pxKm; // rayon ~16 km : les cellules de la grille se recouvrent
+        if (p.x < -r || p.y < -r || p.x > w + r || p.y > h + r) continue;
+        const g = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, r);
+        g.addColorStop(0, `rgba(${aqiColor(aqi)},0.28)`);
+        g.addColorStop(1, `rgba(${aqiColor(aqi)},0)`);
+        ctx.fillStyle = g;
+        ctx.fillRect(p.x - r, p.y - r, r * 2, r * 2);
+        // valeur de l'indice : chiffre opaque de la couleur de la zone, contour noir
+        ctx.font = 'bold 18px system-ui, sans-serif';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.lineWidth = 4;
+        ctx.strokeStyle = 'rgba(0,0,0,0.9)';
+        ctx.strokeText(String(Math.round(aqi)), p.x, p.y);
+        ctx.fillStyle = `rgb(${aqiColor(aqi)})`;
+        ctx.fillText(String(Math.round(aqi)), p.x, p.y);
+      }
+    }
 
     // --- Flammes (sprites animés, taille ∝ intensité FRP, ancrées au sol) ---
     const sprites = fireSpritesRef.current;
@@ -262,18 +305,40 @@ export default function MapView({ aircraft, fires, wind, t, speed, selectedHex, 
     });
     map.on('move', drawTrails);
     map.on('resize', drawTrails);
+    // Tout toucher/clic sur la carte met fin au suivi, différé de 300 ms pour être
+    // annulé si le geste s'avère être un double-clic (saut temporel).
+    let touchTimer = null;
+    map.getCanvasContainer().addEventListener('pointerdown', () => {
+      clearTimeout(touchTimer);
+      touchTimer = setTimeout(() => onFollowEndRef.current?.(), 300);
+    });
     // double-clic (ou double-tap) : moitié gauche = -10 min, moitié droite = +10 min
     map.on('dblclick', (e) => {
+      clearTimeout(touchTimer);
       const half = map.getContainer().clientWidth / 2;
       onJumpRef.current?.(e.point.x < half ? -600 : 600);
     });
+    // un glisser met fin au suivi immédiatement
+    map.on('dragstart', () => { clearTimeout(touchTimer); onFollowEndRef.current?.(); });
     return () => { readyRef.current = false; markersRef.current.clear(); map.remove(); };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // refs pour que refresh() lise toujours les dernières props sans réinitialiser la carte
   const propsRef = useRef({});
-  propsRef.current = { aircraft, fires, wind, t, speed, selectedHex };
+  propsRef.current = { aircraft, fires, wind, air, t, speed, selectedHex, followHex };
+  const onFollowEndRef = useRef(onFollowEnd);
+  onFollowEndRef.current = onFollowEnd;
+
+  // activation du suivi : zoom sur l'appareil
+  useEffect(() => {
+    const map = mapRef.current;
+    if (!map || !followHex) return;
+    const a = propsRef.current.aircraft.find((x) => x.hex === followHex);
+    const pos = a && positionAt(a.points, propsRef.current.t);
+    if (pos) map.easeTo({ center: [pos.lon, pos.lat], zoom: Math.max(map.getZoom(), 10.5), duration: 700 });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [followHex]);
 
   // Couche satellite NASA GIBS, datée selon le jour affiché par la timeline
   useEffect(() => {
@@ -317,14 +382,16 @@ export default function MapView({ aircraft, fires, wind, t, speed, selectedHex, 
       seen.add(a.hex);
       inFlight.set(a.hex, pos);
       const color = selectedHex && selectedHex !== a.hex ? '#8892a0' : a.color;
+      const heli = isHelicopter(a.type);
       let m = markers.get(a.hex);
+      if (m && m.heli !== heli) { m.marker.remove(); markers.delete(a.hex); m = null; } // silhouette obsolète
       if (!m) {
-        const el = planeElement(color, isHelicopter(a.type));
+        const el = planeElement(color, heli);
         el.addEventListener('click', (e) => { e.stopPropagation(); onSelectRef.current?.(a.hex); });
         const marker = new maplibregl.Marker({ element: el, rotationAlignment: 'map', pitchAlignment: 'map' })
           .setLngLat([pos.lon, pos.lat])
           .addTo(map);
-        m = { marker, svg: el.querySelector('svg') };
+        m = { marker, svg: el.querySelector('svg'), heli };
         markers.set(a.hex, m);
       }
       m.marker.setLngLat([pos.lon, pos.lat]).setRotation(pos.track);
@@ -333,6 +400,10 @@ export default function MapView({ aircraft, fires, wind, t, speed, selectedHex, 
     for (const [hex, m] of markers) {
       if (!seen.has(hex)) { m.marker.remove(); markers.delete(hex); }
     }
+
+    // --- Suivi caméra : la carte reste centrée sur l'appareil suivi ---
+    const fPos = propsRef.current.followHex && inFlight.get(propsRef.current.followHex);
+    if (fPos && !map.isEasing()) map.setCenter([fPos.lon, fPos.lat]);
 
     // --- Traînées récentes : canvas, à chaque frame ---
     drawTrails();
@@ -391,7 +462,7 @@ export default function MapView({ aircraft, fires, wind, t, speed, selectedHex, 
     }
   }
 
-  useEffect(refresh, [aircraft, fires, wind, t, selectedHex]);
+  useEffect(refresh, [aircraft, fires, wind, air, t, selectedHex, followHex]);
 
   return (
     <div className="map-wrap">
