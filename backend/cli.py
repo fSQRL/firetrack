@@ -289,15 +289,22 @@ def cmd_today(args):
     db = get_db()
     fleet = db.execute("SELECT hex, registration FROM aircraft ORDER BY registration").fetchall()
     total, seen = 0, 0
+    errors = 0
     for hex_, reg in fleet:
         url = LIVE_TRACE_URL.format(sub=hex_[-2:], hex=hex_)
         try:
-            with http_get(url, timeout=30, ua="Mozilla/5.0 (FireTracker)", extra_headers=LIVE_HEADERS) as resp:
+            with http_get(url, timeout=45, ua="Mozilla/5.0 (FireTracker)", extra_headers=LIVE_HEADERS) as resp:
                 raw = resp.read()
         except urllib.error.HTTPError as e:
             if e.code in (404, 403):
                 continue  # avion pas vu ces dernières 24 h
-            raise
+            print(f"  ✗ {reg} : HTTP {e.code}, on continue", file=sys.stderr)
+            errors += 1
+            continue
+        except Exception as e:  # timeout, réseau... : ne jamais faire échouer tout le lot
+            print(f"  ✗ {reg} : {type(e).__name__} ({e}), on continue", file=sys.stderr)
+            errors += 1
+            continue
         if raw[:2] == b"\x1f\x8b":
             raw = gzip.decompress(raw)
         n = parse_trace(raw, hex_, db)
@@ -306,7 +313,10 @@ def cmd_today(args):
             print(f"  ✔ {reg} ({hex_}) : {n} points sur ~24 h")
             seen += 1
             total += n
-    print(f"Live : {total} points, {seen} appareil(s) vus. Penser à `fires`/`wind`/`export` pour le jour courant.")
+    msg = f"Live : {total} points, {seen} appareil(s) vus"
+    if errors:
+        msg += f", {errors} erreur(s) réseau ignorée(s)"
+    print(msg + ".")
 
 
 # ---------------------------------------------------------------- discover
