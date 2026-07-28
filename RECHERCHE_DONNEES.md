@@ -202,6 +202,24 @@ GeoJSON. Utile pour dessiner la **tache brûlée** (polygone) en plus des flamme
    quand `|t - ts_détection| < quelques heures`.
 3. (Option v2) polygone EFFIS de la surface brûlée en fond.
 
+### Mise à jour du 28/07 : fréquence des détections
+
+Constat en production : VIIRS seul laisse des trous de 8-10 h (passages ~01h30 et ~13h30
+locales, publication +1 à 3 h). Deux améliorations :
+
+- **✅ Fait : ajout de MODIS** (`MODIS_NRT`/`MODIS_SP`). Terra et Aqua passent vers ~10h30 et
+  ~21h30 locales : combinés à VIIRS, on obtient 6-8 fenêtres de détection par jour au lieu
+  de 2-4. Résolution 1 km (contre 375 m), acceptable pour notre affichage.
+- **🔭 Piste étudiée, non retenue pour l'instant : Meteosat (géostationnaire).** Le produit
+  FRP-PIXEL du [LSA SAF](https://lsa-saf.eumetsat.int/) (EUMETSAT) détecte les feux **toutes
+  les 15 minutes**, 24h/24 : c'est LA source "temps quasi réel" européenne (utilisée par
+  certains sites spécialisés). Contreparties : inscription EUMETSAT, accès par FTP/API à des
+  fichiers HDF5/NetCDF à décoder (grille pleine Europe), résolution ~3-4 km, et sensibilité
+  moindre aux petits foyers. Intégrable, mais c'est une brique lourde (dépendances de
+  décodage, pipeline dédié) : à envisager si le besoin de quasi-direct feu devient central.
+- Rappel des limites communes : aucun capteur ne voit à travers les nuages épais, et FIRMS
+  publie avec 1-3 h de latence quelle que soit la fréquence d'interrogation.
+
 ---
 
 ## 8. Afficher la fumée et sa direction

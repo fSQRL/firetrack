@@ -50,8 +50,10 @@ AIR_URL = ("https://air-quality-api.open-meteo.com/v1/air-quality?latitude={lats
 # NASA FIRMS (points chauds satellites) — bbox Gironde + Landes (w,s,e,n)
 FIRMS_URL = "https://firms.modaps.eosdis.nasa.gov/api/area/csv/{key}/{source}/{bbox}/{days}/{day}"
 FIRMS_BBOX = "-1.6,43.4,0.2,45.6"
-FIRMS_NRT = ["VIIRS_SNPP_NRT", "VIIRS_NOAA20_NRT", "VIIRS_NOAA21_NRT"]
-FIRMS_SP = ["VIIRS_SNPP_SP", "VIIRS_NOAA20_SP"]
+# VIIRS passe vers ~01h30/13h30 locales ; MODIS (Terra/Aqua) ajoute des passages
+# vers ~10h30/21h30 : les quatre sources couvrent mieux la journée
+FIRMS_NRT = ["VIIRS_SNPP_NRT", "VIIRS_NOAA20_NRT", "VIIRS_NOAA21_NRT", "MODIS_NRT"]
+FIRMS_SP = ["VIIRS_SNPP_SP", "VIIRS_NOAA20_SP", "MODIS_SP"]
 FIRMS_MAX_RANGE = 5  # l'API n'accepte que des plages de 1 à 5 jours
 FIRMS_KEY_FILE = Path(__file__).resolve().parent / "firms_key.txt"
 

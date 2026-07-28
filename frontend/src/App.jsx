@@ -318,9 +318,9 @@ export default function App() {
                 <a href="https://airplanes.live" target="_blank" rel="noreferrer">airplanes.live</a>.
               </li>
               <li>
-                <b>Zones de feu</b> : points chauds satellites VIIRS,{' '}
+                <b>Zones de feu</b> : points chauds satellites VIIRS et MODIS,{' '}
                 <a href="https://firms.modaps.eosdis.nasa.gov" target="_blank" rel="noreferrer">NASA FIRMS</a>
-                {' '}(2 à 4 passages par jour, les contours affichés sont approximatifs).
+                {' '}(6 à 8 passages par jour, les contours affichés sont approximatifs).
               </li>
               <li>
                 <b>Qualité de l'air</b> : indice européen modélisé{' '}
@@ -370,7 +370,7 @@ export default function App() {
             <p>
               Elle est fournie à titre d'information : en cas d'incendie, seules les
               communications officielles (préfectures, FR-Alert) font foi. Les zones de feu
-              reposent sur 2 à 4 passages satellite par jour et peuvent être temporairement
+              reposent sur 6 à 8 passages satellite par jour et peuvent être temporairement
               masquées par la couverture nuageuse.
             </p>
             <div className="loader-bar">

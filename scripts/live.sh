@@ -1,5 +1,5 @@
 #!/bin/sh
-# Jour courant : traces live + feux + vent + export. Lancé toutes les 30 min par cron.
+# Jour courant : traces live + feux + vent + qualité de l'air + export. Lancé toutes les 30 min par cron.
 cd "$(dirname "$0")/.." || exit 1
 echo "=== $(date -u +%FT%TZ) live ==="
 python3 backend/cli.py today

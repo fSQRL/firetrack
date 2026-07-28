@@ -86,8 +86,8 @@ export default function Timeline({
                 : 'Aucune détection satellite sur la période affichée.'}
             </p>
             <p>
-              Les satellites ne passent que 2 à 4 fois par jour, et les nuages peuvent
-              masquer temporairement les zones chaudes.
+              Les satellites (VIIRS, MODIS) ne passent que 6 à 8 fois par jour, et les
+              nuages peuvent masquer temporairement les zones chaudes.
             </p>
           </div>
         )}

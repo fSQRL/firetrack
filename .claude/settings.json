@@ -35,7 +35,14 @@
       "PowerShell(python backend\\\\cli.py ingest 2026-07-26)",
       "Bash(curl -s \"https://api.airplanes.live/v2/point/44.8/-0.9/80\")",
       "PowerShell(python backend\\\\cli.py air 2026-07-22 --days 6)",
-      "PowerShell(python backend\\\\cli.py export 2026-07-27)"
+      "PowerShell(python backend\\\\cli.py export 2026-07-27)",
+      "PowerShell(git push --set-upstream origin master)",
+      "Bash(curl -s \"https://api.adsbdb.com/v0/aircraft/N905NA\")",
+      "Bash(curl -s \"https://api.airplanes.live/v2/reg/N905NA\")",
+      "Bash(python -c \"import json,sys; d=json.load\\(sys.stdin\\); print\\(', '.join\\(f\\\\\"{a.get\\('hex'\\)} {\\(a.get\\('flight'\\) or ''\\).strip\\(\\)} {a.get\\('t'\\)} alt={a.get\\('alt_baro'\\)} pos={a.get\\('lat'\\)},{a.get\\('lon'\\)}\\\\\" for a in d.get\\('ac',[]\\)\\) or 'pas en vol'\\)\")",
+      "Bash(curl -s \"https://api.airplanes.live/v2/callsign/QFS\")",
+      "Bash(python -c \"import json,sys; d=json.load\\(sys.stdin\\); print\\(', '.join\\(f\\\\\"{a.get\\('hex'\\)} {a.get\\('r'\\)} alt={a.get\\('alt_baro'\\)} pos={a.get\\('lat'\\)},{a.get\\('lon'\\)}\\\\\" for a in d.get\\('ac',[]\\)\\) or 'rien'\\)\")",
+      "Bash(curl -sL --compressed -H \"Referer: https://globe.adsb.lol/\" -H \"User-Agent: Mozilla/5.0\" -w \"\\\\nHTTP %{http_code}\\\\n\" \"https://globe.adsb.lol/data/traces/ec/trace_full_ac82ec.json\")"
     ]
   }
 }
