@@ -35,7 +35,7 @@ function isHelicopter(type) {
   const t = (type || '').toUpperCase();
   return ['EC45', 'EC35', 'EC30', 'EC55', 'EC75', 'H125', 'H135', 'H145', 'H160', 'H225',
     'AS50', 'AS55', 'AS3B', 'AS32', 'S330', 'PUMA', 'S76', 'B06', 'B412', 'B429',
-    'A109', 'A139', 'A189', 'H60', 'S70', 'UH60']
+    'A109', 'A139', 'A189', 'H60', 'S70', 'UH60', 'H53', 'S61', 'S64']
     .includes(t) || t.startsWith('EC1') || t.startsWith('R4');
 }
 
