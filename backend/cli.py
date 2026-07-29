@@ -38,8 +38,9 @@ OPEN_METEO_URL = ("https://archive-api.open-meteo.com/v1/archive?latitude=44.6&l
                   "&start_date={start}&end_date={end}"
                   "&hourly=wind_speed_10m,wind_direction_10m&timezone=UTC")
 # l'archive ERA5 a quelques jours de retard : l'API forecast couvre le jour courant
+# et fournit aussi la prévision (+24 h utilisées pour le mode Prévision du site)
 OPEN_METEO_FORECAST_URL = ("https://api.open-meteo.com/v1/forecast?latitude=44.6&longitude=-1.0"
-                           "&past_days=2&forecast_days=1"
+                           "&past_days=2&forecast_days=2"
                            "&hourly=wind_speed_10m,wind_direction_10m&timezone=UTC")
 
 # Qualité de l'air (Open-Meteo/CAMS) : grille de points sur la zone, indice européen horaire
@@ -425,9 +426,9 @@ def cmd_wind(args):
         return rows
 
     start_ts = datetime(start.year, start.month, start.day, tzinfo=timezone.utc).timestamp()
-    end_ts = start_ts + args.days * 86400
+    end_ts = start_ts + (args.days + 1) * 86400  # +24 h de prévision (remplacées par le réel ensuite)
     rows = fetch_rows(OPEN_METEO_URL.format(start=start.isoformat(), end=end.isoformat()))
-    if len(rows) < args.days * 24:  # l'archive est en retard : compléter avec le forecast
+    if len(rows) < (args.days + 1) * 24:  # archive en retard ou prévision manquante : compléter
         rows += fetch_rows(OPEN_METEO_FORECAST_URL)
     db = get_db()
     db.executemany("INSERT OR REPLACE INTO wind VALUES (?, ?, ?)", rows)
@@ -439,7 +440,8 @@ def cmd_wind(args):
 
 def cmd_air(args):
     start = date.fromisoformat(args.date) if args.date else date.today() - timedelta(days=1)
-    end = start + timedelta(days=args.days - 1)
+    # +1 jour : l'API air est prédictive (CAMS), on stocke aussi la prévision du lendemain
+    end = start + timedelta(days=args.days)
     url = AIR_URL.format(
         lats=",".join(str(la) for la, _ in AIR_GRID),
         lons=",".join(str(lo) for _, lo in AIR_GRID),
@@ -530,11 +532,13 @@ def cmd_export(args):
     out["fires"] = db.execute(
         "SELECT ts, lat, lon, frp FROM fires WHERE ts >= ? AND ts < ? ORDER BY ts", (start, end)
     ).fetchall()
+    # vent et air : fenêtre élargie de +24 h (prévision pour le jour courant ;
+    # pour les jours passés c'est du réel, dédoublonné côté front)
     out["wind"] = db.execute(
-        "SELECT ts, speed_kmh, dir_deg FROM wind WHERE ts >= ? AND ts < ? ORDER BY ts", (start, end)
+        "SELECT ts, speed_kmh, dir_deg FROM wind WHERE ts >= ? AND ts < ? ORDER BY ts", (start, end + 86400)
     ).fetchall()
     out["air"] = db.execute(
-        "SELECT ts, lat, lon, aqi FROM air WHERE ts >= ? AND ts < ? ORDER BY ts", (start, end)
+        "SELECT ts, lat, lon, aqi FROM air WHERE ts >= ? AND ts < ? ORDER BY ts", (start, end + 86400)
     ).fetchall()
     EXPORT_DIR.mkdir(parents=True, exist_ok=True)
     path = EXPORT_DIR / f"{day.isoformat()}.json"

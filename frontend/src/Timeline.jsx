@@ -44,9 +44,13 @@ function daySegments(range) {
 export default function Timeline({
   range, t, onScrub,
   playing, onTogglePlay, speed, onSpeed,
-  satellite, onSatellite, airQ, onAirQ, lastFireTs,
+  satellite, onSatellite, satAvailable, airQ, onAirQ, lastFireTs, dataEnd,
 }) {
+  const [satMsg, setSatMsg] = useState(false);
   const segments = useMemo(() => daySegments(range), [range]);
+  const forecastLeft = range && dataEnd && dataEnd < range[1]
+    ? ((dataEnd - range[0]) / (range[1] - range[0])) * 100
+    : null;
   const [showInfo, setShowInfo] = useState(false);
   const lastFireLabel = lastFireTs
     ? new Date(lastFireTs * 1000).toLocaleString('fr-FR', {
@@ -66,9 +70,23 @@ export default function Timeline({
         >
           ×{speed}
         </button>
-        <label className="btn sat" title="Image satellite réelle du jour affiché (NASA VIIRS) : on y voit le vrai panache de fumée">
-          <input type="checkbox" checked={satellite} onChange={(e) => onSatellite(e.target.checked)} />
-          🛰️ Image NASA du jour
+        <label
+          className={`btn sat ${satAvailable === false ? 'off' : ''}`}
+          title="Image satellite réelle du jour affiché (NASA VIIRS) : on y voit le vrai panache de fumée"
+          onClick={() => {
+            if (satAvailable === false) {
+              setSatMsg(true);
+              setTimeout(() => setSatMsg(false), 1800);
+            }
+          }}
+        >
+          <input
+            type="checkbox"
+            checked={satellite}
+            disabled={satAvailable === false}
+            onChange={(e) => onSatellite(e.target.checked)}
+          />
+          🛰️ {satMsg ? 'Pas encore disponible' : 'Image NASA'}
         </label>
         <label className="btn sat" title="Indice européen de qualité de l'air (modèle Copernicus CAMS)">
           <input type="checkbox" checked={airQ} onChange={(e) => onAirQ(e.target.checked)} />
@@ -98,6 +116,9 @@ export default function Timeline({
             <span>{s.width > 14 ? s.label : s.short}</span>
           </div>
         ))}
+        {forecastLeft != null && (
+          <div className="ruler-forecast" style={{ left: `${forecastLeft}%`, width: `${100 - forecastLeft}%` }} />
+        )}
       </div>
       <input
         className="scrub"

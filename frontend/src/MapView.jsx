@@ -97,7 +97,7 @@ function aqiColor(v) {
 
 export default function MapView({
   aircraft, fires, wind, air, t, speed, selectedHex, satelliteDay,
-  onSelect, onJump, followHex, onFollowEnd,
+  onSelect, onJump, followHex, onFollowEnd, dataEnd,
 }) {
   const containerRef = useRef(null);
   const mapRef = useRef(null);
@@ -326,7 +326,7 @@ export default function MapView({
 
   // refs pour que refresh() lise toujours les dernières props sans réinitialiser la carte
   const propsRef = useRef({});
-  propsRef.current = { aircraft, fires, wind, air, t, speed, selectedHex, followHex };
+  propsRef.current = { aircraft, fires, wind, air, t, speed, selectedHex, followHex, dataEnd };
   const onFollowEndRef = useRef(onFollowEnd);
   onFollowEndRef.current = onFollowEnd;
 
@@ -409,13 +409,17 @@ export default function MapView({
     drawTrails();
 
     // --- Feux : liste des visibles recalculée toutes les 60 s simulées seulement ---
-    const firesKey = `${fires?.length ?? 0}|${Math.floor(t / 60)}`;
+    // En mode Prévision (t au-delà des données réelles), les foyers sont figés à leur
+    // dernier état connu : on ne prétend pas prévoir le feu, seulement la dérive de la fumée.
+    const dEnd = propsRef.current.dataEnd;
+    const te = dEnd ? Math.min(t, dEnd) : t;
+    const firesKey = `${fires?.length ?? 0}|${Math.floor(te / 60)}`;
     if (firesKeyRef.current !== firesKey) {
       firesKeyRef.current = firesKey;
       const vis = [];
       for (const [ts, lat, lon, frp] of fires ?? []) {
-        if (t < ts - FIRE_BEFORE_S || t > ts + FIRE_AFTER_S) continue;
-        const fade = t < ts ? 1 - (ts - t) / FIRE_BEFORE_S : 1 - (t - ts) / FIRE_AFTER_S;
+        if (te < ts - FIRE_BEFORE_S || te > ts + FIRE_AFTER_S) continue;
+        const fade = te < ts ? 1 - (ts - te) / FIRE_BEFORE_S : 1 - (te - ts) / FIRE_AFTER_S;
         vis.push([lon, lat, frp ?? 5, Math.max(0.15, fade)]);
       }
       visFiresRef.current = vis;

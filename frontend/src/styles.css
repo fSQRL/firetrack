@@ -35,6 +35,39 @@ html, body, #root {
   z-index: 4;
 }
 
+/* mode Prévision : voile teinté + badge + zone hachurée de la timeline */
+.forecast-veil {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  pointer-events: none;
+  background: rgba(255, 150, 40, 0.07);
+  box-shadow: inset 0 0 0 3px rgba(255, 150, 40, 0.55);
+}
+.forecast-badge {
+  display: block;
+  margin-top: 4px;
+  padding: 3px 8px;
+  border-radius: 6px;
+  background: #b35309;
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+}
+.ruler-forecast {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    -45deg,
+    rgba(255, 150, 40, 0.25) 0 4px,
+    transparent 4px 8px
+  );
+  border-left: 2px solid #ff9628;
+}
+
 /* date + heure simulées, en haut à gauche */
 .bigclock {
   position: absolute;
@@ -334,6 +367,7 @@ ul.menu-text li { margin-bottom: 8px; }
   white-space: nowrap;
 }
 .btn.sat input { accent-color: #ff5d47; margin: 0; }
+.btn.sat.off { opacity: 0.45; cursor: default; }
 .btn.info { font-size: 14px; min-width: 34px; padding: 6px 8px; }
 
 .fire-info {

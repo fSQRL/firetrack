@@ -42,7 +42,12 @@
       "Bash(python -c \"import json,sys; d=json.load\\(sys.stdin\\); print\\(', '.join\\(f\\\\\"{a.get\\('hex'\\)} {\\(a.get\\('flight'\\) or ''\\).strip\\(\\)} {a.get\\('t'\\)} alt={a.get\\('alt_baro'\\)} pos={a.get\\('lat'\\)},{a.get\\('lon'\\)}\\\\\" for a in d.get\\('ac',[]\\)\\) or 'pas en vol'\\)\")",
       "Bash(curl -s \"https://api.airplanes.live/v2/callsign/QFS\")",
       "Bash(python -c \"import json,sys; d=json.load\\(sys.stdin\\); print\\(', '.join\\(f\\\\\"{a.get\\('hex'\\)} {a.get\\('r'\\)} alt={a.get\\('alt_baro'\\)} pos={a.get\\('lat'\\)},{a.get\\('lon'\\)}\\\\\" for a in d.get\\('ac',[]\\)\\) or 'rien'\\)\")",
-      "Bash(curl -sL --compressed -H \"Referer: https://globe.adsb.lol/\" -H \"User-Agent: Mozilla/5.0\" -w \"\\\\nHTTP %{http_code}\\\\n\" \"https://globe.adsb.lol/data/traces/ec/trace_full_ac82ec.json\")"
+      "Bash(curl -sL --compressed -H \"Referer: https://globe.adsb.lol/\" -H \"User-Agent: Mozilla/5.0\" -w \"\\\\nHTTP %{http_code}\\\\n\" \"https://globe.adsb.lol/data/traces/ec/trace_full_ac82ec.json\")",
+      "PowerShell(python backend\\\\cli.py wind 2026-07-29)",
+      "PowerShell(python backend\\\\cli.py air 2026-07-29)",
+      "PowerShell(python backend\\\\cli.py export 2026-07-29 2>$null)",
+      "PowerShell(python backend\\\\cli.py export 2026-07-28)",
+      "Bash(curl -s \"https://api.open-meteo.com/v1/forecast?latitude=44.6&longitude=-1.0&past_days=2&forecast_days=2&hourly=wind_speed_10m,wind_direction_10m&timezone=UTC\")"
     ]
   }
 }

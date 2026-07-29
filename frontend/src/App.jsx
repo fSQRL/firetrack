@@ -46,6 +46,7 @@ export default function App() {
   const [airQ, setAirQ] = useState(false);
   const [followHex, setFollowHex] = useState(null);
   const [range, setRange] = useState(null);
+  const [dataEnd, setDataEnd] = useState(null); // fin des données réelles (au-delà : prévision)
   const [t, setT] = useState(0);
   const [playing, setPlaying] = useState(false);
   const [speed, setSpeed] = useState(300);
@@ -104,12 +105,28 @@ export default function App() {
         const fs = data.fires ?? [];
         setFires(fs);
         setWind(data.wind ?? []);
-        setAir(data.air ?? []);
+        // dédoublonnage air (les fichiers jour se recouvrent de 24 h pour la prévision)
+        const seenAir = new Set();
+        setAir((data.air ?? []).filter((r) => {
+          const k = `${r[0]}|${r[1]}|${r[2]}`;
+          if (seenAir.has(k)) return false;
+          seenAir.add(k);
+          return true;
+        }));
         // plage : vols + détections de feu (le feu peut précéder le premier décollage)
         let r = timeRange(list);
         if (fs.length) {
           const fmin = fs[0][0], fmax = fs[fs.length - 1][0];
           r = r ? [Math.min(r[0], fmin), Math.max(r[1], fmax)] : [fmin, fmax];
+        }
+        // mode Prévision : +24 h au-delà des données réelles, uniquement si le site est "à jour"
+        // (pas de prévision sur une archive consultée bien plus tard)
+        if (r) {
+          setDataEnd(r[1]);
+          const live = Date.now() / 1000 - r[1] < 36 * 3600;
+          if (live) r = [r[0], r[1] + 24 * 3600];
+        } else {
+          setDataEnd(null);
         }
         setRange(r);
         if (r) {
@@ -175,6 +192,25 @@ export default function App() {
     jumpTimerRef.current = setTimeout(() => setJumpFlash(null), 700);
   }, []);
 
+  // Disponibilité de l'image satellite NASA pour le jour affiché : une seule tuile
+  // sonde par jour (mise en cache), l'imagerie du jour même arrive souvent en cours d'après-midi
+  const satDayStr = range ? new Date(t * 1000).toISOString().slice(0, 10) : null;
+  const [satAvailable, setSatAvailable] = useState(null);
+  const satCacheRef = useRef({});
+  useEffect(() => {
+    if (!satDayStr) return;
+    const cached = satCacheRef.current[satDayStr];
+    if (cached !== undefined) { setSatAvailable(cached); return; }
+    let stale = false;
+    fetch(`https://gibs.earthdata.nasa.gov/wmts/epsg3857/best/VIIRS_SNPP_CorrectedReflectance_TrueColor/default/${satDayStr}/GoogleMapsCompatible_Level9/6/23/31.jpg`)
+      .then((r) => {
+        satCacheRef.current[satDayStr] = r.ok;
+        if (!stale) setSatAvailable(r.ok);
+      })
+      .catch(() => { if (!stale) setSatAvailable(null); });
+    return () => { stale = true; };
+  }, [satDayStr]);
+
   // dernière détection satellite de feu à l'instant t (les feux sont triés par ts)
   const lastFireIdx = fires.length ? indexAt(fires, t) : -1;
   const lastFireTs = lastFireIdx >= 0 ? fires[lastFireIdx][0] : null;
@@ -225,8 +261,9 @@ export default function App() {
     <div className="app">
       <MapView
         aircraft={aircraft} fires={fires} wind={wind} air={airQ ? air : null} t={t} speed={speed}
+        dataEnd={dataEnd}
         selectedHex={selectedHex} onSelect={onSelect}
-        satelliteDay={satellite && range ? new Date(t * 1000).toISOString().slice(0, 10) : null}
+        satelliteDay={satellite && satAvailable ? satDayStr : null}
         onJump={onJump}
         followHex={followHex} onFollowEnd={() => setFollowHex(null)}
       />
@@ -236,6 +273,8 @@ export default function App() {
         </div>
       )}
       <div className="night" style={{ opacity: range ? nightOpacity(t) : 0 }} />
+
+      {dataEnd && t > dataEnd && <div className="forecast-veil" />}
 
       {range && (
         <div className="bigclock">
@@ -247,6 +286,12 @@ export default function App() {
               hour: '2-digit', minute: '2-digit', second: '2-digit', timeZone: 'Europe/Paris',
             })}
           </span>
+          {dataEnd && t > dataEnd && (
+            <span className="forecast-badge">
+              PRÉVISION +{Math.max(1, Math.round((t - dataEnd) / 3600))} h ·
+              fiabilité {t - dataEnd < 6 * 3600 ? 'bonne' : 'moyenne'}
+            </span>
+          )}
         </div>
       )}
 
@@ -413,9 +458,9 @@ export default function App() {
           range={range} t={t} onScrub={setT}
           playing={playing} onTogglePlay={() => setPlaying((p) => !p)}
           speed={speed} onSpeed={setSpeed}
-          satellite={satellite} onSatellite={setSatellite}
+          satellite={satellite} onSatellite={setSatellite} satAvailable={satAvailable}
           airQ={airQ} onAirQ={setAirQ}
-          lastFireTs={lastFireTs}
+          lastFireTs={lastFireTs} dataEnd={dataEnd}
         />
       </footer>
     </div>
