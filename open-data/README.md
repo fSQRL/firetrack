@@ -3,6 +3,10 @@
 Extraction CSV de toutes les données utilisées par https://firetrack.harari.ovh
 Régénérer : `python scripts/export_csv.py` (depuis la racine du projet).
 
+> 🤖 Pour analyser ces données avec Claude Code : un skill dédié existe :
+> [`.claude/skills/firetrack-open-data/`](../.claude/skills/firetrack-open-data/SKILL.md)
+> (dictionnaire, pièges UTC/prévision/zone, recettes SQL, licences).
+
 ## Fichiers
 
 | Fichier | Contenu | Colonnes |

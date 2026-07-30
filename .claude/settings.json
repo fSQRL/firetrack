@@ -48,7 +48,8 @@
       "PowerShell(python backend\\\\cli.py export 2026-07-29 2>$null)",
       "PowerShell(python backend\\\\cli.py export 2026-07-28)",
       "Bash(curl -s \"https://api.open-meteo.com/v1/forecast?latitude=44.6&longitude=-1.0&past_days=2&forecast_days=2&hourly=wind_speed_10m,wind_direction_10m&timezone=UTC\")",
-      "PowerShell(python scripts\\\\export_csv.py 2>&1 | Select-Object -Last 2; \\(Get-ChildItem open-data | Measure-Object Length -Sum\\).Sum/1MB)"
+      "PowerShell(python scripts\\\\export_csv.py 2>&1 | Select-Object -Last 2; \\(Get-ChildItem open-data | Measure-Object Length -Sum\\).Sum/1MB)",
+      "Edit(/.claude/skills/firetrack-open-data/**)"
     ]
   }
 }
