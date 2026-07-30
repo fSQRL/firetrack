@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex" />
+  <title>Analyse : les avions ont-ils arrosé là où ça brûlait ? · Fire Tracker</title>
+  <style>
+    body { margin: 0; background: #14181f; color: #e8ecf2; font-family: system-ui, sans-serif; line-height: 1.65; }
+    main { max-width: 780px; margin: 0 auto; padding: 28px 18px 60px; }
+    h1 { font-size: 26px; line-height: 1.3; }
+    h2 { font-size: 20px; margin-top: 40px; border-bottom: 1px solid #2a313c; padding-bottom: 6px; }
+    p, li { font-size: 15.5px; color: #cdd5de; }
+    img { width: 100%; border-radius: 10px; border: 1px solid #2a313c; margin: 10px 0; }
+    figcaption { font-size: 12.5px; color: #93a0ae; margin: -4px 0 16px; }
+    .chiffre { display: inline-block; background: #1c222b; border: 1px solid #39414d; border-radius: 10px;
+               padding: 10px 16px; margin: 6px 8px 6px 0; text-align: center; }
+    .chiffre b { display: block; font-size: 26px; color: #ffb020; }
+    .encadre { background: rgba(255, 93, 71, 0.1); border: 1px solid rgba(255, 93, 71, 0.4);
+               border-radius: 10px; padding: 12px 16px; font-size: 14px; }
+    table { border-collapse: collapse; width: 100%; font-size: 14px; }
+    th, td { border: 1px solid #2a313c; padding: 6px 10px; text-align: right; }
+    th:first-child, td:first-child { text-align: left; }
+    a { color: #6aa6ff; }
+    .note { font-size: 13px; color: #93a0ae; }
+  </style>
+</head>
+<body>
+<main>
+  <h1>Les avions ont-ils arrosé là où ça brûlait ?</h1>
+  <p class="note">Analyse des données de <a href="https://firetrack.harari.ovh">Fire Tracker</a> ·
+    feux de Gironde et des Landes, 22-29 juillet 2026 · données ouvertes (trajectoires ADS-B,
+    détections satellites NASA) · <a href="stats.json">chiffres bruts</a></p>
+
+  <p><b>La question.</b> Pendant huit jours, des dizaines d'avions et d'hélicoptères ont largué
+    eau et retardant sur deux grands incendies. Une question revient souvent : certaines zones
+    ont-elles été privilégiées par les moyens aériens, et d'autres délaissées ? Nous avons croisé
+    <b>9 400 détections satellites de foyers</b> avec <b>122 000 positions d'avions en action</b>
+    (vol à moins de 300 mètres du sol, à vitesse d'intervention) sur une grille de cellules
+    de 5 km.</p>
+
+  <div>
+    <span class="chiffre"><b>92 %</b>des zones de feu significatif<br/>ont reçu des largages</span>
+    <span class="chiffre"><b>0,49</b>corrélation feu ↔ largages<br/>(cellules de 5 km)</span>
+    <span class="chiffre"><b>2 lacs</b>ont fourni l'essentiel<br/>de l'eau écopée</span>
+  </div>
+
+  <h2>1. Vue d'ensemble : le feu et la réponse se superposent</h2>
+  <figure>
+    <img src="carte_feux_vs_largages.png" alt="Carte des foyers et des largages" />
+    <figcaption>Chaque rond orange est une cellule de 5 km où le satellite a détecté du feu
+      (plus c'est gros, plus c'était intense). Chaque carré bleu, des passages de largage.
+      Les ellipses bleutées sont les lacs d'écopage.</figcaption>
+  </figure>
+  <p>Premier constat rassurant : <b>presque aucune zone en feu n'a été ignorée</b> : 92 % des
+    cellules où le satellite a mesuré un feu significatif ont reçu au moins un passage bas
+    d'aéronef. Il n'y a pas de "trou" dans la réponse aérienne.</p>
+
+  <h2>2. Mais la couverture n'est pas proportionnelle : et c'est voulu</h2>
+  <figure>
+    <img src="zones_feu_vs_largages.png" alt="Part du feu vs part des largages par secteur" />
+    <figcaption>En orange, la part de chaque secteur dans le feu total ; en bleu, sa part
+      des largages.</figcaption>
+  </figure>
+  <p>Si les avions arrosaient "au prorata du feu", les barres orange et bleues seraient égales.
+    Or elles ne le sont pas du tout :</p>
+  <ul>
+    <li><b>Le cœur de l'incendie (secteur Le Porge) : 58 % du feu, mais 19 % des largages.</b>
+      Une fois la forêt embrasée sur des milliers d'hectares, larguer au centre ne sert plus à
+      rien : on ne peut pas éteindre un brasier de cette taille par les airs.</li>
+    <li><b>Le front est (Andernos → Salaunes → Saumos) : ~15 % du feu, mais plus de 55 % des
+      largages.</b> C'est la lisière qui progressait vers les zones habitées et la métropole
+      bordelaise. Secteur Salaunes : 1 % du feu, 16 % des largages : quinze fois plus que
+      sa "part".</li>
+  </ul>
+  <p><b>En clair : les moyens aériens n'éteignent pas le feu, ils le bordent.</b> La stratégie
+    visible dans les données est celle que décrivent les pompiers : sacrifier le cœur déjà
+    perdu, et concentrer l'eau sur les flancs qui menacent les vies et les habitations. La
+    corrélation modérée (0,49) entre intensité du feu et largages n'est pas un défaut de
+    coordination : c'est la signature d'une stratégie de contention.</p>
+
+  <h2>3. Jour par jour : la réponse suit le feu avec un temps d'avance sur les fronts</h2>
+  <figure>
+    <img src="evolution_quotidienne.png" alt="Évolution quotidienne feu vs largages" />
+    <figcaption>Intensité du feu (orange) et activité de largage (bleu), normalisées,
+      pour le feu nord (Médoc) et le feu sud (Biscarrosse).</figcaption>
+  </figure>
+  <p>Au nord, l'activité aérienne culmine <b>avec puis après</b> le pic du feu (24-25 juillet) :
+    on noie les lisières pendant que le cœur décroît. Au sud, l'activité mesurée paraît faible :
+    voir l'encadré méthodologique, ce feu a surtout été traité par des moyens peu visibles de
+    nos capteurs.</p>
+
+  <h2>4. D'où venait l'eau ?</h2>
+  <figure>
+    <img src="ecopage_lacs.png" alt="Écopages par lac" />
+    <figcaption>Passages à très basse altitude au-dessus des lacs (écopage des Canadair
+      et Air Tractor amphibies).</figcaption>
+  </figure>
+  <p>Deux lacs ont servi de "stations-service" : <b>Lacanau pour le feu du Médoc</b> (quelques
+    minutes de rotation seulement) et <b>Cazaux-Sanguinet pour le feu sud</b>. C'est l'atout
+    géographique majeur de ce territoire : des norias ultra-courtes, jusqu'à un largage toutes
+    les 10 minutes par appareil.</p>
+
+  <h2>À quoi ça ressemblait en vrai</h2>
+  <figure>
+    <img src="apercu_site.png" alt="Aperçu de la carte Fire Tracker" />
+    <figcaption>La carte interactive : rejouez ces huit jours heure par heure sur
+      <a href="https://firetrack.harari.ovh">firetrack.harari.ovh</a>.</figcaption>
+  </figure>
+
+  <h2>Méthode et limites (à lire avant de citer)</h2>
+  <div class="encadre">
+    <p><b>Ce que mesurent vraiment ces chiffres.</b> "Feu" = puissance radiative (FRP) détectée
+      par les satellites VIIRS/MODIS, 6-8 passages par jour, aveugles sous les nuages.
+      "Largage" = position d'aéronef sous 300 m d'altitude à vitesse d'intervention, hors
+      aéroports et hors lacs : c'est un indicateur d'activité, pas un décompte officiel
+      de largages.</p>
+    <p><b>Le feu sud (Biscarrosse) est sous-estimé dans nos mesures d'intervention</b>, pour
+      deux raisons : la couverture des récepteurs ADS-B à très basse altitude y est environ
+      8 fois moins bonne qu'au nord, et une partie du travail y a été faite par des
+      hélicoptères bombardiers d'eau qui n'émettent pas de position publique. Les trajectoires
+      montrent pourtant Canadair, Dash et A400M y descendre à 25-75 m : la zone n'a pas été
+      délaissée, elle est simplement moins bien mesurée.</p>
+    <p>Analyse reproductible : <code>scripts/analyse_zones.py</code> du
+      <a href="https://github.com/guillaumebdx/firetrack">dépôt</a>, données complètes en CSV
+      dans <code>open-data/</code>. Sources : © adsb.lol contributors (ODbL), NASA FIRMS,
+      Open-Meteo. Analyse produite avec l'aide de Claude Code.</p>
+  </div>
+</main>
+</body>
+</html>
