@@ -20,7 +20,7 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 
 ROOT = Path(__file__).resolve().parent.parent
-OUT = ROOT / "frontend" / "public" / "analyse"
+OUT = ROOT / "frontend" / "public" / "analyse" / "zones"
 OUT.mkdir(parents=True, exist_ok=True)
 db = sqlite3.connect(ROOT / "data" / "canadair.db")
 

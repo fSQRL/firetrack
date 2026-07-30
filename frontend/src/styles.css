@@ -185,6 +185,41 @@ html, body, #root {
   overflow-y: auto;
 }
 .menu h2 { margin: 4px 0 8px; font-size: 17px; }
+.menu-item {
+  display: block;
+  margin-bottom: 6px;
+  padding: 10px 12px;
+  background: #1c222b;
+  border: 1px solid #2a313c;
+  border-radius: 8px;
+  color: #e8ecf2 !important;
+  text-decoration: none;
+  font-size: 14px;
+}
+.menu-item:hover { background: #2a313c; }
+.menu-group {
+  margin: 14px 0 6px;
+  font-size: 11px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: #6b7683;
+}
+.menu-sec {
+  margin-top: 10px;
+  border: 1px solid #2a313c;
+  border-radius: 8px;
+  background: #1c222b;
+}
+.menu-sec summary {
+  padding: 10px 12px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  list-style-position: inside;
+}
+.menu-sec[open] summary { border-bottom: 1px solid #2a313c; }
+.menu-sec > *:not(summary) { padding: 0 12px; }
+.menu-sec p, .menu-sec ul { margin: 10px 0; }
 .menu h3 { margin: 18px 0 6px; font-size: 14px; color: #aeb8c4; }
 .menu-text { font-size: 13px; line-height: 1.5; color: #cdd5de; margin: 0; padding-left: 0; }
 ul.menu-text { padding-left: 18px; }
@@ -369,6 +404,53 @@ ul.menu-text li { margin-bottom: 8px; }
 .btn.sat input { accent-color: #ff5d47; margin: 0; }
 .btn.sat.off { opacity: 0.45; cursor: default; }
 .btn.info { font-size: 14px; min-width: 34px; padding: 6px 8px; }
+.btn.share { font-size: 12px; white-space: nowrap; }
+
+/* modale de partage */
+.share-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 40;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+.share-modal {
+  width: min(380px, 92vw);
+  background: #1a1f27;
+  border: 1px solid #39414d;
+  border-radius: 14px;
+  padding: 18px;
+}
+.share-modal h2 { margin: 0 0 14px; font-size: 18px; }
+.share-choice {
+  display: block;
+  width: 100%;
+  text-align: left;
+  margin-bottom: 10px;
+  padding: 12px 14px;
+  background: #1c222b;
+  border: 1px solid #39414d;
+  border-radius: 10px;
+  color: #e8ecf2;
+  cursor: pointer;
+}
+.share-choice:hover { border-color: #ff5d47; }
+.share-choice b { display: block; font-size: 15px; margin-bottom: 3px; }
+.share-choice span { font-size: 12.5px; color: #93a0ae; line-height: 1.4; display: block; }
+.share-close {
+  display: block;
+  width: 100%;
+  margin-top: 4px;
+  padding: 9px;
+  background: none;
+  border: none;
+  color: #93a0ae;
+  font-size: 13px;
+  cursor: pointer;
+}
 
 .fire-info {
   position: absolute;

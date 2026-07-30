@@ -1,0 +1,46 @@
+{
+  "genere_le_utc": "2026-07-30T21:44:01+00:00",
+  "capacites_assumees_litres": {
+    "A400": 20000,
+    "DASH8": 10000,
+    "CL-415": 6000
+  },
+  "par_type": {
+    "A400": {
+      "passes_de_largage": 14,
+      "sorties": 7,
+      "appareils": 1,
+      "jours_actifs": 3,
+      "cycle_median_min": 215.9,
+      "pleins_largues": 7,
+      "volume_estime_m3": 140,
+      "volume_par_jour_actif_m3": 47,
+      "alt_largage_mediane_ft": 312,
+      "vitesse_mediane_kt": 140
+    },
+    "DASH8": {
+      "passes_de_largage": 164,
+      "sorties": 137,
+      "appareils": 6,
+      "jours_actifs": 8,
+      "cycle_median_min": 35.6,
+      "pleins_largues": 137,
+      "volume_estime_m3": 1370,
+      "volume_par_jour_actif_m3": 171,
+      "alt_largage_mediane_ft": 200,
+      "vitesse_mediane_kt": 139
+    },
+    "CL-415": {
+      "passes_de_largage": 40,
+      "sorties": 4,
+      "appareils": 1,
+      "jours_actifs": 2,
+      "cycle_median_min": 7.2,
+      "pleins_largues": 40,
+      "volume_estime_m3": 240,
+      "volume_par_jour_actif_m3": 120,
+      "alt_largage_mediane_ft": 400,
+      "vitesse_mediane_kt": 122
+    }
+  }
+}

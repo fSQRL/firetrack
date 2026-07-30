@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex" />
+  <title>La montée en puissance des renforts · Analyses Fire Tracker</title>
+  <style>
+    :root { --bg: #14181f; --card: #1a1f27; --line: #2a313c; --txt: #e8ecf2; --mut: #93a0ae; --acc: #ff7a30; }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: var(--bg); color: var(--txt); font-family: Georgia, 'Times New Roman', serif; line-height: 1.68; }
+    main { max-width: 720px; margin: 0 auto; padding: 32px 18px 70px; }
+    .sur { font-family: system-ui, sans-serif; font-size: 12px; letter-spacing: 2.5px; text-transform: uppercase; color: var(--acc); }
+    .sur a { color: inherit; text-decoration: none; }
+    h1 { font-size: 30px; line-height: 1.2; margin: 8px 0 10px; font-weight: 600; }
+    h2 { font-size: 21px; margin-top: 42px; font-weight: 600; }
+    p, li { font-size: 16px; color: #cdd5de; }
+    img.fig { width: 100%; border-radius: 6px; border: 1px solid var(--line); margin: 8px 0 4px; }
+    figure { margin: 18px 0; }
+    figcaption { font-family: system-ui, sans-serif; font-size: 12.5px; color: var(--mut); }
+    .chiffres { display: flex; flex-wrap: wrap; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); margin: 24px 0; }
+    .chiffres div { flex: 1 1 33%; padding: 14px 6px; text-align: center; }
+    .chiffres b { display: block; font-size: 24px; font-weight: 600; color: var(--acc); }
+    .chiffres span { font-family: system-ui, sans-serif; font-size: 11.5px; color: var(--mut); }
+    .galerie { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin: 18px 0; }
+    .pod { background: var(--card); border: 1px solid var(--line); border-radius: 6px; overflow: hidden; }
+    .pod img { width: 100%; height: 125px; object-fit: cover; display: block; }
+    .pod .body { padding: 10px 12px; font-family: system-ui, sans-serif; }
+    .pod h3 { margin: 0 0 4px; font-size: 14.5px; font-weight: 600; font-family: Georgia, serif; }
+    .pod p { margin: 0; font-size: 12.5px; color: var(--mut); }
+    .pod .credit { font-size: 10px; color: #6b7683; margin-top: 5px; }
+    .encadre { background: rgba(255, 122, 48, 0.08); border: 1px solid rgba(255, 122, 48, 0.35); border-radius: 6px; padding: 12px 16px; font-size: 14px; }
+    a { color: #6aa6ff; }
+  </style>
+  <script src="/analyse/menu.js" defer></script>
+</head>
+<body>
+<main>
+  <div class="sur"><a href="../">← Analyses</a> · Fire Tracker · 22-29 juillet 2026</div>
+  <h1>La montée en puissance des renforts</h1>
+  <p class="pubdate">Publié le 31 juillet 2026</p>
+  <p>Huit pavillons ont volé au-dessus des feux de Gironde et des Landes. Derrière ce chiffre,
+    trois cercles bien distincts : la flotte française (Sécurité civile et armées), les avions
+    <b>loués pour la saison</b> sous pavillons australien, espagnol et sud-africain : déjà
+    prépositionnés avant le feu : et les <b>renforts d'États européens</b> arrivés en cours
+    d'épisode, du Black Hawk slovaque au Dromader polonais. Les trajectoires permettent de
+    dater chaque arrivée et de mesurer qui a réellement porté l'effort.</p>
+
+  <div class="chiffres">
+    <div><b>9</b><span>pavillons engagés</span></div>
+    <div><b>51 %</b><span>de l'activité déjà "étrangère" au jour 1 (loués)</span></div>
+    <div><b>80 %</b><span>portée par les renforts le 29 : la relève</span></div>
+  </div>
+
+  <h2>Qui est arrivé quand</h2>
+  <figure>
+    <img class="fig" src="frise_arrivees.png" alt="Frise des arrivées des renforts" />
+    <figcaption>Chaque barre : la présence en zone d'un appareil non français,
+      du premier au dernier jour observé.</figcaption>
+  </figure>
+  <p>La frise raconte une mobilisation en escalier. <b>Jour 1</b> : les Air Tractor loués
+    (australiens et espagnols) sont déjà là : c'est tout l'intérêt du prépositionnement
+    saisonnier. <b>24-25 juillet</b>, au pic de la crise : les Black Hawk slovaques du
+    mécanisme RescEU entrent en scène, avec l'Air Tractor sud-africain. <b>28-29 juillet</b> :
+    la deuxième vague : CH-53 allemand, Air Tractor suédois puis luxembourgeois, Dromader
+    polonais : arrive pour la consolidation, quand les équipages français ont une semaine
+    de feu dans les bras.</p>
+
+  <h2>Qui a porté l'effort, jour après jour</h2>
+  <figure>
+    <img class="fig" src="part_quotidienne.png" alt="Part quotidienne par catégorie" />
+    <figcaption>Répartition de l'activité de largage entre moyens français, flotte louée
+      et renforts d'États européens.</figcaption>
+  </figure>
+  <p>Le graphique dessine trois temps. Aux jours les plus durs (24-25), <b>la France porte
+    80 % de l'effort</b> : c'est le pic de sa flotte, Canadair, Dash et A400M compris. Puis
+    la part étrangère grimpe régulièrement jusqu'à <b>80 % le 29 juillet</b> : les renforts
+    prennent la relève du travail de consolidation pendant que les moyens nationaux
+    récupèrent ou repartent sur d'autres départs de feu. C'est exactement le rôle prévu du
+    mécanisme européen : pas remplacer, relayer.</p>
+
+  <h2>La contribution de chaque pavillon</h2>
+  <figure>
+    <img class="fig" src="totaux_pays.png" alt="Totaux par pays" />
+    <figcaption>Volume d'activité en action (points de trajectoire en configuration de
+      largage) par pays d'immatriculation, sur l'ensemble de l'épisode.</figcaption>
+  </figure>
+  <p>Après la France, <b>l'Australie</b> : dont les équipages vivent l'hiver austral et
+    louent leurs étés au continent européen : fournit à elle seule un tiers de l'activité.
+    La <b>Suède</b> impressionne : arrivée le 28, elle se hisse au niveau de l'Espagne en
+    deux jours. Les contributions polonaise et luxembourgeoise, arrivées la veille de nos
+    dernières données, ne font que commencer.</p>
+
+  <h2>Trois visages de la solidarité</h2>
+  <div class="galerie">
+    <div class="pod">
+      <img src="https://t.plnspttrs.net/35166/1666516_13b9c1619f_280.jpg" alt="VH-OUM" />
+      <div class="body">
+        <h3>Air Tractor VH-OUM · Australie</h3>
+        <p>Loué à la saison, au feu dès le premier jour : 32 000 points d'action au total.</p>
+        <p class="credit">© Sierra Mike · planespotters.net</p>
+      </div>
+    </div>
+    <div class="pod">
+      <img src="https://t.plnspttrs.net/25839/1919849_0ca6306e35_280.jpg" alt="OM-BHK" />
+      <div class="body">
+        <h3>Black Hawk OM-BHK · Slovaquie</h3>
+        <p>RescEU : arrivé au plus fort de la crise, rotation record de 6,5 minutes.</p>
+        <p class="credit">© Thomas Scholz · planespotters.net</p>
+      </div>
+    </div>
+    <div class="pod">
+      <img src="https://t.plnspttrs.net/30885/1666367_306163399e_280.jpg" alt="SE-MHO" />
+      <div class="body">
+        <h3>Air Tractor SE-MHO · Suède</h3>
+        <p>La deuxième vague : sitôt arrivé, sitôt en noria sur les points chauds résiduels.</p>
+        <p class="credit">© William Wallin · planespotters.net</p>
+      </div>
+    </div>
+  </div>
+
+  <h2>Méthode et limites</h2>
+  <div class="encadre">
+    <p>Nationalité = pavillon d'immatriculation (ou hex militaire) de l'appareil, pas celui
+      de l'opérateur du contrat. "Activité" = points de trajectoire en configuration de
+      largage (vol sous 300 m à vitesse d'intervention, hors lacs et aéroports) : une mesure
+      de temps passé au feu, robuste pour comparer des parts, à ne pas confondre avec un
+      décompte de largages. Les hélicoptères sous-équipés en transpondeurs (Dragons français,
+      2e Puma...) manquent au décompte : la part française réelle est donc un peu supérieure.
+      Les Super Pumas suisses, engagés en Corse, n'apparaissent pas ici (hors zone).</p>
+    <p>Reproduire : <code>scripts/analyse_renforts.py</code> du
+      <a href="https://github.com/guillaumebdx/firetrack">dépôt</a> ·
+      <a href="stats.json">chiffres bruts</a>. Sources : © adsb.lol contributors (ODbL).
+      Analyse produite avec l'aide de Claude Code.</p>
+  </div>
+
+  <p><a href="../">← Toutes les analyses</a></p>
+
+  <div class="changelog"><b>Historique des révisions</b><ul><li><b>31/07/2026</b> : première publication.</li></ul></div>
+</main>
+</body>
+</html>

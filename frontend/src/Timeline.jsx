@@ -44,7 +44,7 @@ function daySegments(range) {
 export default function Timeline({
   range, t, onScrub,
   playing, onTogglePlay, speed, onSpeed,
-  satellite, onSatellite, satAvailable, airQ, onAirQ, lastFireTs, dataEnd,
+  satellite, onSatellite, satAvailable, airQ, onAirQ, lastFireTs, dataEnd, onShare,
 }) {
   const [satMsg, setSatMsg] = useState(false);
   const segments = useMemo(() => daySegments(range), [range]);
@@ -94,6 +94,9 @@ export default function Timeline({
         </label>
         <button className="btn info" onClick={() => setShowInfo((s) => !s)} aria-label="Infos sur les feux">
           ⓘ
+        </button>
+        <button className="btn share" onClick={onShare} disabled={!range}>
+          Partager
         </button>
         {showInfo && (
           <div className="fire-info" onClick={() => setShowInfo(false)}>

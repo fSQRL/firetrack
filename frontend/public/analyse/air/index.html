@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex" />
+  <title>La fumée et l'air qu'on a respiré · Analyses Fire Tracker</title>
+  <style>
+    :root { --bg: #14181f; --card: #1a1f27; --line: #2a313c; --txt: #e8ecf2; --mut: #93a0ae; --acc: #ff7a30; }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: var(--bg); color: var(--txt); font-family: Georgia, 'Times New Roman', serif; line-height: 1.68; }
+    main { max-width: 720px; margin: 0 auto; padding: 32px 18px 70px; }
+    .sur { font-family: system-ui, sans-serif; font-size: 12px; letter-spacing: 2.5px; text-transform: uppercase; color: var(--acc); }
+    .sur a { color: inherit; text-decoration: none; }
+    h1 { font-size: 30px; line-height: 1.2; margin: 8px 0 10px; font-weight: 600; }
+    h2 { font-size: 21px; margin-top: 42px; font-weight: 600; }
+    p, li { font-size: 16px; color: #cdd5de; }
+    img.fig { width: 100%; border-radius: 6px; border: 1px solid var(--line); margin: 8px 0 4px; }
+    figure { margin: 18px 0; }
+    figcaption { font-family: system-ui, sans-serif; font-size: 12.5px; color: var(--mut); }
+    .duo { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    @media (max-width: 560px) { .duo { grid-template-columns: 1fr; } }
+    .chiffres { display: flex; flex-wrap: wrap; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); margin: 24px 0; }
+    .chiffres div { flex: 1 1 33%; padding: 14px 6px; text-align: center; }
+    .chiffres b { display: block; font-size: 24px; font-weight: 600; color: var(--acc); }
+    .chiffres span { font-family: system-ui, sans-serif; font-size: 11.5px; color: var(--mut); }
+    .encadre { background: rgba(255, 122, 48, 0.08); border: 1px solid rgba(255, 122, 48, 0.35); border-radius: 6px; padding: 12px 16px; font-size: 14px; }
+    a { color: #6aa6ff; }
+  </style>
+  <script src="/analyse/menu.js" defer></script>
+</head>
+<body>
+<main>
+  <div class="sur"><a href="../">← Analyses</a> · Fire Tracker · 22-29 juillet 2026</div>
+  <h1>La fumée et l'air qu'on a respiré</h1>
+  <p class="pubdate">Publié le 31 juillet 2026</p>
+  <p>Le feu se voit ; la fumée se respire. Pendant huit jours, le panache a promené des
+    centaines de tonnes de particules fines au gré du vent : vers l'océan d'abord, vers
+    Bordeaux ensuite (voir <a href="../vent/">le feu et le vent</a>). L'indice européen de
+    qualité de l'air, modélisé heure par heure par Copernicus, permet de reconstituer qui
+    a respiré quoi, et quand. La découverte principale ne se trouve pas là où on
+    l'attendait : <b>l'air le plus toxique n'était pas aux heures des flammes, mais au
+    cœur de la nuit</b>.</p>
+
+  <div class="chiffres">
+    <div><b>138</b><span>pic d'indice ("extrêmement mauvais") · nuit du 26 au 27, 4 h du matin</span></div>
+    <div><b>7 h</b><span>d'air "très mauvais" à Bordeaux sur l'épisode</span></div>
+    <div><b>78 h</b><span>d'air dégradé autour du feu (sur ~190 h)</span></div>
+  </div>
+
+  <h2>Huit jours d'air, quatre lieux</h2>
+  <figure>
+    <img class="fig" src="chronologie_aqi.png" alt="Chronologie de l'indice de qualité de l'air" />
+    <figcaption>L'indice heure par heure en quatre points : la zone du feu, Bordeaux,
+      le sud des Landes et un point "témoin" à l'est, loin du panache. Bandes sombres :
+      les nuits.</figcaption>
+  </figure>
+  <p>Deux choses sautent aux yeux. D'abord, <b>les pics se produisent dans les bandes
+    sombres</b> : la nuit. Ensuite, la hiérarchie géographique suit le vent : la zone du
+    feu et le sud des Landes trinquent le plus, Bordeaux est touchée par vagues : quand
+    le vent d'ouest s'y met à partir du 25 : et le témoin de l'Entre-deux-Mers, à 60 km
+    du feu, respire un air presque normal jusqu'à la grande nuit du 26 au 27, où même
+    lui bascule en "mauvais".</p>
+
+  <h2>Le paradoxe de la nuit</h2>
+  <figure>
+    <img class="fig" src="profil_horaire.png" alt="Profil horaire moyen de l'indice" />
+    <figcaption>L'indice moyen selon l'heure de la journée, sur l'ensemble de
+      l'épisode.</figcaption>
+  </figure>
+  <p>Comment l'air peut-il être pire à 4 h du matin qu'à 16 h, quand le feu est à son
+    maximum ? C'est la mécanique de l'<b>inversion thermique nocturne</b> : le jour, le
+    sol chaud brasse l'atmosphère et dilue la fumée vers le haut ; la nuit, l'air froid
+    plaque tout au sol, sous un couvercle d'air chaud. La fumée produite l'après-midi
+    redescend et stagne dans les premières dizaines de mètres : précisément là où on
+    dort, fenêtres ouvertes, un soir de canicule. C'est une leçon de santé publique
+    connue des spécialistes et invisible du grand public : <b>lors d'un incendie, les
+    heures les plus dangereuses pour les poumons sont souvent celles où l'on ne voit
+    plus les flammes</b>.</p>
+
+  <h2>La nuit du 26 au 27, sur la carte</h2>
+  <div class="duo">
+    <figure>
+      <img class="fig" src="air_app_nuit27.png" alt="La carte dans la nuit du 27" />
+      <figcaption>27 juillet, 3 h du matin : les indices virent au rouge sombre jusqu'à
+        Bordeaux. <a href="/?t=1785114000">Rejouer</a>.</figcaption>
+    </figure>
+    <figure>
+      <img class="fig" src="air_app_aprem24.png" alt="La carte le 24 après-midi" />
+      <figcaption>24 juillet, 14 h : le feu est au maximum... et l'air, brassé et dilué,
+        reste bien meilleur. <a href="/?t=1784894400">Rejouer</a>.</figcaption>
+    </figure>
+  </div>
+
+  <h2>Combien d'heures d'air dégradé</h2>
+  <figure>
+    <img class="fig" src="heures_degradees.png" alt="Heures d'air dégradé par jour" />
+    <figcaption>Nombre d'heures quotidiennes avec un indice supérieur à 50 ("dégradé"),
+      par lieu.</figcaption>
+  </figure>
+  <p>Au total sur l'épisode : <b>78 heures d'air dégradé autour du feu</b> (un tiers du
+    temps), 46 heures à Bordeaux dont 7 en "très mauvais", 31 heures même pour le témoin
+    de l'est. Aucun décès ni hospitalisation ne se lit dans ces courbes : mais elles
+    rappellent que l'incendie ne s'arrête pas à la lisière des flammes : son empreinte
+    sanitaire s'étend sur des milliers de km² et des centaines de milliers de personnes.</p>
+
+  <h2>Méthode et limites</h2>
+  <div class="encadre">
+    <p>Indice européen de qualité de l'air modélisé par
+      <a href="https://atmosphere.copernicus.eu/">Copernicus CAMS</a> (via l'API
+      Open-Meteo), en quatre points d'une grille de ~40 km, heure par heure, tronqué au
+      dernier relevé observé. <b>La résolution du modèle (~11 km) lisse les pics locaux</b> :
+      au cœur du panache, les concentrations réelles ont pu être bien supérieures aux
+      valeurs affichées : nos chiffres sont donc plutôt des planchers. L'indice agrège
+      plusieurs polluants ; pendant un feu, il est dominé par les particules fines PM2.5.
+      Échelle : 0-20 bon, 50+ dégradé, 80+ mauvais, 100+ très mauvais.</p>
+    <p>Reproduire : <code>scripts/analyse_air.py</code> du
+      <a href="https://github.com/guillaumebdx/firetrack">dépôt</a> ·
+      <a href="stats.json">chiffres bruts</a>. Sources : Copernicus CAMS / Open-Meteo
+      (CC BY 4.0), NASA FIRMS, © adsb.lol contributors (ODbL). Analyse produite avec
+      l'aide de Claude Code.</p>
+  </div>
+
+  <p><a href="../">← Toutes les analyses</a></p>
+
+  <div class="changelog"><b>Historique des révisions</b><ul><li><b>31/07/2026</b> : première publication.</li></ul></div>
+</main>
+</body>
+</html>

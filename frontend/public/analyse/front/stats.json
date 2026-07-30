@@ -1,0 +1,49 @@
+{
+  "genere_le_utc": "2026-07-30T21:55:42+00:00",
+  "cellules_jour_etudiees": 122,
+  "seuil_extinction": "FRP(J+1) < 15 % de FRP(J)",
+  "extinction_globale_par_groupe": {
+    "0 largage": {
+      "taux_pct": 89,
+      "n": 9
+    },
+    "1-49": {
+      "taux_pct": 72,
+      "n": 18
+    },
+    "50+": {
+      "taux_pct": 42,
+      "n": 95
+    }
+  },
+  "extinction_stratifiee": {
+    "feu modéré | 0 largage": {
+      "taux_pct": 100,
+      "n": 6
+    },
+    "feu modéré | 1-49": {
+      "taux_pct": 83,
+      "n": 6
+    },
+    "feu modéré | 50+": {
+      "taux_pct": 32,
+      "n": 28
+    },
+    "feu fort | 1-49": {
+      "taux_pct": 60,
+      "n": 5
+    },
+    "feu fort | 50+": {
+      "taux_pct": 39,
+      "n": 33
+    },
+    "feu extrême | 1-49": {
+      "taux_pct": 71,
+      "n": 7
+    },
+    "feu extrême | 50+": {
+      "taux_pct": 53,
+      "n": 34
+    }
+  }
+}

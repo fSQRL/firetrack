@@ -53,6 +53,8 @@ export default function App() {
   const [selectedHex, setSelectedHex] = useState(null);
   const [error, setError] = useState(null);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [shareOpen, setShareOpen] = useState(false);
+  const [copied, setCopied] = useState(null); // 'site' | 'moment'
   const [loading, setLoading] = useState({ done: 0, total: 1 }); // barre de chargement initial
 
   // Liste des jours disponibles
@@ -130,12 +132,17 @@ export default function App() {
         }
         setRange(r);
         if (r) {
-          // premier chargement : démarrer au 22/07 13h (si couvert) et lire automatiquement
           const first = firstLoadRef.current;
           firstLoadRef.current = false;
-          const start = first && START_T >= r[0] && START_T < r[1] ? START_T : r[0];
-          setT(start);
-          if (first) autoplayRef.current = true; // la lecture démarre à la fermeture du disclaimer
+          // lien profond ?t=<epoch secondes> prioritaire (sans lecture auto),
+          // sinon départ par défaut au START_T avec lecture automatique
+          const urlT = Number(new URLSearchParams(window.location.search).get('t'));
+          if (first && urlT >= r[0] && urlT <= r[1]) {
+            setT(urlT);
+          } else {
+            setT(first && START_T >= r[0] && START_T < r[1] ? START_T : r[0]);
+            if (first) autoplayRef.current = true; // lecture au moment de fermer le disclaimer
+          }
         } else {
           setT(0);
         }
@@ -177,6 +184,22 @@ export default function App() {
     setFollowHex(null); // tout changement de sélection met fin au suivi
     setSelectedHex((cur) => (cur === hex ? null : hex));
   }, []);
+
+  // partage : le site, ou le moment précis de la timeline (lien profond ?t=)
+  const doShare = useCallback((kind) => {
+    const url = kind === 'moment'
+      ? `${window.location.origin}/?t=${Math.round(t)}`
+      : `${window.location.origin}/`;
+    if (navigator.share) {
+      navigator.share({ title: 'Fire Tracker', url }).catch(() => {});
+      setShareOpen(false);
+    } else {
+      navigator.clipboard.writeText(url).then(() => {
+        setCopied(kind);
+        setTimeout(() => setCopied(null), 2000);
+      });
+    }
+  }, [t]);
 
   // saut temporel au double-clic sur la carte (borné à la plage de données)
   const [jumpFlash, setJumpFlash] = useState(null); // {side, label}
@@ -333,70 +356,101 @@ export default function App() {
           <nav className="menu" onClick={(e) => e.stopPropagation()}>
             <button className="menu-close" onClick={() => setMenuOpen(false)} aria-label="Fermer">✕</button>
             <h2>Fire Tracker</h2>
-            <p className="menu-text">
-              Rejouez les allers-retours des avions de lutte contre les incendies
-              (Canadair, Dash, Air Tractor…) en Gironde et dans les Landes, jour par jour.
-            </p>
-            <div className="menu-warning">
-              <b>⚠️ Ceci est une reconstitution, pas un outil d'alerte.</b>
+            <a className="menu-item" href="/">La carte interactive</a>
+            <div className="menu-group">Analyses</div>
+            <a className="menu-item" href="/analyse/zones/">Des zones privilégiées ?</a>
+            <a className="menu-item" href="/analyse/norias/">Le rendement des norias</a>
+            <a className="menu-item" href="/analyse/a400m/">A400M et Canadair</a>
+            <a className="menu-item" href="/analyse/front/">Les largages et le front</a>
+            <a className="menu-item" href="/analyse/vent/">Le feu et le vent</a>
+            <a className="menu-item" href="/analyse/renforts/">La montée en puissance des renforts</a>
+            <a className="menu-item" href="/analyse/air/">La fumée et l'air qu'on a respiré</a>
+            <a className="menu-item" href="/analyse/">Toutes les analyses</a>
+
+            <details className="menu-sec">
+              <summary>Avertissement</summary>
               <p className="menu-text">
-                Les trajectoires sont rejouées avec un décalage et les zones de feu
-                sont approximatives (détection satellite, fumée simulée). Si vous êtes
-                concerné par un incendie, informez-vous uniquement auprès des sources
-                officielles :
+                <b>Ceci est une reconstitution, pas un outil d'alerte.</b> Les trajectoires
+                sont rejouées avec un décalage et les zones de feu sont approximatives
+                (détection satellite, fumée simulée). Si vous êtes concerné par un incendie,
+                informez-vous uniquement auprès des sources officielles :
               </p>
               <ul className="menu-text">
-                <li><a href="https://www.gironde.gouv.fr" target="_blank" rel="noreferrer">Préfecture de la Gironde</a> (et son compte X <a href="https://x.com/PrefAquitaine33" target="_blank" rel="noreferrer">@PrefAquitaine33</a>)</li>
-                <li><a href="https://www.landes.gouv.fr" target="_blank" rel="noreferrer">Préfecture des Landes</a> (et son compte X <a href="https://x.com/Prefecture40" target="_blank" rel="noreferrer">@Prefecture40</a>)</li>
-                <li>Numéro d'information incendies (cellule d'information du public) :{' '}
-                  <b><a href="tel:0970809040">09 70 80 90 40</a></b></li>
-                <li>Les alertes <b>FR-Alert</b> reçues sur votre téléphone et les consignes de votre mairie</li>
-                <li>En cas d'urgence : <b>112</b> ou <b>18</b> (personnes sourdes ou malentendantes : 114)</li>
+                <li><a href="https://www.gironde.gouv.fr" target="_blank" rel="noreferrer">Préfecture de la Gironde</a> (compte X <a href="https://x.com/PrefAquitaine33" target="_blank" rel="noreferrer">@PrefAquitaine33</a>)</li>
+                <li><a href="https://www.landes.gouv.fr" target="_blank" rel="noreferrer">Préfecture des Landes</a> (compte X <a href="https://x.com/Prefecture40" target="_blank" rel="noreferrer">@Prefecture40</a>)</li>
+                <li>Numéro d'information incendies : <b><a href="tel:0970809040">09 70 80 90 40</a></b></li>
+                <li>Les alertes <b>FR-Alert</b> et les consignes de votre mairie</li>
+                <li>Urgences : <b>112</b> ou <b>18</b> (personnes sourdes ou malentendantes : 114)</li>
               </ul>
-            </div>
-            <h3>Données</h3>
-            <ul className="menu-text">
-              <li>
-                <b>Trajectoires des avions</b> : signaux ADS-B agrégés par{' '}
-                <a href="https://www.adsb.lol" target="_blank" rel="noreferrer">adsb.lol</a>{' '}
-                (données ouvertes, licence ODbL, contributions communautaires) et{' '}
-                <a href="https://airplanes.live" target="_blank" rel="noreferrer">airplanes.live</a>.
-              </li>
-              <li>
-                <b>Zones de feu</b> : points chauds satellites VIIRS et MODIS,{' '}
-                <a href="https://firms.modaps.eosdis.nasa.gov" target="_blank" rel="noreferrer">NASA FIRMS</a>
-                {' '}(6 à 8 passages par jour, les contours affichés sont approximatifs).
-              </li>
-              <li>
-                <b>Qualité de l'air</b> : indice européen modélisé{' '}
-                <a href="https://atmosphere.copernicus.eu/" target="_blank" rel="noreferrer">Copernicus CAMS</a>,
-                {' '}servi par l'<a href="https://open-meteo.com/en/docs/air-quality-api" target="_blank" rel="noreferrer">API Open-Meteo</a>
-                {' '}(résolution ~11 km : les pics locaux dans le panache peuvent être sous-estimés).
-              </li>
-              <li>
-                <b>Fond de carte</b> :{' '}
-                <a href="https://www.openstreetmap.org" target="_blank" rel="noreferrer">OpenStreetMap</a>.
-              </li>
-            </ul>
-            <h3>Mise à jour</h3>
-            <p className="menu-text">
-              La journée en cours est rafraîchie <b>toutes les 30 minutes</b> à partir des
-              traces live, puis consolidée le lendemain avec l'archive quotidienne complète
-              d'adsb.lol.
-            </p>
-            <h3>Crédits</h3>
-            <p className="menu-text">
-              Guillaume HARARI
-              <br />
-              Merci à <a href="https://x.com/nox33" target="_blank" rel="noreferrer">NoX</a> pour
-              son aide précieuse à l'identification des appareils engagés.
-              <br />
-              <span className="menu-hint">
-                Vibe codé avec{' '}
-                <a href="https://claude.com/claude-code" target="_blank" rel="noreferrer">Claude Code</a>
-              </span>
-            </p>
+            </details>
+
+            <details className="menu-sec">
+              <summary>Données</summary>
+              <ul className="menu-text">
+                <li>
+                  <b>Trajectoires des avions</b> : signaux ADS-B agrégés par{' '}
+                  <a href="https://www.adsb.lol" target="_blank" rel="noreferrer">adsb.lol</a>{' '}
+                  (données ouvertes, licence ODbL) et{' '}
+                  <a href="https://airplanes.live" target="_blank" rel="noreferrer">airplanes.live</a>.
+                  La journée en cours est rafraîchie toutes les 30 minutes.
+                </li>
+                <li>
+                  <b>Zones de feu</b> : points chauds satellites VIIRS et MODIS,{' '}
+                  <a href="https://firms.modaps.eosdis.nasa.gov" target="_blank" rel="noreferrer">NASA FIRMS</a>
+                  {' '}(6 à 8 passages par jour, contours approximatifs).
+                </li>
+                <li>
+                  <b>Qualité de l'air</b> : indice européen{' '}
+                  <a href="https://atmosphere.copernicus.eu/" target="_blank" rel="noreferrer">Copernicus CAMS</a>
+                  {' '}via l'<a href="https://open-meteo.com/en/docs/air-quality-api" target="_blank" rel="noreferrer">API Open-Meteo</a>.
+                </li>
+                <li>
+                  <b>Fond de carte</b> :{' '}
+                  <a href="https://www.openstreetmap.org" target="_blank" rel="noreferrer">OpenStreetMap</a>.
+                </li>
+              </ul>
+            </details>
+
+            <details className="menu-sec">
+              <summary>Crédits</summary>
+              <p className="menu-text">
+                Guillaume HARARI
+                <br />
+                Merci à <a href="https://x.com/nox33" target="_blank" rel="noreferrer">NoX</a> pour
+                son aide précieuse à l'identification des appareils engagés.
+                <br />
+                <span className="menu-hint">
+                  Vibe codé avec{' '}
+                  <a href="https://claude.com/claude-code" target="_blank" rel="noreferrer">Claude Code</a>
+                </span>
+              </p>
+            </details>
           </nav>
+        </div>
+      )}
+
+      {shareOpen && (
+        <div className="share-overlay" onClick={() => setShareOpen(false)}>
+          <div className="share-modal" onClick={(e) => e.stopPropagation()}>
+            <h2>Partager</h2>
+            <button className="share-choice" onClick={() => doShare('site')}>
+              <b>{copied === 'site' ? 'Lien copié !' : 'Le site'}</b>
+              <span>firetrack.harari.ovh, la carte s'ouvre au début du replay</span>
+            </button>
+            <button className="share-choice" onClick={() => doShare('moment')}>
+              <b>{copied === 'moment' ? 'Lien copié !' : 'Ce moment précis'}</b>
+              <span>
+                La carte s'ouvrira le{' '}
+                {new Date(t * 1000).toLocaleDateString('fr-FR', {
+                  weekday: 'long', day: 'numeric', month: 'long', timeZone: 'Europe/Paris',
+                })} à{' '}
+                {new Date(t * 1000).toLocaleTimeString('fr-FR', {
+                  hour: '2-digit', minute: '2-digit', timeZone: 'Europe/Paris',
+                })}
+              </span>
+            </button>
+            <button className="share-close" onClick={() => setShareOpen(false)}>Fermer</button>
+          </div>
         </div>
       )}
 
@@ -461,6 +515,7 @@ export default function App() {
           satellite={satellite} onSatellite={setSatellite} satAvailable={satAvailable}
           airQ={airQ} onAirQ={setAirQ}
           lastFireTs={lastFireTs} dataEnd={dataEnd}
+          onShare={() => { setPlaying(false); setShareOpen(true); }}
         />
       </footer>
     </div>

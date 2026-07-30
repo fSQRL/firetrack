@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex" />
+  <title>Le rendement des norias · Analyses Fire Tracker</title>
+  <style>
+    :root { --bg: #14181f; --card: #1a1f27; --line: #2a313c; --txt: #e8ecf2; --mut: #93a0ae; --acc: #ff7a30; }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: var(--bg); color: var(--txt); font-family: Georgia, 'Times New Roman', serif; line-height: 1.68; }
+    main { max-width: 720px; margin: 0 auto; padding: 32px 18px 70px; }
+    .sur { font-family: system-ui, sans-serif; font-size: 12px; letter-spacing: 2.5px; text-transform: uppercase; color: var(--acc); }
+    .sur a { color: inherit; text-decoration: none; }
+    h1 { font-size: 30px; line-height: 1.2; margin: 8px 0 10px; font-weight: 600; }
+    h2 { font-size: 21px; margin-top: 42px; font-weight: 600; }
+    p, li { font-size: 16px; color: #cdd5de; }
+    img.fig { width: 100%; border-radius: 6px; border: 1px solid var(--line); margin: 8px 0 4px; }
+    figure { margin: 18px 0; }
+    figcaption { font-family: system-ui, sans-serif; font-size: 12.5px; color: var(--mut); }
+    .chiffres { display: flex; flex-wrap: wrap; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); margin: 24px 0; }
+    .chiffres div { flex: 1 1 33%; padding: 14px 6px; text-align: center; }
+    .chiffres b { display: block; font-size: 24px; font-weight: 600; color: var(--acc); }
+    .chiffres span { font-family: system-ui, sans-serif; font-size: 11.5px; color: var(--mut); }
+    .podium { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin: 18px 0; }
+    .pod { background: var(--card); border: 1px solid var(--line); border-radius: 6px; overflow: hidden; }
+    .pod img { width: 100%; height: 130px; object-fit: cover; display: block; }
+    .pod .body { padding: 10px 12px; }
+    .pod h3 { margin: 0; font-size: 15px; font-weight: 600; }
+    .pod p { margin: 4px 0 0; font-family: system-ui, sans-serif; font-size: 12.5px; color: var(--mut); }
+    .pod .credit { font-size: 10px; color: #6b7683; }
+    .encadre { background: rgba(255, 122, 48, 0.08); border: 1px solid rgba(255, 122, 48, 0.35); border-radius: 6px; padding: 12px 16px; font-size: 14px; }
+    a { color: #6aa6ff; }
+  </style>
+  <script src="/analyse/menu.js" defer></script>
+</head>
+<body>
+<main>
+  <div class="sur"><a href="../">← Analyses</a> · Fire Tracker · 22-29 juillet 2026</div>
+  <h1>Écoper, larguer, recommencer : le rendement des norias</h1>
+  <p class="pubdate">Publié le 31 juillet 2026</p>
+  <p>Une "noria", dans le jargon des pompiers du ciel, c'est la boucle sans fin d'un appareil
+    entre sa source d'eau et le feu. Sa cadence, c'est le nerf de la guerre : chaque minute
+    gagnée par rotation, ce sont des milliers de litres de plus sur les flammes chaque jour.
+    Nous avons reconstitué ces boucles à partir de 465 000 positions d'aéronefs : voici
+    ce que ça donne, appareil par appareil.</p>
+
+  <div class="chiffres">
+    <div><b>798</b><span>largages détectés</span></div>
+    <div><b>13,7 min</b><span>rotation médiane, tous appareils</span></div>
+    <div><b>9,8 min</b><span>de l'écopage au largage</span></div>
+  </div>
+
+  <h2>Trois familles, trois cadences</h2>
+  <figure>
+    <img class="fig" src="cadence_par_appareil.png" alt="Cadence médiane par appareil" />
+    <figcaption>Durée médiane entre deux largages d'un même appareil. Rouge : Canadair ·
+      jaune : Dash 8 · vert : Air Tractor · violet : hélicoptères.</figcaption>
+  </figure>
+  <p>Le graphique révèle trois mondes qui coexistent au-dessus du même feu :</p>
+  <ul>
+    <li><b>Les hélicoptères : une rotation toutes les 6 à 10 minutes.</b> Le Black Hawk
+      slovaque (6,5 min) et le Puma français (9,6 min) remplissent leur réservoir souple dans
+      le premier plan d'eau venu, à côté du feu. Peu de volume par largage, mais un
+      martèlement continu.</li>
+    <li><b>Les amphibies : 7 à 10 minutes quand le lac est à côté.</b> Le Canadair
+      Pélican 34 (7,2 min) et les Air Tractor "Fire Boss" à flotteurs (TRACTORB : 10,3 min,
+      SE-MHO : 10,1 min) écopent en glissant sur le lac de Lacanau, à 2 minutes de vol
+      du front. C'est l'atout géographique de ce feu.</li>
+    <li><b>Les gros porteurs de retardant : 30 à 40 minutes.</b> Les Dash 8 "Milan"
+      (~33 min) doivent retourner se recharger en retardant à l'aéroport après chaque
+      largage. Moins fréquents, mais 10 000 litres d'un produit qui continue d'agir
+      après évaporation : un autre métier.</li>
+  </ul>
+  <div class="encadre">💡 Surprise dans les données : les Air Tractor se divisent en deux
+    sous-familles. Ceux à flotteurs (Fire Boss) tournent en ~10 minutes comme les Canadair ;
+    ceux à roues (TRACTA : 39,5 min, VH-ODH : 43 min) rechargent au sol comme les Dash.
+    Même silhouette, rendements du simple au quadruple.</div>
+
+  <h2>Le champion du jour : 28 largages en une journée</h2>
+  <figure>
+    <img class="fig" src="noria_exemple.png" alt="Trajectoire d'une journée de noria" />
+    <figcaption>La journée du Puma B le 24 juillet, colorée du matin (violet) au soir
+      (jaune) : la pelote au centre, ce sont ses dizaines d'allers-retours collés au front
+      de feu (points orange).</figcaption>
+  </figure>
+  <p>Le 24 juillet, au plus fort de l'incendie, l'hélicoptère militaire Puma B a enchaîné
+    <b>28 largages</b>. Sa trajectoire dessine une pelote serrée contre le front : là où un
+    avion doit prendre de l'élan, s'aligner, larguer en passant, l'hélicoptère pivote sur
+    place et revient. Sur un front qui menace des maisons, cette agilité est irremplaçable.</p>
+
+  <h2>Les lacs, stations-service du feu</h2>
+  <figure>
+    <img class="fig" src="ecopages_par_lac.png" alt="Écopages par lac" />
+    <figcaption>Écopages détectés par plan d'eau (sous-comptés : voir méthode).</figcaption>
+  </figure>
+  <p>Le <b>lac de Lacanau</b> a été la pompe à eau du feu du Médoc : les trois quarts des
+    écopages détectés. Une noria Lacanau → front durait <b>moins de 10 minutes</b> : c'est
+    précisément ce qui a permis de tenir les lisières est pendant les pires journées.
+    Au sud, Cazaux-Sanguinet a joué le même rôle pour le feu de Biscarrosse.</p>
+
+  <h2>Une journée de feu, heure par heure</h2>
+  <figure>
+    <img class="fig" src="rythme_journee.png" alt="Rythme horaire des largages" />
+    <figcaption>Tous les largages de l'épisode, par heure de la journée.</figcaption>
+  </figure>
+  <p>Le ballet suit le soleil : premiers largages vers 9 h, montée en puissance jusqu'au
+    <b>pic de fin d'après-midi</b> : le moment où la chaleur et le vent rendent le feu le
+    plus agressif : puis arrêt quasi total à la nuit tombée, les opérations aériennes de
+    nuit restant exceptionnelles. Le feu, lui, ne dort pas : c'est la fenêtre où les équipes
+    au sol prennent le relais.</p>
+
+  <h2>Les stakhanovistes de l'épisode</h2>
+  <div class="podium">
+    <div class="pod">
+      <img src="https://t.plnspttrs.net/35166/1666516_13b9c1619f_280.jpg" alt="TRACTORB" />
+      <div class="body">
+        <h3>Air Tractor "Fire Boss" VH-OUM 🇦🇺</h3>
+        <p>100 largages · rotation 10,3 min<br/>le métronome australien</p>
+        <p class="credit">photo © Sierra Mike · planespotters.net</p>
+      </div>
+    </div>
+    <div class="pod">
+      <img src="https://t.plnspttrs.net/02644/1926015_09b0c7d608_280.jpg" alt="Milan F-ZBMJ" />
+      <div class="body">
+        <h3>Dash 8 "Milan" F-ZBMJ 🇫🇷</h3>
+        <p>74 largages · 10 000 L de retardant chacun<br/>le poids lourd de la Sécurité civile</p>
+        <p class="credit">photo © William Verguet · planespotters.net</p>
+      </div>
+    </div>
+    <div class="pod">
+      <img src="https://t.plnspttrs.net/30885/1666367_306163399e_280.jpg" alt="SE-MHO" />
+      <div class="body">
+        <h3>Air Tractor SE-MHO 🇸🇪</h3>
+        <p>45 largages en 2 jours seulement<br/>le renfort suédois, sitôt arrivé sitôt au travail</p>
+        <p class="credit">photo © William Wallin · planespotters.net</p>
+      </div>
+    </div>
+  </div>
+  <p>Mention spéciale au <b>Puma B</b> (129 largages, le total le plus élevé de l'épisode),
+    hélicoptère militaire sans photo publique : son transpondeur anonyme est resté notre
+    seule fenêtre sur son travail.</p>
+
+  <h2>Méthode et limites</h2>
+  <div class="encadre">
+    <p><b>Un "largage"</b> = un passage sous 150 m d'altitude à vitesse d'intervention,
+      hors lacs et aéroports ; <b>une "rotation"</b> = l'intervalle entre deux largages
+      du même appareil (3 à 90 minutes). C'est une reconstruction à partir des trajectoires
+      publiques, pas un décompte officiel : les chiffres absolus sont des ordres de grandeur,
+      les comparaisons entre appareils sont robustes.</p>
+    <p><b>Les écopages sont sous-comptés</b> (93 détectés pour 798 largages) : au ras de
+      l'eau, les avions descendent souvent sous l'horizon des récepteurs. Même biais pour
+      le feu sud, moins bien couvert en très basse altitude. Les hélicoptères remplissent
+      en vol stationnaire, souvent invisible dans les données.</p>
+    <p>Reproduire : <code>scripts/analyse_norias.py</code> du
+      <a href="https://github.com/guillaumebdx/firetrack">dépôt</a> · données en CSV dans
+      <code>open-data/</code> · <a href="stats.json">chiffres bruts</a>. Sources :
+      © adsb.lol contributors (ODbL), NASA FIRMS, Open-Meteo. Analyse produite avec
+      l'aide de Claude Code.</p>
+  </div>
+
+  <p><a href="../">← Toutes les analyses</a> ·
+    <a href="https://firetrack.harari.ovh">rejouer ces norias sur la carte interactive</a></p>
+
+  <div class="changelog"><b>Historique des révisions</b><ul><li><b>31/07/2026</b> : première publication.</li></ul></div>
+</main>
+</body>
+</html>
