@@ -1,5 +1,16 @@
 // Burger de navigation partagé par les pages d'analyses (statique, zéro dépendance)
+// + suivi Matomo (le même que la carte, site id 4)
 (function () {
+  var _paq = window._paq = window._paq || [];
+  _paq.push(['trackPageView']);
+  _paq.push(['enableLinkTracking']);
+  (function () {
+    var u = '//www.matomo.harari.ovh/';
+    _paq.push(['setTrackerUrl', u + 'matomo.php']);
+    _paq.push(['setSiteId', '4']);
+    var d = document, g = d.createElement('script'), s = d.getElementsByTagName('script')[0];
+    g.async = true; g.src = u + 'matomo.js'; s.parentNode.insertBefore(g, s);
+  })();
   const style = document.createElement('style');
   style.textContent = `
     .ft-burger { position: fixed; top: 12px; left: 12px; z-index: 50;
