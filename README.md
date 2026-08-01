@@ -159,11 +159,16 @@ et attributions dans son README.
 Mise à jour courante : `git pull && npm run build --prefix frontend` (+ `python3 backend/cli.py
 fleet && ./scripts/live.sh` pour voir un ajout de flotte sans attendre le cron).
 
-## Sécurité
+## Sécurité et vie privée
 
 - Seul secret : la clé NASA FIRMS (`backend/firms_key.txt`, gitignoré, ou env `FIRMS_MAP_KEY`).
-- Site publié 100 % statique : pas de base exposée, pas d'API à protéger, pas de données
-  personnelles (les positions ADS-B sont publiques).
+- Site publié 100 % statique : pas de base exposée, pas d'API à protéger.
+- **Aucune donnée personnelle collectée** : pas de compte, pas de formulaire, pas de cookies
+  publicitaires. La seule mesure d'audience est un **Matomo auto-hébergé** (aucun tracker
+  tiers type Google Analytics, rien ne quitte l'infrastructure du site). Les positions
+  d'aéronefs affichées sont des données publiques diffusées par les appareils eux-mêmes.
+- Les seules requêtes tierces du navigateur sont techniques : tuiles de carte (OSM, NASA GIBS)
+  et vignettes photos (planespotters) : chargées sans identifiant de session.
 - Ne jamais exposer `backend/` ni `data/` dans nginx.
 
 ## Attribution
