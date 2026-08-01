@@ -1,12 +1,12 @@
 {
-  "genere_le_utc": "2026-07-30T21:29:48+00:00",
-  "nb_largages_detectes": 798,
-  "nb_ecopages_detectes": 93,
-  "cycle_median_global_min": 13.7,
-  "ecopage_vers_largage_median_min": 9.8,
+  "genere_le_utc": "2026-08-01T10:43:15+00:00",
+  "nb_largages_detectes": 1298,
+  "nb_ecopages_detectes": 113,
+  "cycle_median_global_min": 10.3,
+  "ecopage_vers_largage_median_min": 9.9,
   "ecopages_par_lac": {
-    "Lac de Cazaux-Sanguinet": 22,
-    "Lac de Lacanau": 69,
+    "Lac de Cazaux-Sanguinet": 25,
+    "Lac de Lacanau": 86,
     "Lac de Biscarrosse-Parentis": 2
   },
   "meilleure_journee": {
@@ -18,42 +18,74 @@
     {
       "nom": "Puma B",
       "type": "PUMA",
-      "largages": 129,
-      "ecopages": 4,
-      "cycle_median_min": 9.6,
-      "cycles_mesures": 102
+      "largages": 191,
+      "ecopages": 5,
+      "cycle_median_min": 9.2,
+      "cycles_mesures": 152
     },
     {
       "nom": "TRACTORB",
       "type": "AT8T",
-      "largages": 100,
-      "ecopages": 32,
+      "largages": 144,
+      "ecopages": 37,
       "cycle_median_min": 10.3,
-      "cycles_mesures": 84
+      "cycles_mesures": 122
+    },
+    {
+      "nom": "Tract SE-MHO",
+      "type": "AT8T",
+      "largages": 119,
+      "ecopages": 20,
+      "cycle_median_min": 8.5,
+      "cycles_mesures": 106
+    },
+    {
+      "nom": "Hélico GAF (CH-53)",
+      "type": "H53",
+      "largages": 88,
+      "ecopages": 3,
+      "cycle_median_min": 6.1,
+      "cycles_mesures": 79
+    },
+    {
+      "nom": "Tract SE-MHN",
+      "type": "AT8T",
+      "largages": 87,
+      "ecopages": 17,
+      "cycle_median_min": 10.5,
+      "cycles_mesures": 75
     },
     {
       "nom": "Milan F-ZBMJ",
       "type": "DASH8",
-      "largages": 74,
+      "largages": 76,
       "ecopages": 0,
       "cycle_median_min": 32.6,
+      "cycles_mesures": 65
+    },
+    {
+      "nom": "Tract LX-2",
+      "type": "AT8T",
+      "largages": 71,
+      "ecopages": 3,
+      "cycle_median_min": 8.3,
       "cycles_mesures": 62
     },
     {
       "nom": "TRACTA",
       "type": "AT8T",
-      "largages": 59,
+      "largages": 64,
       "ecopages": 3,
       "cycle_median_min": 39.5,
-      "cycles_mesures": 41
+      "cycles_mesures": 45
     },
     {
-      "nom": "Tract SE-MHO",
-      "type": "AT8T",
-      "largages": 45,
-      "ecopages": 18,
-      "cycle_median_min": 10.1,
-      "cycles_mesures": 41
+      "nom": "Black Hawk OM-BHG",
+      "type": "H60",
+      "largages": 51,
+      "ecopages": 2,
+      "cycle_median_min": 6.7,
+      "cycles_mesures": 42
     },
     {
       "nom": "TRACTC",
@@ -64,20 +96,12 @@
       "cycles_mesures": 32
     },
     {
-      "nom": "Black Hawk OM-BHG",
-      "type": "H60",
-      "largages": 43,
-      "ecopages": 0,
-      "cycle_median_min": 6.5,
-      "cycles_mesures": 36
-    },
-    {
       "nom": "Abel VH-ODH",
       "type": "AT8T",
-      "largages": 41,
+      "largages": 42,
       "ecopages": 1,
-      "cycle_median_min": 43.2,
-      "cycles_mesures": 25
+      "cycle_median_min": 43.8,
+      "cycles_mesures": 27
     },
     {
       "nom": "Pélican 34",
@@ -90,10 +114,18 @@
     {
       "nom": "Milan F-ZBMI",
       "type": "DASH8",
-      "largages": 33,
+      "largages": 36,
       "ecopages": 0,
-      "cycle_median_min": 35.0,
-      "cycles_mesures": 25
+      "cycle_median_min": 34.6,
+      "cycles_mesures": 27
+    },
+    {
+      "nom": "Tract LX-AFC",
+      "type": "AT8T",
+      "largages": 34,
+      "ecopages": 3,
+      "cycle_median_min": 11.0,
+      "cycles_mesures": 30
     },
     {
       "nom": "Tract EC-NKY",
@@ -102,64 +134,32 @@
       "ecopages": 0,
       "cycle_median_min": 28.6,
       "cycles_mesures": 20
-    },
-    {
-      "nom": "Hélico GAF (CH-53)",
-      "type": "H53",
-      "largages": 28,
-      "ecopages": 2,
-      "cycle_median_min": 7.8,
-      "cycles_mesures": 24
-    },
-    {
-      "nom": "Tract SE-MHN",
-      "type": "AT8T",
-      "largages": 28,
-      "ecopages": 14,
-      "cycle_median_min": 15.9,
-      "cycles_mesures": 22
-    },
-    {
-      "nom": "Milan F-ZBMM",
-      "type": "DASH8",
-      "largages": 25,
-      "ecopages": 0,
-      "cycle_median_min": 30.1,
-      "cycles_mesures": 15
-    },
-    {
-      "nom": "Milan F-ZBMK",
-      "type": "DASH8",
-      "largages": 23,
-      "ecopages": 0,
-      "cycle_median_min": 39.0,
-      "cycles_mesures": 16
     }
   ],
   "photos": {
     "Puma B": {
-      "src": null,
-      "credit": null
+      "src": "https://t.plnspttrs.net/11659/1556118_7886790898_280.jpg",
+      "credit": "Adolfo Bento de Urquía"
     },
     "TRACTORB": {
       "src": "https://t.plnspttrs.net/35166/1666516_13b9c1619f_280.jpg",
       "credit": "Sierra Mike"
     },
-    "Milan F-ZBMJ": {
-      "src": "https://t.plnspttrs.net/02644/1926015_09b0c7d608_280.jpg",
-      "credit": "William Verguet"
-    },
-    "TRACTA": {
-      "src": "https://t.plnspttrs.net/46698/1780422_4816218aa9_280.jpg",
-      "credit": "Cameron"
-    },
     "Tract SE-MHO": {
       "src": "https://t.plnspttrs.net/30885/1666367_306163399e_280.jpg",
       "credit": "William Wallin"
     },
-    "TRACTC": {
+    "Hélico GAF (CH-53)": {
       "src": null,
       "credit": null
+    },
+    "Tract SE-MHN": {
+      "src": "https://t.plnspttrs.net/29911/1886648_fd98662c03_280.jpg",
+      "credit": "Michał Furmańczak"
+    },
+    "Milan F-ZBMJ": {
+      "src": "https://t.plnspttrs.net/02644/1926015_09b0c7d608_280.jpg",
+      "credit": "William Verguet"
     }
   }
 }

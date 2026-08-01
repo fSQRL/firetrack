@@ -12,7 +12,7 @@ Régénérer : `python scripts/export_csv.py` (depuis la racine du projet).
 | Fichier | Contenu | Colonnes |
 |---|---|---|
 | `appareils.csv` | La flotte suivie | hex ICAO, immatriculation, nom affiché, type, photo (URL, page, crédit) |
-| `positions_YYYY-MM-DD.csv` | Trajectoires, un fichier par jour UTC | hex, immat, nom, horodatage UTC, latitude, longitude, altitude (pieds), au sol (0/1), vitesse sol (nœuds), cap (degrés) |
+| `positions_YYYY-MM-DD.csv.gz` | Trajectoires, un fichier par jour UTC (CSV gzippé : lisible tel quel par pandas, R, Excel après décompression) | hex, immat, nom, horodatage UTC, latitude, longitude, altitude (pieds), au sol (0/1), vitesse sol (nœuds), cap (degrés) |
 | `feux.csv` | Détections satellites de feu | horodatage du passage satellite UTC, position, puissance radiative (MW), satellite, jour/nuit |
 | `vent.csv` | Vent horaire au point 44.6N 1.0W | horodatage UTC, vitesse (km/h), direction d'origine (degrés) |
 | `qualite_air.csv` | Indice européen de qualité de l'air, grille de 20 points | horodatage UTC, position, indice |

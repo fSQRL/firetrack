@@ -29,7 +29,7 @@ KM_LAT, KM_LON = 111.0, 78.0
 nlat, nlon = int((LAT1 - LAT0) / CELL), int((LON1 - LON0) / CELL)
 AIRPORTS = [(44.828, -0.715, 4.5), (44.533, -1.125, 3.0)]
 LAKES = [(45.13, -1.07, 5.5), (44.98, -1.135, 3.5), (44.50, -1.13, 5.5), (44.35, -1.17, 4.5)]
-DAYS = [date(2026, 7, d) for d in range(22, 30)]
+DAYS = [date(2026, 7, d) for d in range(22, 32)]
 
 
 def near_any(lat, lon, places):
@@ -53,9 +53,10 @@ for d in DAYS:
     t0, t1 = day_ts(d), day_ts(d) + 86400
     fire_g[d] = grid_of(db.execute(
         "SELECT lat, lon, COALESCE(frp,5) FROM fires WHERE ts>=? AND ts<?", (t0, t1)), weight=True)
-    rows = db.execute("""SELECT p.lat, p.lon FROM positions p
+    rows = db.execute("""SELECT p.lat, p.lon FROM positions p JOIN aircraft a USING (hex)
         WHERE p.ts>=? AND p.ts<? AND p.alt_ft<1000 AND p.on_ground=0 AND p.gs_kt>60
-          AND p.lat BETWEEN ? AND ? AND p.lon BETWEEN ? AND ?""",
+          AND p.lat BETWEEN ? AND ? AND p.lon BETWEEN ? AND ?
+          AND a.registration NOT IN ('LX-LGG','LX-LQD','LX-LGM','F-HSIF','F-HSOX','ZZ507')""",
         (t0, t1, LAT0, LAT1, LON0, LON1)).fetchall()
     rows = [(la, lo) for la, lo in rows if not near_any(la, lo, AIRPORTS) and not near_any(la, lo, LAKES)]
     drop_g[d] = grid_of(rows)

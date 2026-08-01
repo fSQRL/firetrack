@@ -26,27 +26,52 @@ KM_LAT, KM_LON = 111.0, 78.0
 AIRPORTS = [(44.828, -0.715, 4.5), (44.533, -1.125, 3.0)]
 LAKES = [(45.13, -1.07, 5.5), (44.98, -1.135, 3.5), (44.50, -1.13, 5.5), (44.35, -1.17, 4.5)]
 
-COUNTRY = {  # hex -> (pays, catégorie)
-    **{h: ("France", "national") for h in
-       ["3b7b6f", "3b7b6e", "3b7b6d", "3b7b6c", "3b7b76", "3b7b75", "3b7b74", "3b7b73",
-        "3b7b72", "3b7b71", "3b7b70", "3b7b6b", "3b7b3f", "3b7b3e", "3b7b3d", "3b7b3a",
-        "3b7b39", "3b7b3c", "3b7b3b", "3b7b38", "3b7b37", "3b7b40", "3b7b41", "3b7b43",
-        "009343"] + [f"3b77{x:02x}" for x in range(0x5a, 0x6f)]},
-    **{h: ("Australie", "loué") for h in ["7caeb4", "7c49bc", "7cad89", "7c4753"]},
-    "3464d9": ("Espagne", "loué"), "348650": ("Espagne", "loué"),
-    "00a113": ("Afrique du Sud", "loué"),
-    "505d0b": ("Slovaquie", "renfort UE"), "505847": ("Slovaquie", "renfort UE"),
-    "4ab50f": ("Suède", "renfort UE"), "4ab50e": ("Suède", "renfort UE"),
-    "3e9555": ("Allemagne", "renfort UE"), "3f62f6": ("Allemagne", "renfort UE"),
-    "4d0123": ("Luxembourg", "renfort UE"), "4d0129": ("Luxembourg", "renfort UE"),
-    "48d691": ("Pologne", "renfort UE"), "48ea09": ("Pologne", "renfort UE"),
+# Classification par immatriculation (les hex viennent de la base : robuste aux nouveaux
+# appareils captés par discover). Les hors-sujet sont écartés (lignes régulières, SAMU...).
+SKIP_REGS = {"LX-LGG", "LX-LQD", "LX-LGM", "F-HSIF", "F-HSOX", "ZZ507", "AC82EC"}
+SPECIAL = {
+    "811": ("Croatie", "renfort UE"),
+    "CT-05": ("Belgique", "renfort UE"), "CT-07": ("Belgique", "renfort UE"),
+    "54+06": ("Allemagne", "renfort UE"), "GAF670": ("Allemagne", "renfort UE"),
+    "3F62F6": ("Allemagne", "renfort UE"),
+    "EC-NKY": ("Espagne", "loué"), "348650": ("Espagne", "loué"),
+    "ZS-MNA": ("Afrique du Sud", "loué"),
+    "LX-AFC": ("Luxembourg", "renfort UE"),
+    "4D0123": ("Luxembourg", "renfort UE"), "4D0129": ("Luxembourg", "renfort UE"),
+    "48D691": ("Pologne", "renfort UE"), "48EA09": ("Pologne", "renfort UE"),
+    "T-317": ("Suisse", "renfort UE"), "T-312": ("Suisse", "renfort UE"),
+    "OM-BHK": ("Slovaquie", "renfort UE"), "OM-BHG": ("Slovaquie", "renfort UE"),
+    "SE-MHO": ("Suède", "renfort UE"), "SE-MHN": ("Suède", "renfort UE"),
 }
+
+
+def classify(reg):
+    if reg in SKIP_REGS:
+        return None
+    if reg in SPECIAL:
+        return SPECIAL[reg]
+    if reg.startswith("VH-"):
+        return ("Australie", "loué")
+    if reg.startswith(("F-", "PUMAB", "3B")) or reg.replace("+", "").isdigit():
+        return ("France", "national")  # immat civiles F- et numéros de série militaires
+    print("  ? immatriculation non classée :", reg)
+    return None
+
+
 FLAG = {"France": "FR", "Australie": "AU", "Espagne": "ES", "Afrique du Sud": "ZA",
-        "Slovaquie": "SK", "Suède": "SE", "Allemagne": "DE", "Luxembourg": "LU", "Pologne": "PL"}
+        "Slovaquie": "SK", "Suède": "SE", "Allemagne": "DE", "Luxembourg": "LU",
+        "Pologne": "PL", "Croatie": "HR", "Belgique": "BE", "Suisse": "CH"}
 CAT_COLOR = {"national": "#4f8dff", "loué": "#3ecf5b", "renfort UE": "#ffb020"}
 COUNTRY_COLOR = {"France": "#4f8dff", "Australie": "#3ecf5b", "Espagne": "#e0b400",
                  "Afrique du Sud": "#2fb886", "Slovaquie": "#ff5d47", "Suède": "#59c1e8",
-                 "Allemagne": "#c9a34e", "Luxembourg": "#8fd0ff", "Pologne": "#ff8b8b"}
+                 "Allemagne": "#c9a34e", "Luxembourg": "#8fd0ff", "Pologne": "#ff8b8b",
+                 "Croatie": "#ff4fa0", "Belgique": "#ffe14f", "Suisse": "#e05252"}
+COUNTRY = {}
+_db0 = sqlite3.connect(ROOT / "data" / "canadair.db")
+for _hex, _reg in _db0.execute("SELECT hex, registration FROM aircraft"):
+    c = classify(_reg)
+    if c:
+        COUNTRY[_hex] = c
 
 
 def near_any(lat, lon, places):
@@ -58,7 +83,7 @@ rows = db.execute("""SELECT p.hex, a.name, p.ts, p.lat, p.lon, p.alt_ft, p.gs_kt
     WHERE p.lat BETWEEN ? AND ? AND p.lon BETWEEN ? AND ?
     ORDER BY p.ts""", (LAT0, LAT1, LON0, LON1)).fetchall()
 
-DAYS = [date(2026, 7, d) for d in range(22, 30)]
+DAYS = [date(2026, 7, d) for d in range(22, 32)]
 presence = {}   # (hex, name) -> set(day)
 drops_day = {}  # (day, pays, cat) -> nb de points en action
 for hex_, name, ts, la, lo, alt, gs, gnd in rows:

@@ -1,5 +1,5 @@
 {
-  "genere_le_utc": "2026-07-30T22:23:44+00:00",
+  "genere_le_utc": "2026-08-01T10:40:48+00:00",
   "pics": {
     "Bordeaux": {
       "aqi": 106.0,
@@ -19,10 +19,10 @@
     }
   },
   "heures_degradees_total": {
-    "Bordeaux": 46,
-    "Zone du feu / nord Bassin": 78,
-    "Sud des Landes": 47,
-    "Témoin est (Entre-deux-Mers)": 31
+    "Bordeaux": 52,
+    "Zone du feu / nord Bassin": 99,
+    "Sud des Landes": 59,
+    "Témoin est (Entre-deux-Mers)": 36
   },
   "heures_tres_mauvais_total": {
     "Bordeaux": 7,

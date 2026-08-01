@@ -20,17 +20,44 @@ hex_icao,immatriculation,nom,type_appareil,photo_url,photo_page,photo_credit
 3b775d,0134,A400M 0134,A400,https://t.plnspttrs.net/20820/1924896_749a15ebfd_280.jpg,https://www.planespotters.net/photo/1924896/f-rbaw-armee-de-lair-french-air-force-airbus-a400m-180?utm_source=api,Jack Li
 3b775c,F-RBAX,A400M F-RBAX,A400,https://t.plnspttrs.net/09926/1513943_a0430bede6_280.jpg,https://www.planespotters.net/photo/1513943/f-rbar-armee-de-lair-french-air-force-airbus-a400m-180?utm_source=api,A-Rafi NA
 3b775a,F-RBAY,A400M F-RBAY,A400,https://t.plnspttrs.net/39081/1905966_66f8f9036d_280.jpg,https://www.planespotters.net/photo/1905966/f-rbay-armee-de-lair-french-air-force-airbus-a400m-180?utm_source=api,Andreas Fietz
+7cace5,VH-8FR,Abel VH-8FR,AT8T,https://t.plnspttrs.net/47709/1693615_c6e6311680_280.jpg,https://www.planespotters.net/photo/1693615/vh-8fr-aerotech-australia-air-tractor-at-802?utm_source=api,Cameron
 7cad89,VH-8KB,Abel VH-8KB,AT8T,https://t.plnspttrs.net/12479/1693617_71a0f43542_280.jpg,https://www.planespotters.net/photo/1693617/vh-8kb-xo-aviation-air-tractor-at-802a?utm_source=api,Cameron
 7c4753,VH-ODH,Abel VH-ODH,AT8T,https://t.plnspttrs.net/09950/1646061_27aa04a33a_280.jpg,https://www.planespotters.net/photo/1646061/vh-odh-aerotech-australasia-air-tractor-at-802?utm_source=api,Peter Tonna
+44f685,CT-05,BAF641,A400,https://t.plnspttrs.net/48159/1942279_865a057e44_280.jpg,https://www.planespotters.net/photo/1942279/ct-05-belgian-air-force-airbus-a400m-180?utm_source=api,Lyon Blöcher
+44f687,CT-07,BAF653,A400,,,
 505847,OM-BHG,Black Hawk OM-BHG,H60,,,
 505d0b,OM-BHK,Black Hawk OM-BHK,H60,https://t.plnspttrs.net/25839/1919849_0ca6306e35_280.jpg,https://www.planespotters.net/photo/1919849/om-bhk-slovak-training-academy-sikorsky-uh-60a-black-hawk?utm_source=api,Thomas Scholz
 3f62f6,3F62F6,CH-53 GAF n°2,H53,,,
+3b77c5,123,CTM0028,CN35,,,
+3b7711,5227,CTM1231,C130,https://t.plnspttrs.net/29037/1868237_eedf8966ea_280.jpg,https://www.planespotters.net/photo/1868237/5227-armee-de-lair-et-de-lespace-french-air-and-space-force-lockheed-c-130h-30-hercules-l-382?utm_source=api,Yann Bougdour
+3b77ed,131,CTM1289,TBM7,https://t.plnspttrs.net/10806/1494901_5144d9a940_280.jpg,https://www.planespotters.net/photo/1494901/131-armee-de-lair-french-air-force-socata-tbm-700?utm_source=api,Werner Verbogt
+3b77f0,117,CTM1291,TBM7,https://t.plnspttrs.net/10632/1293382_a72fe4349f_280.jpg,https://www.planespotters.net/photo/1293382/117-armee-de-lair-french-air-force-dassault-rafale-c?utm_source=api,Mj-aviation
+3b77eb,147,CTM1293,TBM7,https://t.plnspttrs.net/03332/1233272_ac330e8e98_280.jpg,https://www.planespotters.net/photo/1233272/147-armee-de-lair-french-air-force-dassault-rafale-c?utm_source=api,MILSPOT
+3b77f2,33,CTM1305,TBM7,,,
+3b77fa,95,CTM1307,TBM7,,,
+3b77c3,141,CTM1481,CN35,https://t.plnspttrs.net/18295/1405122_c58210aba3_280.jpg,https://www.planespotters.net/photo/1405122/141-armee-de-lair-french-air-force-casa-cn-235-200?utm_source=api,Alexis Boidron
+3b77ec,146,CTM3886,TBM7,https://t.plnspttrs.net/22741/1940786_ccce25d6dd_280.jpg,https://www.planespotters.net/photo/1940786/146-hungarian-air-force-aero-l-39ng?utm_source=api,Striteczky László
+501f9c,811,Canadair croate 811,CL-415,,,
+3b77d6,2461,Caracal 2461,EC25,,,
+3b7601,2741,Caracal 2741,EC25,https://t.plnspttrs.net/35687/1309188_33fee81a9b_280.jpg,https://www.planespotters.net/photo/1309188/2741-armee-de-lair-french-air-force-eurocopter-ec225lp-super-puma-mk2?utm_source=api,MILSPOT
+3b7620,3B7620,Caracal n°2,EC25,,,
+3b7b9e,F-ZBPM,Dragon (F-ZBPM),EC45,,,
+3b7ba3,F-ZBPH,Dragon 33,EC45,https://t.plnspttrs.net/16304/1344637_1484dd2a7e_280.jpg,https://www.planespotters.net/photo/1344637/f-zbph-securite-civile-eurocopter-ec-145?utm_source=api,Filipe Sousa
+3b7b92,F-ZBPY,Dragon 69,EC45,https://t.plnspttrs.net/16299/1322222_4ad9809a5e_280.jpg,https://www.planespotters.net/photo/1322222/f-zbpy-securite-civile-eurocopter-ec-145?utm_source=api,Yann Bougdour
+3b7b98,F-ZBPS,Dragon 75,EC45,https://t.plnspttrs.net/35157/1898840_edbdc30fa1_280.jpg,https://www.planespotters.net/photo/1898840/f-zbps-securite-civile-eurocopter-ec-145?utm_source=api,Mattis Linn
 3b7b43,F-ZBEK,F-ZBEK,COORD,,,
 3b7b40,F-ZBGL,F-ZBGL,COORD,https://t.plnspttrs.net/00741/1109585_0393e8ffa0_280.jpg,https://www.planespotters.net/photo/1109585/f-zbgl-douane-francaise-french-customs-service-beechcraft-b300-king-air-350er?utm_source=api,Y.Panas
 3b7b41,F-ZBGM,F-ZBGM,COORD,https://t.plnspttrs.net/42123/1653411_0a57ab2ea0_280.jpg,https://www.planespotters.net/photo/1653411/f-zbgm-douane-francaise-french-customs-service-beechcraft-350-king-air-b300?utm_source=api,Alejandro Hernández León
+3f7001,54+06,GAF143,A400,,,
 3e9555,GAF670,Hélico GAF (CH-53),H53,,,
+43c908,ZZ507,King Air RAF,B350,,,
+4d00ca,LX-LGG,Luxair (ligne),DH8D,https://t.plnspttrs.net/36193/1934106_eb5f482293_280.jpg,https://www.planespotters.net/photo/1934106/lx-lgg-luxair-bombardier-dhc-8-402-dash-8-q400?utm_source=api,Borut Smrdelj
+4d00d8,LX-LQD,Luxair (ligne),DH8D,,,
+4d00d0,LX-LGM,Luxair (ligne),DH8D,,,
 48d691,48D691,M18 Dromader PL,M18,https://t.plnspttrs.net/22609/856792_2f15933f9c_280.jpg,https://www.planespotters.net/photo/856792/sp-zws-private-pzl-mielec-m-18-dromader?utm_source=api,Stefan Mieszkowski
 48ea09,48EA09,M18 Dromader PL n°2,M18,https://t.plnspttrs.net/19325/1645117_63f258d111_280.jpg,https://www.planespotters.net/photo/1645117/sp-zwi-zua-mielec-pzl-mielec-m-18b-dromader?utm_source=api,Stefan Mieszkowski
+3b7b86,F-ZBMC,Milan F-ZBMC,DASH8,https://t.plnspttrs.net/22065/1128902_b1683efc99_280.jpg,https://www.planespotters.net/photo/1128902/f-zbmc-securite-civile-bombardier-dhc-8-402-mr?utm_source=api,Stéphane Boyer
+3b7b63,F-ZBMH,Milan F-ZBMH,DASH8,,,
 3b7b3f,F-ZBMI,Milan F-ZBMI,DASH8,https://t.plnspttrs.net/39559/1866308_8f0abc41c4_280.jpg,https://www.planespotters.net/photo/1866308/f-zbmi-securite-civile-de-havilland-canada-dhc-8-402-mr?utm_source=api,Jose M. Deza
 3b7b3e,F-ZBMJ,Milan F-ZBMJ,DASH8,https://t.plnspttrs.net/02644/1926015_09b0c7d608_280.jpg,https://www.planespotters.net/photo/1926015/f-zbmj-securite-civile-de-havilland-canada-dhc-8-402-mr?utm_source=api,William Verguet
 3b7b3d,F-ZBMK,Milan F-ZBMK,DASH8,https://t.plnspttrs.net/45277/1859560_32eb69d2d0_280.jpg,https://www.planespotters.net/photo/1859560/f-zbmk-securite-civile-de-havilland-canada-dhc-8-402-mr?utm_source=api,AviaStar Photography
@@ -53,16 +80,18 @@ hex_icao,immatriculation,nom,type_appareil,photo_url,photo_page,photo_credit
 3b7b71,F-ZBME,Pélican 44,CL-415,https://t.plnspttrs.net/49688/1840876_e450614c51_280.jpg,https://www.planespotters.net/photo/1840876/f-zbme-securite-civile-canadair-cl-415?utm_source=api,Mathias Barré
 3b7b70,F-ZBMF,Pélican 45,CL-415,https://t.plnspttrs.net/24032/1661545_4a473e8c33_280.jpg,https://www.planespotters.net/photo/1661545/f-zbmf-securite-civile-canadair-cl-415?utm_source=api,Daniel Filipe Francisco Silva
 3b7b6b,F-ZBMG,Pélican 48,CL-415,https://t.plnspttrs.net/26765/261071_714ffb71cd_280.jpg,https://www.planespotters.net/photo/261071/f-zbmg-securite-civile-canadair-cl-415?utm_source=api,GRITTI
+39c9d7,F-HSOX,SAMU 64,EC45,https://t.plnspttrs.net/22934/1707098_2f589ea0c7_280.jpg,https://www.planespotters.net/photo/1707098/f-hsox-samu-france-eurocopter-ec-145?utm_source=api,sebastien david
+39c905,F-HSIF,SAMU 86,EC45,https://t.plnspttrs.net/01853/1443995_ab44de1d0d_280.jpg,https://www.planespotters.net/photo/1443995/f-hsif-babcock-mcs-france-airbus-helicopters-h145-ec-145-t2?utm_source=api,Alexandre Fevrier
 39c672,F-HRTS,Super Puma F-HRTS,AS32,https://t.plnspttrs.net/08862/1895907_94766796a0_280.jpg,https://www.planespotters.net/photo/1895907/f-hrts-airtelis-airbus-helicopters-h215?utm_source=api,Romain ROUX
 4b7fa7,T-312,Super Puma T-312,AS32,https://t.plnspttrs.net/06347/1338593_e45e7c23c8_280.jpg,https://www.planespotters.net/photo/1338593/t-312-schweizer-luftwaffe-swiss-air-force-eurocopter-th89-super-puma-as-332m1?utm_source=api,Radim Koblížka
 4b7fa2,T-317,Super Puma T-317,AS32,https://t.plnspttrs.net/22859/1718951_2501c4ff28_280.jpg,https://www.planespotters.net/photo/1718951/t-317-schweizer-luftwaffe-swiss-air-force-aerospatiale-th89-super-puma-as-332m1?utm_source=api,Dmitry Petrochenko
 ac82ec,AC82EC,Surveillance (hex N905NA),?,,,
+4ab50e,SE-MHN,TGT42,AT8T,https://t.plnspttrs.net/29911/1886648_fd98662c03_280.jpg,https://www.planespotters.net/photo/1886648/se-mhn-saab-nyge-aero-air-tractor-at-802f-fire-boss?utm_source=api,Michał Furmańczak
+4ab50f,SE-MHO,TGT43,AT8T,https://t.plnspttrs.net/30885/1666367_306163399e_280.jpg,https://www.planespotters.net/photo/1666367/se-mho-saab-nyge-aero-air-tractor-at-802a?utm_source=api,William Wallin
 7caeb4,VH-8SM,TRACTA,AT8T,https://t.plnspttrs.net/46698/1780422_4816218aa9_280.jpg,https://www.planespotters.net/photo/1780422/vh-8sm-aerotech-australasia-air-tractor-at-802?utm_source=api,Cameron
 348650,348650,TRACTC,?,,,
 7c49bc,VH-OUM,TRACTORB,AT8T,https://t.plnspttrs.net/35166/1666516_13b9c1619f_280.jpg,https://www.planespotters.net/photo/1666516/vh-oum-aerotech-australasia-air-tractor-at-802a?utm_source=api,Sierra Mike
 3464d9,EC-NKY,Tract EC-NKY,AT8T,,,
-4d0123,4D0123,Tract LX-1,AT8T,,,
 4d0129,4D0129,Tract LX-2,AT8T,,,
-4ab50e,SE-MHN,Tract SE-MHN,AT8T,https://t.plnspttrs.net/29911/1886648_fd98662c03_280.jpg,https://www.planespotters.net/photo/1886648/se-mhn-saab-nyge-aero-air-tractor-at-802f-fire-boss?utm_source=api,Michał Furmańczak
-4ab50f,SE-MHO,Tract SE-MHO,AT8T,https://t.plnspttrs.net/30885/1666367_306163399e_280.jpg,https://www.planespotters.net/photo/1666367/se-mho-saab-nyge-aero-air-tractor-at-802a?utm_source=api,William Wallin
+4d0123,LX-AFC,Tract LX-AFC,AT8T,https://t.plnspttrs.net/26270/1938245_f7aefb4383_280.jpg,https://www.planespotters.net/photo/1938245/lx-afc-aquarius-aerial-firefighting-air-tractor-at-802af?utm_source=api,Markus Pichler
 00a113,ZS-MNA,Tract ZS-MNA,AT8T,,,

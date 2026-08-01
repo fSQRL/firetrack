@@ -48,6 +48,7 @@ rows = db.execute("""SELECT p.hex, a.name, a.type, p.ts, p.lat, p.lon FROM posit
     JOIN aircraft a USING (hex)
     WHERE p.lat BETWEEN ? AND ? AND p.lon BETWEEN ? AND ?
       AND p.alt_ft < 500 AND p.on_ground = 0 AND p.gs_kt > 60
+      AND a.registration NOT IN ('LX-LGG','LX-LQD','LX-LGM','F-HSIF','F-HSOX','ZZ507')
     ORDER BY p.hex, p.ts""", (LAT0, LAT1, LON0, LON1)).fetchall()
 
 # groupes de passages bas -> événements classés

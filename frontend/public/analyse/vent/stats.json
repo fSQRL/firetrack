@@ -1,5 +1,5 @@
 {
-  "genere_le_utc": "2026-07-30T22:07:30+00:00",
+  "genere_le_utc": "2026-08-01T10:40:42+00:00",
   "par_jour": {
     "2026-07-22": {
       "frp_total_gw": 11.3,
@@ -33,21 +33,39 @@
     },
     "2026-07-27": {
       "frp_total_gw": 1.5,
-      "vent_moyen_kmh": 8.9,
-      "vent_max_kmh": 13.8,
-      "vent_direction_moyenne_deg": 266
+      "vent_moyen_kmh": 9.5,
+      "vent_max_kmh": 15.5,
+      "vent_direction_moyenne_deg": 283
     },
     "2026-07-28": {
-      "frp_total_gw": 0.9,
-      "vent_moyen_kmh": 8.1,
-      "vent_max_kmh": 8.4,
-      "vent_direction_moyenne_deg": 21
+      "frp_total_gw": 8.6,
+      "vent_moyen_kmh": 4.8,
+      "vent_max_kmh": 9.9,
+      "vent_direction_moyenne_deg": 191
     },
     "2026-07-29": {
       "frp_total_gw": 1.6,
-      "vent_moyen_kmh": 5.6,
+      "vent_moyen_kmh": 6.9,
       "vent_max_kmh": 17.8,
-      "vent_direction_moyenne_deg": 164
+      "vent_direction_moyenne_deg": 195
+    },
+    "2026-07-30": {
+      "frp_total_gw": 0.1,
+      "vent_moyen_kmh": 7.7,
+      "vent_max_kmh": 13.7,
+      "vent_direction_moyenne_deg": 258
+    },
+    "2026-07-31": {
+      "frp_total_gw": 0.0,
+      "vent_moyen_kmh": 7.6,
+      "vent_max_kmh": 15.3,
+      "vent_direction_moyenne_deg": 270
+    },
+    "2026-08-01": {
+      "frp_total_gw": 0.0,
+      "vent_moyen_kmh": 2.7,
+      "vent_max_kmh": 3.7,
+      "vent_direction_moyenne_deg": 262
     }
   }
 }

@@ -33,7 +33,7 @@ Extraction CSV complète : [open-data/](open-data/) ·
 ## Les analyses de données
 
 Sept analyses publiées sur [/analyse/](https://firetrack.harari.ovh/analyse/), construites
-sur ~480 000 lignes de données : vulgarisées, sourcées, reproductibles (un script
+sur 2,4 millions de lignes de données : vulgarisées, sourcées, reproductibles (un script
 `scripts/analyse_*.py` par sujet), datées avec historique de révisions, et honnêtes sur
 leurs biais (chaque page a son encadré "Méthode et limites") :
 
@@ -46,7 +46,7 @@ leurs biais (chaque page a son encadré "Méthode et limites") :
 4. **Les largages arrêtent-ils le front ?** : une leçon de biais de sélection, et la ligne
    qui a tenu face à Bordeaux
 5. **Le feu et le vent** : trois régimes de vent, trois incendies successifs
-6. **La montée en puissance des renforts** : 9 pavillons, et la relève européenne à 80 %
+6. **La montée en puissance des renforts** : 11 pavillons, et la relève européenne à 77 %
 7. **La fumée et l'air qu'on a respiré** : le pic de pollution à 4 h du matin, expliqué
 
 | ![Le mur de largages du 24 juillet](frontend/public/analyse/front/front_est_24_25.png) | ![La nuit toxique du 27, couche air activée](frontend/public/analyse/air/air_app_nuit27.png) |
@@ -106,7 +106,7 @@ Ne jamais écrire `cmd1 && cmd2 >> log` directement en crontab (la redirection n
 que la dernière commande) : passer par les scripts. Optionnel : `GITHUB_TOKEN` en variable
 d'environnement pour la limite anonyme de l'API GitHub.
 
-## Flotte (69 appareils suivis)
+## Flotte (96 appareils suivis)
 
 Trois mécanismes complémentaires :
 

@@ -55,7 +55,8 @@
       "PowerShell(python scripts\\\\analyse_a400m.py)",
       "PowerShell(python scripts\\\\analyse_front.py)",
       "PowerShell(node frontend\\\\scripts\\\\shot_front.mjs)",
-      "PowerShell(node frontend\\\\scripts\\\\shot_vent.mjs)"
+      "PowerShell(node frontend\\\\scripts\\\\shot_vent.mjs)",
+      "Bash(npm run *)"
     ],
     "additionalDirectories": [
       "\\tmp"

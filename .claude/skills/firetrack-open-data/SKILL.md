@@ -7,14 +7,14 @@ description: Manipuler, analyser ou vérifier les données Fire Tracker (feux de
 
 Deux accès aux mêmes données : les **CSV de `open-data/`** (lisibles, partage) et la
 **base SQLite `data/canadair.db`** (requêtes lourdes : préférer SQL, la table `positions`
-dépasse le demi-million de lignes). Régénérer les CSV : `python scripts/export_csv.py`.
+dépasse les 2 millions de lignes). Régénérer les CSV : `python scripts/export_csv.py`.
 
 ## Dictionnaire
 
 | Fichier CSV | Table SQLite | Clé | Contenu |
 |---|---|---|---|
-| `appareils.csv` | `aircraft` | `hex_icao` | flotte suivie (67 appareils), photos |
-| `positions_YYYY-MM-DD.csv` (1/jour UTC) | `positions` | `hex+horodatage` | trajectoires |
+| `appareils.csv` | `aircraft` | `hex_icao` | flotte suivie (96 appareils), photos |
+| `positions_YYYY-MM-DD.csv.gz` (1/jour UTC, gzippé) | `positions` | `hex+horodatage` | trajectoires |
 | `feux.csv` | `fires` | `ts+lat+lon+satellite` | détections satellites NASA FIRMS |
 | `vent.csv` | `wind` | `ts` | vent horaire au point 44.6N/-1.0E |
 | `qualite_air.csv` | `air` | `ts+lat+lon` | indice européen, grille 20 points |

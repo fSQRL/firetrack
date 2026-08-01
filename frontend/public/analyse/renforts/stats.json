@@ -1,5 +1,5 @@
 {
-  "genere_le_utc": "2026-07-30T22:18:41+00:00",
+  "genere_le_utc": "2026-08-01T10:43:21+00:00",
   "arrivees": {
     "TRACTA": "2026-07-22",
     "TRACTORB": "2026-07-22",
@@ -9,23 +9,31 @@
     "Tract ZS-MNA": "2026-07-24",
     "Black Hawk OM-BHK": "2026-07-25",
     "Black Hawk OM-BHG": "2026-07-25",
+    "Abel VH-8FR": "2026-07-27",
     "Hélico GAF (CH-53)": "2026-07-28",
     "Tract SE-MHN": "2026-07-28",
     "Tract SE-MHO": "2026-07-28",
-    "Tract LX-1": "2026-07-29",
+    "BAF641": "2026-07-29",
+    "Tract LX-AFC": "2026-07-29",
     "Tract LX-2": "2026-07-29",
-    "M18 Dromader PL n°2": "2026-07-29"
+    "M18 Dromader PL n°2": "2026-07-29",
+    "GAF143": "2026-07-30",
+    "CH-53 GAF n°2": "2026-07-30",
+    "BAF653": "2026-07-30",
+    "Canadair croate 811": "2026-07-31"
   },
   "activite_par_pays": {
-    "France": 62536,
-    "Australie": 32592,
-    "Espagne": 8658,
-    "Afrique du Sud": 1534,
-    "Slovaquie": 4339,
-    "Suède": 8190,
-    "Allemagne": 4104,
-    "Pologne": 57,
-    "Luxembourg": 347
+    "France": 266809,
+    "Australie": 159635,
+    "Espagne": 25171,
+    "Afrique du Sud": 5983,
+    "Slovaquie": 12692,
+    "Suède": 95190,
+    "Allemagne": 41506,
+    "Belgique": 87,
+    "Pologne": 275,
+    "Luxembourg": 39712,
+    "Croatie": 8
   },
   "part_etrangere_par_jour_pct": {
     "2026-07-22": 51,
@@ -33,8 +41,10 @@
     "2026-07-24": 19,
     "2026-07-25": 16,
     "2026-07-26": 32,
-    "2026-07-27": 48,
-    "2026-07-28": 62,
-    "2026-07-29": 80
+    "2026-07-27": 44,
+    "2026-07-28": 52,
+    "2026-07-29": 77,
+    "2026-07-30": 66,
+    "2026-07-31": 64
   }
 }

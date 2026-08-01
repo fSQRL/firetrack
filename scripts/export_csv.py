@@ -12,6 +12,7 @@ Fichiers produits :
 Relancer simplement :  python scripts/export_csv.py
 """
 import csv
+import gzip
 import sqlite3
 from datetime import datetime, timezone
 from pathlib import Path
@@ -26,8 +27,11 @@ def iso(ts):
 
 
 def write(name, header, rows):
+    """CSV simple, ou CSV gzippé si le nom finit en .gz (gros volumes : positions)."""
     path = OUT / name
-    with open(path, "w", newline="", encoding="utf-8") as f:
+    opener = (lambda: gzip.open(path, "wt", newline="", encoding="utf-8")) if name.endswith(".gz") \
+        else (lambda: open(path, "w", newline="", encoding="utf-8"))
+    with opener() as f:
         w = csv.writer(f)
         w.writerow(header)
         w.writerows(rows)
@@ -51,7 +55,7 @@ def main():
                    p.alt_ft, p.on_ground, p.gs_kt, p.track_deg
             FROM positions p LEFT JOIN aircraft a ON a.hex = p.hex
             WHERE date(p.ts,'unixepoch') = ? ORDER BY p.ts""", (day,))
-        write(f"positions_{day}.csv",
+        write(f"positions_{day}.csv.gz",
               ["hex_icao", "immatriculation", "nom", "horodatage_utc", "latitude", "longitude",
                "altitude_pieds", "au_sol", "vitesse_sol_noeuds", "cap_degres"],
               ([h, r, n, iso(ts), la, lo, alt, g, gs, trk] for h, r, n, ts, la, lo, alt, g, gs, trk in rows))

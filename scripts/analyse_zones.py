@@ -64,7 +64,9 @@ fires = db.execute("""SELECT ts, lat, lon, COALESCE(frp, 5) FROM fires
 # inégale entre le nord et le sud de la zone, ce qui biaiserait la comparaison.
 action = db.execute("""SELECT p.ts, p.lat, p.lon, a.name FROM positions p JOIN aircraft a USING (hex)
     WHERE p.lat BETWEEN ? AND ? AND p.lon BETWEEN ? AND ?
-      AND p.alt_ft < 1000 AND p.on_ground = 0 AND p.gs_kt > 60""", (LAT0, LAT1, LON0, LON1)).fetchall()
+      AND p.alt_ft < 1000 AND p.on_ground = 0 AND p.gs_kt > 60
+      AND a.registration NOT IN ('LX-LGG','LX-LQD','LX-LGM','F-HSIF','F-HSOX','ZZ507')""",
+    (LAT0, LAT1, LON0, LON1)).fetchall()
 
 drops = [(ts, la, lo, n) for ts, la, lo, n in action if not near(la, lo, AIRPORTS) and not near(la, lo, [l for l in LAKES])]
 scoops = [(ts, la, lo, n) for ts, la, lo, n in action if near(la, lo, [l for l in LAKES])]
