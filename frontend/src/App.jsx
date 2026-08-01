@@ -408,6 +408,11 @@ export default function App() {
                   <b>Fond de carte</b> :{' '}
                   <a href="https://www.openstreetmap.org" target="_blank" rel="noreferrer">OpenStreetMap</a>.
                 </li>
+                <li>
+                  <b>Transparence</b> : le code source de l'application et l'intégralité des
+                  données en CSV sont publics sur{' '}
+                  <a href="https://github.com/guillaumebdx/firetrack" target="_blank" rel="noreferrer">GitHub</a>.
+                </li>
               </ul>
             </details>
 
