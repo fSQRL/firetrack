@@ -51,7 +51,10 @@
       "PowerShell(python scripts\\\\export_csv.py 2>&1 | Select-Object -Last 2; \\(Get-ChildItem open-data | Measure-Object Length -Sum\\).Sum/1MB)",
       "Edit(/.claude/skills/firetrack-open-data/**)",
       "PowerShell(python -c \"import matplotlib; print\\('matplotlib', matplotlib.__version__\\)\" 2>&1)",
-      "PowerShell(pip install matplotlib 2>&1)"
+      "PowerShell(pip install matplotlib 2>&1)",
+      "Bash(curl -sL -H \"Referer: https://globe.adsbexchange.com/\" -H \"User-Agent: Mozilla/5.0 \\(Windows NT 10.0; Win64; x64\\)\" -H \"Accept-Encoding: gzip\" -o t.bin \"https://globe.adsbexchange.com/data/traces/20/trace_full_3b7620.json\")",
+      "PowerShell(mkdir docs -Force)",
+      "PowerShell(node frontend\\\\scripts\\\\shot_readme.mjs)"
     ]
   }
 }

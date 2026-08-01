@@ -42,6 +42,8 @@
     { "registration": "4D0123", "name": "Tract LX-1", "type": "AT8T", "hex": "4d0123" },
     { "registration": "4D0129", "name": "Tract LX-2", "type": "AT8T", "hex": "4d0129" },
     { "registration": "3F62F6", "name": "CH-53 GAF n°2", "type": "H53", "hex": "3f62f6" },
+    { "registration": "2461", "name": "Caracal 2461", "type": "EC25", "hex": "3b77d6" },
+    { "registration": "3B7620", "name": "Caracal n°2", "type": "EC25", "hex": "3b7620" },
     { "registration": "T-317", "name": "Super Puma T-317", "type": "AS32", "hex": "4b7fa2" },
     { "registration": "T-312", "name": "Super Puma T-312", "type": "AS32", "hex": "4b7fa7" },
     { "registration": "48D691", "name": "M18 Dromader PL", "type": "M18", "hex": "48d691" },
