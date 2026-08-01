@@ -1,74 +1,489 @@
 {
   "comment": "Flotte suivie. Le code hex ICAO est résolu automatiquement via hexdb.io par la commande `fleet` et stocké en base. Ajouter ici tout nouvel appareil (ex. Dash 8 MILAN).",
   "aircraft": [
-    { "registration": "F-ZBFP", "name": "Pélican 31", "type": "CL-415" },
-    { "registration": "F-ZBFS", "name": "Pélican 32", "type": "CL-415" },
-    { "registration": "F-ZBFN", "name": "Pélican 33", "type": "CL-415" },
-    { "registration": "F-ZBFX", "name": "Pélican 34", "type": "CL-415" },
-    { "registration": "F-ZBFY", "name": "Pélican 35", "type": "CL-415" },
-    { "registration": "F-ZBEO", "name": "Pélican 36", "type": "CL-415" },
-    { "registration": "F-ZBFV", "name": "Pélican 37", "type": "CL-415" },
-    { "registration": "F-ZBFW", "name": "Pélican 38", "type": "CL-415" },
-    { "registration": "F-ZBEG", "name": "Pélican 39", "type": "CL-415" },
-    { "registration": "F-ZBEZ", "name": "Pélican 41", "type": "CL-415" },
-    { "registration": "F-ZBEU", "name": "Pélican 42", "type": "CL-415" },
-    { "registration": "F-ZBFQ", "name": "Pélican 43", "type": "CL-415" },
-    { "registration": "F-ZBME", "name": "Pélican 44", "type": "CL-415" },
-    { "registration": "F-ZBMF", "name": "Pélican 45", "type": "CL-415" },
-    { "registration": "F-ZBMG", "name": "Pélican 48", "type": "CL-415" },
-    { "registration": "F-ZBMI", "name": "Milan F-ZBMI", "type": "DASH8" },
-    { "registration": "F-ZBMJ", "name": "Milan F-ZBMJ", "type": "DASH8" },
-    { "registration": "F-ZBMK", "name": "Milan F-ZBMK", "type": "DASH8" },
-    { "registration": "F-ZBML", "name": "Milan F-ZBML", "type": "DASH8" },
-    { "registration": "F-ZBMM", "name": "Milan F-ZBMM", "type": "DASH8" },
-    { "registration": "F-ZBQM", "name": "Milan F-ZBQM", "type": "DASH8" },
-    { "registration": "F-ZBQN", "name": "Milan F-ZBQN", "type": "DASH8" },
-    { "registration": "F-ZBQO", "name": "Milan F-ZBQO", "type": "DASH8" },
-    { "registration": "F-ZBQP", "name": "Milan F-ZBQP", "type": "DASH8" },
-    { "registration": "F-ZBGL", "name": "F-ZBGL", "type": "COORD" },
-    { "registration": "F-ZBGM", "name": "F-ZBGM", "type": "COORD" },
-    { "registration": "VH-8KB", "name": "Abel VH-8KB", "type": "AT8T", "hex": "7cad89" },
-    { "registration": "VH-ODH", "name": "Abel VH-ODH", "type": "AT8T", "hex": "7c4753" },
-    { "registration": "PUMAB", "name": "Puma B", "type": "PUMA", "hex": "009343" },
-    { "registration": "EC-NKY", "name": "Tract EC-NKY", "type": "AT8T", "hex": "3464d9" },
-    { "registration": "OM-BHK", "name": "Black Hawk OM-BHK", "type": "H60", "hex": "505d0b" },
-    { "registration": "F-HRTS", "name": "Super Puma F-HRTS", "type": "AS32", "hex": "39c672" },
-    { "registration": "ZS-MNA", "name": "Tract ZS-MNA", "type": "AT8T", "hex": "00a113" },
-    { "registration": "OM-BHG", "name": "Black Hawk OM-BHG", "type": "H60", "hex": "505847" },
-    { "registration": "AC82EC", "name": "Surveillance (hex N905NA)", "type": "?", "hex": "ac82ec" },
-    { "registration": "SE-MHO", "name": "Tract SE-MHO", "type": "AT8T", "hex": "4ab50f" },
-    { "registration": "SE-MHN", "name": "Tract SE-MHN", "type": "AT8T", "hex": "4ab50e" },
-    { "registration": "GAF670", "name": "Hélico GAF (CH-53)", "type": "H53", "hex": "3e9555" },
-    { "registration": "4D0123", "name": "Tract LX-1", "type": "AT8T", "hex": "4d0123" },
-    { "registration": "4D0129", "name": "Tract LX-2", "type": "AT8T", "hex": "4d0129" },
-    { "registration": "3F62F6", "name": "CH-53 GAF n°2", "type": "H53", "hex": "3f62f6" },
-    { "registration": "2461", "name": "Caracal 2461", "type": "EC25", "hex": "3b77d6" },
-    { "registration": "3B7620", "name": "Caracal n°2", "type": "EC25", "hex": "3b7620" },
-    { "registration": "T-317", "name": "Super Puma T-317", "type": "AS32", "hex": "4b7fa2" },
-    { "registration": "T-312", "name": "Super Puma T-312", "type": "AS32", "hex": "4b7fa7" },
-    { "registration": "48D691", "name": "M18 Dromader PL", "type": "M18", "hex": "48d691" },
-    { "registration": "48EA09", "name": "M18 Dromader PL n°2", "type": "M18", "hex": "48ea09" },
-    { "registration": "F-ZBEK", "name": "F-ZBEK", "type": "COORD", "hex": "3b7b43" },
-    { "registration": "F-RBAY", "name": "A400M F-RBAY", "type": "A400", "hex": "3b775a" },
-    { "registration": "0075", "name": "A400M 0075", "type": "A400", "hex": "3b775b" },
-    { "registration": "F-RBAX", "name": "A400M F-RBAX", "type": "A400", "hex": "3b775c" },
-    { "registration": "0134", "name": "A400M 0134", "type": "A400", "hex": "3b775d" },
-    { "registration": "0130", "name": "A400M 0130", "type": "A400", "hex": "3b775e" },
-    { "registration": "0127", "name": "A400M 0127", "type": "A400", "hex": "3b775f" },
-    { "registration": "0122", "name": "A400M 0122", "type": "A400", "hex": "3b7760" },
-    { "registration": "0110", "name": "A400M 0110", "type": "A400", "hex": "3b7761" },
-    { "registration": "0102", "name": "A400M 0102", "type": "A400", "hex": "3b7762" },
-    { "registration": "0095", "name": "A400M 0095", "type": "A400", "hex": "3b7763" },
-    { "registration": "0089", "name": "A400M 0089", "type": "A400", "hex": "3b7764" },
-    { "registration": "0073", "name": "A400M 0073", "type": "A400", "hex": "3b7765" },
-    { "registration": "0065", "name": "A400M 0065", "type": "A400", "hex": "3b7766" },
-    { "registration": "0062", "name": "A400M 0062", "type": "A400", "hex": "3b7767" },
-    { "registration": "0053", "name": "A400M 0053", "type": "A400", "hex": "3b7768" },
-    { "registration": "0037", "name": "A400M 0037", "type": "A400", "hex": "3b7769" },
-    { "registration": "0033", "name": "A400M 0033", "type": "A400", "hex": "3b776a" },
-    { "registration": "0031", "name": "A400M 0031", "type": "A400", "hex": "3b776b" },
-    { "registration": "0019", "name": "A400M 0019", "type": "A400", "hex": "3b776c" },
-    { "registration": "0014", "name": "A400M 0014", "type": "A400", "hex": "3b776d" },
-    { "registration": "0012", "name": "A400M 0012", "type": "A400", "hex": "3b776e" }
+    {
+      "registration": "F-ZBFP",
+      "name": "Pélican 31",
+      "type": "CL-415"
+    },
+    {
+      "registration": "F-ZBFS",
+      "name": "Pélican 32",
+      "type": "CL-415"
+    },
+    {
+      "registration": "F-ZBFN",
+      "name": "Pélican 33",
+      "type": "CL-415"
+    },
+    {
+      "registration": "F-ZBFX",
+      "name": "Pélican 34",
+      "type": "CL-415"
+    },
+    {
+      "registration": "F-ZBFY",
+      "name": "Pélican 35",
+      "type": "CL-415"
+    },
+    {
+      "registration": "F-ZBEO",
+      "name": "Pélican 36",
+      "type": "CL-415"
+    },
+    {
+      "registration": "F-ZBFV",
+      "name": "Pélican 37",
+      "type": "CL-415"
+    },
+    {
+      "registration": "F-ZBFW",
+      "name": "Pélican 38",
+      "type": "CL-415"
+    },
+    {
+      "registration": "F-ZBEG",
+      "name": "Pélican 39",
+      "type": "CL-415"
+    },
+    {
+      "registration": "F-ZBEZ",
+      "name": "Pélican 41",
+      "type": "CL-415"
+    },
+    {
+      "registration": "F-ZBEU",
+      "name": "Pélican 42",
+      "type": "CL-415"
+    },
+    {
+      "registration": "F-ZBFQ",
+      "name": "Pélican 43",
+      "type": "CL-415"
+    },
+    {
+      "registration": "F-ZBME",
+      "name": "Pélican 44",
+      "type": "CL-415"
+    },
+    {
+      "registration": "F-ZBMF",
+      "name": "Pélican 45",
+      "type": "CL-415"
+    },
+    {
+      "registration": "F-ZBMG",
+      "name": "Pélican 48",
+      "type": "CL-415"
+    },
+    {
+      "registration": "F-ZBMI",
+      "name": "Milan F-ZBMI",
+      "type": "DASH8"
+    },
+    {
+      "registration": "F-ZBMJ",
+      "name": "Milan F-ZBMJ",
+      "type": "DASH8"
+    },
+    {
+      "registration": "F-ZBMK",
+      "name": "Milan F-ZBMK",
+      "type": "DASH8"
+    },
+    {
+      "registration": "F-ZBML",
+      "name": "Milan F-ZBML",
+      "type": "DASH8"
+    },
+    {
+      "registration": "F-ZBMM",
+      "name": "Milan F-ZBMM",
+      "type": "DASH8"
+    },
+    {
+      "registration": "F-ZBQM",
+      "name": "Milan F-ZBQM",
+      "type": "DASH8"
+    },
+    {
+      "registration": "F-ZBQN",
+      "name": "Milan F-ZBQN",
+      "type": "DASH8"
+    },
+    {
+      "registration": "F-ZBQO",
+      "name": "Milan F-ZBQO",
+      "type": "DASH8"
+    },
+    {
+      "registration": "F-ZBQP",
+      "name": "Milan F-ZBQP",
+      "type": "DASH8"
+    },
+    {
+      "registration": "F-ZBGL",
+      "name": "F-ZBGL",
+      "type": "COORD"
+    },
+    {
+      "registration": "F-ZBGM",
+      "name": "F-ZBGM",
+      "type": "COORD"
+    },
+    {
+      "registration": "VH-8KB",
+      "name": "Abel VH-8KB",
+      "type": "AT8T",
+      "hex": "7cad89"
+    },
+    {
+      "registration": "VH-ODH",
+      "name": "Abel VH-ODH",
+      "type": "AT8T",
+      "hex": "7c4753"
+    },
+    {
+      "registration": "PUMAB",
+      "name": "Puma B",
+      "type": "PUMA",
+      "hex": "009343"
+    },
+    {
+      "registration": "EC-NKY",
+      "name": "Tract EC-NKY",
+      "type": "AT8T",
+      "hex": "3464d9"
+    },
+    {
+      "registration": "OM-BHK",
+      "name": "Black Hawk OM-BHK",
+      "type": "H60",
+      "hex": "505d0b"
+    },
+    {
+      "registration": "F-HRTS",
+      "name": "Super Puma F-HRTS",
+      "type": "AS32",
+      "hex": "39c672"
+    },
+    {
+      "registration": "ZS-MNA",
+      "name": "Tract ZS-MNA",
+      "type": "AT8T",
+      "hex": "00a113"
+    },
+    {
+      "registration": "OM-BHG",
+      "name": "Black Hawk OM-BHG",
+      "type": "H60",
+      "hex": "505847"
+    },
+    {
+      "registration": "AC82EC",
+      "name": "Surveillance (hex N905NA)",
+      "type": "?",
+      "hex": "ac82ec"
+    },
+    {
+      "registration": "SE-MHO",
+      "name": "Tract SE-MHO",
+      "type": "AT8T",
+      "hex": "4ab50f"
+    },
+    {
+      "registration": "SE-MHN",
+      "name": "Tract SE-MHN",
+      "type": "AT8T",
+      "hex": "4ab50e"
+    },
+    {
+      "registration": "GAF670",
+      "name": "Hélico GAF (CH-53)",
+      "type": "H53",
+      "hex": "3e9555"
+    },
+    {
+      "registration": "4D0123",
+      "name": "Tract LX-1",
+      "type": "AT8T",
+      "hex": "4d0123"
+    },
+    {
+      "registration": "4D0129",
+      "name": "Tract LX-2",
+      "type": "AT8T",
+      "hex": "4d0129"
+    },
+    {
+      "registration": "3F62F6",
+      "name": "CH-53 GAF n°2",
+      "type": "H53",
+      "hex": "3f62f6"
+    },
+    {
+      "registration": "2461",
+      "name": "Caracal 2461",
+      "type": "EC25",
+      "hex": "3b77d6"
+    },
+    {
+      "registration": "3B7620",
+      "name": "Caracal n°2",
+      "type": "EC25",
+      "hex": "3b7620"
+    },
+    {
+      "registration": "T-317",
+      "name": "Super Puma T-317",
+      "type": "AS32",
+      "hex": "4b7fa2"
+    },
+    {
+      "registration": "T-312",
+      "name": "Super Puma T-312",
+      "type": "AS32",
+      "hex": "4b7fa7"
+    },
+    {
+      "registration": "48D691",
+      "name": "M18 Dromader PL",
+      "type": "M18",
+      "hex": "48d691"
+    },
+    {
+      "registration": "48EA09",
+      "name": "M18 Dromader PL n°2",
+      "type": "M18",
+      "hex": "48ea09"
+    },
+    {
+      "registration": "F-ZBEK",
+      "name": "F-ZBEK",
+      "type": "COORD",
+      "hex": "3b7b43"
+    },
+    {
+      "registration": "F-RBAY",
+      "name": "A400M F-RBAY",
+      "type": "A400",
+      "hex": "3b775a"
+    },
+    {
+      "registration": "0075",
+      "name": "A400M 0075",
+      "type": "A400",
+      "hex": "3b775b"
+    },
+    {
+      "registration": "F-RBAX",
+      "name": "A400M F-RBAX",
+      "type": "A400",
+      "hex": "3b775c"
+    },
+    {
+      "registration": "0134",
+      "name": "A400M 0134",
+      "type": "A400",
+      "hex": "3b775d"
+    },
+    {
+      "registration": "0130",
+      "name": "A400M 0130",
+      "type": "A400",
+      "hex": "3b775e"
+    },
+    {
+      "registration": "0127",
+      "name": "A400M 0127",
+      "type": "A400",
+      "hex": "3b775f"
+    },
+    {
+      "registration": "0122",
+      "name": "A400M 0122",
+      "type": "A400",
+      "hex": "3b7760"
+    },
+    {
+      "registration": "0110",
+      "name": "A400M 0110",
+      "type": "A400",
+      "hex": "3b7761"
+    },
+    {
+      "registration": "0102",
+      "name": "A400M 0102",
+      "type": "A400",
+      "hex": "3b7762"
+    },
+    {
+      "registration": "0095",
+      "name": "A400M 0095",
+      "type": "A400",
+      "hex": "3b7763"
+    },
+    {
+      "registration": "0089",
+      "name": "A400M 0089",
+      "type": "A400",
+      "hex": "3b7764"
+    },
+    {
+      "registration": "0073",
+      "name": "A400M 0073",
+      "type": "A400",
+      "hex": "3b7765"
+    },
+    {
+      "registration": "0065",
+      "name": "A400M 0065",
+      "type": "A400",
+      "hex": "3b7766"
+    },
+    {
+      "registration": "0062",
+      "name": "A400M 0062",
+      "type": "A400",
+      "hex": "3b7767"
+    },
+    {
+      "registration": "0053",
+      "name": "A400M 0053",
+      "type": "A400",
+      "hex": "3b7768"
+    },
+    {
+      "registration": "0037",
+      "name": "A400M 0037",
+      "type": "A400",
+      "hex": "3b7769"
+    },
+    {
+      "registration": "0033",
+      "name": "A400M 0033",
+      "type": "A400",
+      "hex": "3b776a"
+    },
+    {
+      "registration": "0031",
+      "name": "A400M 0031",
+      "type": "A400",
+      "hex": "3b776b"
+    },
+    {
+      "registration": "0019",
+      "name": "A400M 0019",
+      "type": "A400",
+      "hex": "3b776c"
+    },
+    {
+      "registration": "0014",
+      "name": "A400M 0014",
+      "type": "A400",
+      "hex": "3b776d"
+    },
+    {
+      "registration": "0012",
+      "name": "A400M 0012",
+      "type": "A400",
+      "hex": "3b776e"
+    },
+    {
+      "registration": "VH-8FR",
+      "name": "Abel VH-8FR",
+      "type": "AT8T",
+      "hex": "7cace5"
+    },
+    {
+      "registration": "F-ZBPS",
+      "name": "Dragon 75",
+      "type": "EC45",
+      "hex": "3b7b98"
+    },
+    {
+      "registration": "F-ZBPM",
+      "name": "Dragon (F-ZBPM)",
+      "type": "EC45",
+      "hex": "3b7b9e"
+    },
+    {
+      "registration": "F-ZBPY",
+      "name": "Dragon 69",
+      "type": "EC45",
+      "hex": "3b7b92"
+    },
+    {
+      "registration": "F-ZBPH",
+      "name": "Dragon 33",
+      "type": "EC45",
+      "hex": "3b7ba3"
+    },
+    {
+      "registration": "F-ZBMH",
+      "name": "Milan F-ZBMH",
+      "type": "DASH8",
+      "hex": "3b7b63"
+    },
+    {
+      "registration": "F-ZBMC",
+      "name": "Milan F-ZBMC",
+      "type": "DASH8",
+      "hex": "3b7b86"
+    },
+    {
+      "registration": "811",
+      "name": "Canadair croate 811",
+      "type": "CL-415",
+      "hex": "501f9c"
+    },
+    {
+      "registration": "LX-AFC",
+      "name": "Tract LX-AFC",
+      "type": "AT8T",
+      "hex": "4d0123"
+    },
+    {
+      "registration": "2741",
+      "name": "Caracal 2741",
+      "type": "EC25",
+      "hex": "3b7601"
+    },
+    {
+      "registration": "LX-LGG",
+      "name": "Luxair (ligne)",
+      "type": "DH8D",
+      "hex": "4d00ca"
+    },
+    {
+      "registration": "LX-LQD",
+      "name": "Luxair (ligne)",
+      "type": "DH8D",
+      "hex": "4d00d8"
+    },
+    {
+      "registration": "LX-LGM",
+      "name": "Luxair (ligne)",
+      "type": "DH8D",
+      "hex": "4d00d0"
+    },
+    {
+      "registration": "F-HSIF",
+      "name": "SAMU 86",
+      "type": "EC45",
+      "hex": "39c905"
+    },
+    {
+      "registration": "F-HSOX",
+      "name": "SAMU 64",
+      "type": "EC45",
+      "hex": "39c9d7"
+    },
+    {
+      "registration": "ZZ507",
+      "name": "King Air RAF",
+      "type": "B350",
+      "hex": "43c908"
+    }
   ]
 }

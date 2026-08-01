@@ -151,7 +151,14 @@ def cmd_fleet(args):
     for ac in fleet:
         reg = ac["registration"]
         if reg in known:
-            print(f"  {reg} -> {known[reg]} (déjà en base)")
+            # déjà en base : fleet.json reste la référence pour le nom et le type affichés
+            cur = db.execute("SELECT name, type FROM aircraft WHERE registration=?", (reg,)).fetchone()
+            if cur and (cur[0] != ac["name"] or cur[1] != ac["type"]):
+                db.execute("UPDATE aircraft SET name=?, type=? WHERE registration=?",
+                           (ac["name"], ac["type"], reg))
+                print(f"  {reg} -> renommé : {ac['name']} ({ac['type']})")
+            else:
+                print(f"  {reg} -> {known[reg]} (déjà en base)")
             continue
         if "hex" in ac:  # hex fourni explicitement (immat. militaires absentes de hexdb)
             db.execute(
