@@ -5,8 +5,11 @@ aériens engagés contre les feux de Gironde et des Landes (juillet 2026) : Cana
 Air Tractor, A400M, hélicoptères, renforts européens : avec les zones de feu détectées par
 satellite, la fumée simulée par le vent réel et la qualité de l'air.
 
+![La carte Fire Tracker le 24 juillet à 17h30 : le panache file vers Bordeaux pendant que la flotte martèle le front](docs/screenshot_carte.png)
+
 Étude des sources de données : [RECHERCHE_DONNEES.md](RECHERCHE_DONNEES.md) ·
-Extraction CSV complète : [open-data/](open-data/)
+Extraction CSV complète : [open-data/](open-data/) ·
+**Les analyses : https://firetrack.harari.ovh/analyse/**
 
 ## Fonctionnalités
 
@@ -24,6 +27,31 @@ Extraction CSV complète : [open-data/](open-data/)
   n'est pas publiée), 😷 indice européen de qualité de l'air (grille CAMS, valeurs affichées)
 - **Nuit astronomique** (voile calé sur l'altitude réelle du soleil), hélicos à rotor animé,
   icônes orientées au cap, traces qui suivent les avions à la frame près
+- **Partage d'un moment précis** : bouton Partager (site ou instant courant) et liens profonds
+  `/?t=<epoch>` qui ouvrent la carte à la seconde voulue
+
+## Les analyses de données
+
+Sept analyses publiées sur [/analyse/](https://firetrack.harari.ovh/analyse/), construites
+sur ~480 000 lignes de données : vulgarisées, sourcées, reproductibles (un script
+`scripts/analyse_*.py` par sujet), datées avec historique de révisions, et honnêtes sur
+leurs biais (chaque page a son encadré "Méthode et limites") :
+
+1. **Des zones ont-elles été privilégiées par les largages ?** : pourquoi on borde les
+   lisières au lieu de noyer le brasier
+2. **Le rendement des norias** : hélicos toutes les 6 min, Dash toutes les 36 : trois
+   familles, trois cadences
+3. **A400M et Canadair : deux doctrines de largage** : le "1 A400M = 3 Canadair" passé
+   au crible
+4. **Les largages arrêtent-ils le front ?** : une leçon de biais de sélection, et la ligne
+   qui a tenu face à Bordeaux
+5. **Le feu et le vent** : trois régimes de vent, trois incendies successifs
+6. **La montée en puissance des renforts** : 9 pavillons, et la relève européenne à 80 %
+7. **La fumée et l'air qu'on a respiré** : le pic de pollution à 4 h du matin, expliqué
+
+| ![Le mur de largages du 24 juillet](frontend/public/analyse/front/front_est_24_25.png) | ![La nuit toxique du 27, couche air activée](frontend/public/analyse/air/air_app_nuit27.png) |
+|---|---|
+| *Le "mur de largages" du 24/07 face au front est* | *La nuit du 26-27 : l'air vire au rouge jusqu'à Bordeaux* |
 
 ## Architecture : 100 % statique à la publication
 
@@ -78,7 +106,7 @@ Ne jamais écrire `cmd1 && cmd2 >> log` directement en crontab (la redirection n
 que la dernière commande) : passer par les scripts. Optionnel : `GITHUB_TOKEN` en variable
 d'environnement pour la limite anonyme de l'API GitHub.
 
-## Flotte (67 appareils suivis)
+## Flotte (69 appareils suivis)
 
 Trois mécanismes complémentaires :
 
