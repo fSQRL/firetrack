@@ -18,8 +18,8 @@
     },
     {
       "registration": "F-ZBFX",
-      "name": "Pélican 34",
-      "type": "CL-415"
+      "name": "PELIC34",
+      "type": "CL2T"
     },
     {
       "registration": "F-ZBFY",
@@ -33,8 +33,8 @@
     },
     {
       "registration": "F-ZBFV",
-      "name": "Pélican 37",
-      "type": "CL-415"
+      "name": "PELIC37",
+      "type": "CL2T"
     },
     {
       "registration": "F-ZBFW",
@@ -53,8 +53,8 @@
     },
     {
       "registration": "F-ZBEU",
-      "name": "Pélican 42",
-      "type": "CL-415"
+      "name": "PELIC42",
+      "type": "CL2T"
     },
     {
       "registration": "F-ZBFQ",
@@ -78,18 +78,18 @@
     },
     {
       "registration": "F-ZBMI",
-      "name": "Milan F-ZBMI",
-      "type": "DASH8"
+      "name": "MILAN76",
+      "type": "DH8D"
     },
     {
       "registration": "F-ZBMJ",
-      "name": "Milan F-ZBMJ",
-      "type": "DASH8"
+      "name": "MILAN77",
+      "type": "DH8D"
     },
     {
       "registration": "F-ZBMK",
-      "name": "Milan F-ZBMK",
-      "type": "DASH8"
+      "name": "MILAN78",
+      "type": "DH8D"
     },
     {
       "registration": "F-ZBML",
@@ -98,8 +98,8 @@
     },
     {
       "registration": "F-ZBMM",
-      "name": "Milan F-ZBMM",
-      "type": "DASH8"
+      "name": "MILAN80",
+      "type": "DH8D"
     },
     {
       "registration": "F-ZBQM",
@@ -113,8 +113,8 @@
     },
     {
       "registration": "F-ZBQO",
-      "name": "Milan F-ZBQO",
-      "type": "DASH8"
+      "name": "DRAGO65",
+      "type": "EC45"
     },
     {
       "registration": "F-ZBQP",
@@ -124,12 +124,12 @@
     {
       "registration": "F-ZBGL",
       "name": "F-ZBGL",
-      "type": "COORD"
+      "type": "L2T"
     },
     {
       "registration": "F-ZBGM",
       "name": "F-ZBGM",
-      "type": "COORD"
+      "type": "L2T"
     },
     {
       "registration": "VH-8KB",
@@ -139,25 +139,25 @@
     },
     {
       "registration": "VH-ODH",
-      "name": "Abel VH-ODH",
+      "name": "TRACTE",
       "type": "AT8T",
       "hex": "7c4753"
     },
     {
-      "registration": "PUMAB",
-      "name": "Puma B",
-      "type": "PUMA",
+      "registration": "ZT-RYE",
+      "name": "PUMAB",
+      "type": "EC25",
       "hex": "009343"
     },
     {
       "registration": "EC-NKY",
-      "name": "Tract EC-NKY",
+      "name": "TRACTF",
       "type": "AT8T",
       "hex": "3464d9"
     },
     {
       "registration": "OM-BHK",
-      "name": "Black Hawk OM-BHK",
+      "name": "OMBHK",
       "type": "H60",
       "hex": "505d0b"
     },
@@ -169,13 +169,13 @@
     },
     {
       "registration": "ZS-MNA",
-      "name": "Tract ZS-MNA",
+      "name": "MORA343",
       "type": "AT8T",
       "hex": "00a113"
     },
     {
       "registration": "OM-BHG",
-      "name": "Black Hawk OM-BHG",
+      "name": "OMBHG",
       "type": "H60",
       "hex": "505847"
     },
@@ -187,13 +187,13 @@
     },
     {
       "registration": "SE-MHO",
-      "name": "Tract SE-MHO",
+      "name": "TGT43",
       "type": "AT8T",
       "hex": "4ab50f"
     },
     {
       "registration": "SE-MHN",
-      "name": "Tract SE-MHN",
+      "name": "TGT42",
       "type": "AT8T",
       "hex": "4ab50e"
     },
@@ -264,134 +264,14 @@
       "hex": "3b7b43"
     },
     {
-      "registration": "F-RBAY",
-      "name": "A400M F-RBAY",
-      "type": "A400",
-      "hex": "3b775a"
-    },
-    {
-      "registration": "0075",
-      "name": "A400M 0075",
-      "type": "A400",
-      "hex": "3b775b"
-    },
-    {
       "registration": "F-RBAX",
-      "name": "A400M F-RBAX",
+      "name": "BLADE38",
       "type": "A400",
       "hex": "3b775c"
     },
     {
-      "registration": "0134",
-      "name": "A400M 0134",
-      "type": "A400",
-      "hex": "3b775d"
-    },
-    {
-      "registration": "0130",
-      "name": "A400M 0130",
-      "type": "A400",
-      "hex": "3b775e"
-    },
-    {
-      "registration": "0127",
-      "name": "A400M 0127",
-      "type": "A400",
-      "hex": "3b775f"
-    },
-    {
-      "registration": "0122",
-      "name": "A400M 0122",
-      "type": "A400",
-      "hex": "3b7760"
-    },
-    {
-      "registration": "0110",
-      "name": "A400M 0110",
-      "type": "A400",
-      "hex": "3b7761"
-    },
-    {
-      "registration": "0102",
-      "name": "A400M 0102",
-      "type": "A400",
-      "hex": "3b7762"
-    },
-    {
-      "registration": "0095",
-      "name": "A400M 0095",
-      "type": "A400",
-      "hex": "3b7763"
-    },
-    {
-      "registration": "0089",
-      "name": "A400M 0089",
-      "type": "A400",
-      "hex": "3b7764"
-    },
-    {
-      "registration": "0073",
-      "name": "A400M 0073",
-      "type": "A400",
-      "hex": "3b7765"
-    },
-    {
-      "registration": "0065",
-      "name": "A400M 0065",
-      "type": "A400",
-      "hex": "3b7766"
-    },
-    {
-      "registration": "0062",
-      "name": "A400M 0062",
-      "type": "A400",
-      "hex": "3b7767"
-    },
-    {
-      "registration": "0053",
-      "name": "A400M 0053",
-      "type": "A400",
-      "hex": "3b7768"
-    },
-    {
-      "registration": "0037",
-      "name": "A400M 0037",
-      "type": "A400",
-      "hex": "3b7769"
-    },
-    {
-      "registration": "0033",
-      "name": "A400M 0033",
-      "type": "A400",
-      "hex": "3b776a"
-    },
-    {
-      "registration": "0031",
-      "name": "A400M 0031",
-      "type": "A400",
-      "hex": "3b776b"
-    },
-    {
-      "registration": "0019",
-      "name": "A400M 0019",
-      "type": "A400",
-      "hex": "3b776c"
-    },
-    {
-      "registration": "0014",
-      "name": "A400M 0014",
-      "type": "A400",
-      "hex": "3b776d"
-    },
-    {
-      "registration": "0012",
-      "name": "A400M 0012",
-      "type": "A400",
-      "hex": "3b776e"
-    },
-    {
       "registration": "VH-8FR",
-      "name": "Abel VH-8FR",
+      "name": "VH8FR",
       "type": "AT8T",
       "hex": "7cace5"
     },
@@ -403,7 +283,7 @@
     },
     {
       "registration": "F-ZBPM",
-      "name": "Dragon (F-ZBPM)",
+      "name": "DRAGO17",
       "type": "EC45",
       "hex": "3b7b9e"
     },
@@ -415,20 +295,20 @@
     },
     {
       "registration": "F-ZBPH",
-      "name": "Dragon 33",
+      "name": "DRAGO33",
       "type": "EC45",
       "hex": "3b7ba3"
     },
     {
       "registration": "F-ZBMH",
-      "name": "Milan F-ZBMH",
-      "type": "DASH8",
+      "name": "MILAN75",
+      "type": "DH8D",
       "hex": "3b7b63"
     },
     {
       "registration": "F-ZBMC",
-      "name": "Milan F-ZBMC",
-      "type": "DASH8",
+      "name": "MILAN73",
+      "type": "DH8D",
       "hex": "3b7b86"
     },
     {
@@ -484,6 +364,41 @@
       "name": "King Air RAF",
       "type": "B350",
       "hex": "43c908"
+    },
+    {
+      "registration": "F-ZBFK",
+      "name": "BENGA96",
+      "type": "BE20"
+    },
+    {
+      "registration": "F-ZBMB",
+      "name": "BENGA97",
+      "type": "BE20"
+    },
+    {
+      "registration": "F-HROD",
+      "name": "C33FEUX",
+      "type": "AS50"
+    },
+    {
+      "registration": "OM-BHG",
+      "name": "OMBHG",
+      "type": "H60"
+    },
+    {
+      "registration": "OM-BHK",
+      "name": "OMBHK",
+      "type": "H60"
+    },
+    {
+      "registration": "N47CU",
+      "name": "N47CU",
+      "type": "H47"
+    },
+    {
+      "registration": "VH-VQB",
+      "name": "HLTK201",
+      "type": "B412"
     }
   ]
 }
