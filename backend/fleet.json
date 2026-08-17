@@ -399,6 +399,21 @@
       "registration": "VH-VQB",
       "name": "HLTK201",
       "type": "B412"
+    },
+    {
+      "registration": "VH-8SM",
+      "name": "TRACTA",
+      "type": "AT8T"
+    },
+    {
+      "registration": "VH-OUM",
+      "name": "TRACTORB",
+      "type": "AT8T"
+    },
+    {
+      "registration": "EC-ORX",
+      "name": "TRACTC",
+      "type": "AT8T"
     }
   ]
 }
